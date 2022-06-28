@@ -9,7 +9,7 @@ const session = require('express-session');
 const MysqlStore = require('express-mysql-session')(session);
 const sessionStore = new MysqlStore({},db);
 const moment = require('moment-timezone');
-const upload = require('./modules/upload-images')
+const upload = require('./modules/upload-images');
 
 // cors setting
 app.use(cors());
@@ -35,7 +35,9 @@ app.use(express.json());
 
 
 
-// ----------------- routes end -------------------------
+
+app.use('/cart',require(__dirname+'/routes/cart.js'));
+// ------------------ routes end -------------------------
 app.get('/',(req,res)=>{
     res.send('<h1>http://localhost:3000 is test running</h1>');
 })
