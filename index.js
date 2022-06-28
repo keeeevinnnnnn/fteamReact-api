@@ -31,11 +31,11 @@ app.use(session({
 }))
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
-// ------------------ start -----------------------
+// ------------------ routes start -----------------------
 
 
 
-// ----------------- end -------------------------
+// ----------------- routes end -------------------------
 app.get('/',(req,res)=>{
     res.send('<h1>http://localhost:3000 is test running</h1>');
 })
