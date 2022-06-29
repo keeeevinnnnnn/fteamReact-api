@@ -12,6 +12,7 @@ router.post('/login', upload.none(), async (req, res) => {
         success: false,
         bollen: false,
         new: false,
+        grade:'low',
         token: '',
         info: null,
         code: 0,
@@ -65,6 +66,7 @@ router.post('/login', upload.none(), async (req, res) => {
     //     new:output.new,
     //     mem_created_at,
     //     mem_avatar,
+    //     grade:output.grade,
     // };
 
     // 進行加密讓前端頁面看不出來
@@ -74,6 +76,7 @@ router.post('/login', upload.none(), async (req, res) => {
         new:output.new,
         mem_created_at,
         mem_avatar,
+        grade:output.grade,
     }, process.env.JWT_KEY);
 
     res.json(output);
