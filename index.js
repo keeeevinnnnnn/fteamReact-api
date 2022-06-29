@@ -34,7 +34,7 @@ app.use(express.json());
 // ------------------ routes start -----------------------
 
 
-
+app.use('/member',require(__dirname+'/routes/member'));
 
 app.use('/cart',require(__dirname+'/routes/cart.js'));
 // ------------------ routes end -------------------------
@@ -42,7 +42,7 @@ app.get('/',(req,res)=>{
     res.send('<h1>http://localhost:3000 is test running</h1>');
 })
 // 404
-app.use((req,res)=>{ 
+app.use((req,res)=>{
     res.send("<h2>404 not found</h2>")
 })
 app.listen(3000,()=>{
