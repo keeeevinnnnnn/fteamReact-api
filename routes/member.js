@@ -34,8 +34,14 @@ router.post('/login', upload.none(), async (req, res) => {
         output.error = '帳密錯誤';
         output.code = 402;
         return res.json(output);
-    } else {
+    }
+
+    if(row.mem_bollen==1){
         output.bollen = true;
+    }else{
+        output.error = '帳號已被停用';
+        output.code = 403;
+        return res.json(output);
     }
 
     const { sid, mem_account, mem_nickname, mem_created_at, mem_avatar } = row;
