@@ -7,11 +7,11 @@ const bcrypt = require('bcryptjs');
 require('dotenv').config();
 
 router.post('/login', upload.none(), async (req, res) => {
-
     const output = {
         success: false,
         bollen: false,
         new: false,
+        grade: 'low',
         token: '',
         info: null,
         code: 0,
@@ -36,9 +36,9 @@ router.post('/login', upload.none(), async (req, res) => {
         return res.json(output);
     }
 
-    if(row.mem_bollen==1){
+    if (row.mem_bollen == 1) {
         output.bollen = true;
-    }else{
+    } else {
         output.error = '帳號已被停用';
         output.code = 403;
         return res.json(output);
@@ -47,10 +47,10 @@ router.post('/login', upload.none(), async (req, res) => {
     const { sid, mem_account, mem_nickname, mem_created_at, mem_avatar } = row;
 
     const now = new Date();
-    const newOld= now - mem_created_at;
+    const newOld = now - mem_created_at;
 
     // 86400000是24小時的毫秒數
-    if(newOld<86400000){
+    if (newOld < 86400000) {
         output.new = true;
     }
 
@@ -65,16 +65,22 @@ router.post('/login', upload.none(), async (req, res) => {
     //     new:output.new,
     //     mem_created_at,
     //     mem_avatar,
+    //     grade:output.grade,
     // };
 
     // 進行加密讓前端頁面看不出來
-    output.token = jwt.sign({ sid,
-        mem_account,
-        mem_nickname,
-        new:output.new,
-        mem_created_at,
-        mem_avatar,
-    }, process.env.JWT_KEY);
+    output.token = jwt.sign(
+        {
+            sid,
+            mem_account,
+            mem_nickname,
+            new: output.new,
+            mem_created_at,
+            mem_avatar,
+            grade: output.grade,
+        },
+        process.env.JWT_KEY
+    );
 
     res.json(output);
 });
