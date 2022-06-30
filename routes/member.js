@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 require('dotenv').config();
 
+// 會員登入
 router.post('/login', upload.none(), async (req, res) => {
     const output = {
         success: false,
@@ -86,6 +87,7 @@ router.post('/login', upload.none(), async (req, res) => {
     res.json(output);
 });
 
+// 會員註冊
 router.post('/add', upload.none(), async (req, res) => {
     const output = {
         success: false,
@@ -167,6 +169,13 @@ router.post('/add', upload.none(), async (req, res) => {
     // 新增成功顯示在Preview的
     // {"fieldCount":0,"affectedRows":1,"insertId":1113,"info":"","serverStatus":2,"warningStatus":0}
     (output.success = true), res.json(output);
+});
+
+// 刪除帳號
+router.get('/delete', (req, res) => {
+    const sql = db.query("DELETE FROM `member` WHERE sid=?", [
+        req.query.sid,
+    ]);
 });
 
 module.exports = router;
