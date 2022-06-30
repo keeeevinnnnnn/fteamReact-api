@@ -33,7 +33,7 @@ app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 // ------------------ routes start -----------------------
 
-
+app.use('/admin',require(__dirname+'/routes/admin'));
 app.use('/member',require(__dirname+'/routes/member'));
 
 app.use('/cart',require(__dirname+'/routes/cart.js'));
