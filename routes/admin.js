@@ -8,7 +8,7 @@ const bcrypt = require('bcryptjs');
 require('dotenv').config();
 
 // 管理員登入
-router.post('/login', async (req, res) => {
+router.post('/login', upload.none(), async (req, res) => {
     const output = {
         success: false,
         grade: 'hight',
@@ -28,23 +28,20 @@ router.post('/login', async (req, res) => {
         return res.json(output);
     }
 
-    const row = rs[0];
-
     if (req.body.password !== row.ad_password) {
         output.error = '帳密錯誤';
         output.code = 402;
         return res.json(output);
     }
 
-    const { sid, ad_account, ad_avatar } = row;
+    const { ad_account, ad_avatar } = row;
 
     output.success = true;
-    output.info = { ad_account };
+    output.info = { ad_account, ad_avatar, grade: output.grade };
 
     // 進行加密讓前端頁面看不出來
     output.token = jwt.sign(
         {
-            sid,
             ad_account,
             ad_avatar,
             grade: output.grade,
@@ -56,17 +53,18 @@ router.post('/login', async (req, res) => {
 });
 
 // 停用會員
-router.get('/false/:sid', (req, res) => {
+router.get('/false', (req, res) => {
     const sql = db.query('UPDATE `member` SET `mem_bollen`=0 WHERE `sid`=? ', [
-        req.params.sid,
+        req.query.sid,
     ]);
 });
 
 // 激活會員
-router.get('/true/:sid', (req, res) => {
+router.get('/true', (req, res) => {
     const sql = db.query('UPDATE `member` SET `mem_bollen`=1 WHERE `sid`=? ', [
-        req.params.sid,
+        req.query.sid,
     ]);
+    console.log(req.query.sid);
 });
 
 module.exports = router;
