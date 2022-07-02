@@ -13,7 +13,6 @@ router.get('/login', async (req, res)=>{
 
 // 會員登入
 router.post('/login', upload.none(), async (req, res) => {
-    console.log(res.locals.user.sid);
     const output = {
         success: false,
         bollen: false,
