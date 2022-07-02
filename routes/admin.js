@@ -56,16 +56,16 @@ router.post('/login', async (req, res) => {
 });
 
 // 停用會員
-router.get('/false', (req, res) => {
+router.get('/false/:sid', (req, res) => {
     const sql = db.query('UPDATE `member` SET `mem_bollen`=0 WHERE `sid`=? ', [
-        req.query.sid,
+        req.params.sid,
     ]);
 });
 
 // 激活會員
-router.get('/true', (req, res) => {
+router.get('/true/:sid', (req, res) => {
     const sql = db.query('UPDATE `member` SET `mem_bollen`=1 WHERE `sid`=? ', [
-        req.query.sid,
+        req.params.sid,
     ]);
 });
 
