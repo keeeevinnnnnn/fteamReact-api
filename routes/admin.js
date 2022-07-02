@@ -54,17 +54,26 @@ router.post('/login', upload.none(), async (req, res) => {
 
 // 停用會員
 router.get('/false', (req, res) => {
-    const sql = db.query('UPDATE `member` SET `mem_bollen`=0 WHERE `sid`=? ', [
+    const sql = db.query('UPDATE member SET mem_bollen=0 WHERE sid=?', [
         req.query.sid,
     ]);
 });
 
 // 激活會員
 router.get('/true', (req, res) => {
-    const sql = db.query('UPDATE `member` SET `mem_bollen`=1 WHERE `sid`=? ', [
+    const sql = db.query('UPDATE member SET mem_bollen=1 WHERE sid=?', [
         req.query.sid,
     ]);
-    console.log(req.query.sid);
+});
+
+// 刪除會員
+router.delete('/delete', (req, res) => {
+    // 單筆刪除
+    const sql = db.query('DELETE FROM member WHERE sid=?', [
+        req.query.sid,
+    ]);
+    // 多筆刪除
+    const sqlar = db.query(`DELETE FROM member WHERE sid IN (${req.query.sid_ar})`);
 });
 
 module.exports = router;
