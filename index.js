@@ -61,7 +61,9 @@ app.get('/', (req, res) => {
 });
 // 404
 app.use((req, res) => {
-    res.send('<h2>404 not found</h2>');
+    res.send(`<h2>404 找不到頁面</h2>
+    <img src="/errorpage.png" alt="" width="500px">
+    `)
 });
 app.listen(3000, () => {
     console.log('Serve is running.');
