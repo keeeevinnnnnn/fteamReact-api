@@ -7,44 +7,60 @@ const db = require('./modules/connect_db');
 const { v4: uuidv4 } = require('uuid');
 const session = require('express-session');
 const MysqlStore = require('express-mysql-session')(session);
-const sessionStore = new MysqlStore({},db);
+const sessionStore = new MysqlStore({}, db);
 const moment = require('moment-timezone');
 const upload = require('./modules/upload-images');
+const jwt = require('jsonwebtoken');
 
 // cors setting
 app.use(cors());
 
 //ejs set
-app.set('view engine','ejs');
+app.set('view engine', 'ejs');
 app.set('case sensitive routing', true);
 
 // top level middleware
 // session setting
-app.use(session({
-    saveUninitialized: false,
-    resave: false,
-    secret: 'nfkdsnonlgfkewngrer4ngqoerwnggrkqwngpirgqgnprwgnkpr', // 加密用
-    store: sessionStore,
-    cookie:{
-        maxAge:1800000, // 30 min
+app.use(
+    session({
+        saveUninitialized: false,
+        resave: false,
+        secret: 'nfkdsnonlgfkewngrer4ngqoerwnggrkqwngpirgqgnprwgnkpr', // 加密用
+        store: sessionStore,
+        cookie: {
+            maxAge: 1800000, // 30 min
+        },
+    })
+);
+
+app.use((req, res, next) => {
+    // 如果有 token 就解析(驗證)完放在 res.locals.user
+    res.locals.user = null; // 自訂的變數, 設定有沒有身份驗證, 預設值為 null
+    let user = req.get('Authorization');
+    if (user && user.indexOf('fteam') === 0) {
+        user = user.slice(5);
+        const payload = jwt.verify(user, process.env.JWT_KEY);
+        res.locals.user = payload;
     }
-}))
-app.use(express.urlencoded({extended: false}));
+    next();
+});
+
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 // ------------------ routes start -----------------------
 
-app.use('/admin',require(__dirname+'/routes/admin'));
-app.use('/member',require(__dirname+'/routes/member'));
+app.use('/admin', require(__dirname + '/routes/admin'));
+app.use('/member', require(__dirname + '/routes/member'));
 
-app.use('/cart',require(__dirname+'/routes/cart.js'));
+app.use('/cart', require(__dirname + '/routes/cart.js'));
 // ------------------ routes end -------------------------
-app.get('/',(req,res)=>{
+app.get('/', (req, res) => {
     res.send('<h1>http://localhost:3000 is test running</h1>');
-})
+});
 // 404
-app.use((req,res)=>{
-    res.send("<h2>404 not found</h2>")
-})
-app.listen(3000,()=>{
+app.use((req, res) => {
+    res.send('<h2>404 not found</h2>');
+});
+app.listen(3000, () => {
     console.log('Serve is running.');
 });

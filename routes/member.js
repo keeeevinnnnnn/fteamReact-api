@@ -7,8 +7,13 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 require('dotenv').config();
 
+router.get('/login', async (req, res)=>{
+    res.render('login');
+});
+
 // 會員登入
 router.post('/login', upload.none(), async (req, res) => {
+    console.log(res.locals.user.sid);
     const output = {
         success: false,
         bollen: false,
@@ -32,7 +37,10 @@ router.post('/login', upload.none(), async (req, res) => {
 
     const row = rs[0];
 
-    if (req.body.password !== row.mem_password) {
+    // 資料庫密碼解密
+    const compareResult = await bcrypt.compare(req.body.password, row.mem_password);
+
+    if (! compareResult) {
         output.error = '帳密錯誤';
         output.code = 402;
         return res.json(output);
@@ -106,7 +114,7 @@ router.post('/add', upload.none(), async (req, res) => {
             //欄位變數名稱用中文顯示
             .label('姓名必填'),
         nickname: Joi.any(),
-        email: Joi.string().email().required(),
+        email: Joi.string().email(),
         mobile: Joi.string(),
         account: Joi.string().required(),
         password: Joi.string().required(),
@@ -121,7 +129,7 @@ router.post('/add', upload.none(), async (req, res) => {
 
     const find = schema.validate(req.body, { abortEarly: false });
 
-    console.log(find);
+    // console.log(find);
 
     if (find.error) {
         (output.code = 401), (output.error = '資料有錯誤');
@@ -136,6 +144,18 @@ router.post('/add', upload.none(), async (req, res) => {
     // 如果沒給頭貼
     if (!req.body.avatar) {
         req.body.avatar = '檔案名稱'; //之後給個預設頭貼
+    }
+    if (!req.body.nickname) {
+        req.body.nickname = '';
+    }
+    if (!req.body.email) {
+        req.body.email = '';
+    }
+    if (!req.body.mobile) {
+        req.body.mobile = '';
+    }
+    if (!req.body.address) {
+        req.body.address = '';
     }
 
     const {
@@ -152,12 +172,15 @@ router.post('/add', upload.none(), async (req, res) => {
         created,
     } = req.body;
 
+    // 密碼加密再存進資料庫
+    const hash = bcrypt.hashSync(password);
+
     const [result] = await db.query(sql, [
         name,
         nickname,
         level,
         account,
-        password,
+        hash,
         email,
         mobile,
         birthday,
@@ -168,13 +191,14 @@ router.post('/add', upload.none(), async (req, res) => {
 
     // 新增成功顯示在Preview的
     // {"fieldCount":0,"affectedRows":1,"insertId":1113,"info":"","serverStatus":2,"warningStatus":0}
-    (output.success = true), res.json(output);
+    output.success = true;
+    res.json(output);
 });
 
 // 刪除帳號
-router.get('/delete', (req, res) => {
+router.delete('/delete', (req, res) => {
     const sql = db.query("DELETE FROM `member` WHERE sid=?", [
-        req.query.sid,
+        res.locals.user.sid,
     ]);
 });
 

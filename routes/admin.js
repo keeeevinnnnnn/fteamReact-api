@@ -8,7 +8,7 @@ const bcrypt = require('bcryptjs');
 require('dotenv').config();
 
 // 管理員登入
-router.post('/login', upload.none(), async (req, res) => {
+router.post('/login', async (req, res) => {
     const output = {
         success: false,
         grade: 'hight',
