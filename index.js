@@ -12,6 +12,8 @@ const moment = require('moment-timezone');
 const upload = require('./modules/upload-images');
 const jwt = require('jsonwebtoken');
 
+// static folder
+app.use(express.static('errPage'))
 // cors setting
 app.use(cors());
 
