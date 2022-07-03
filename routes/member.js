@@ -101,7 +101,7 @@ router.post('/add', upload.none(), async (req, res) => {
     res.json(output);
 });
 
-// 登入
+// 登入 JWT
 router.post('/login', upload.none(), async (req, res) => {
     const output = {
         success: false,
