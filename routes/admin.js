@@ -67,7 +67,7 @@ router.get('/true', (req, res) => {
 });
 
 // 刪除會員
-router.delete('/delete', (req, res) => {
+router.delete('/', (req, res) => {
     // 單筆刪除
     const sql = db.query('DELETE FROM member WHERE sid=?', [
         req.query.sid,

@@ -301,7 +301,7 @@ router.post('/password', upload.none(), async (req, res) => {
 });
 
 // 刪除帳號
-router.delete('/delete', (req, res) => {
+router.delete('/', (req, res) => {
     const sql = db.query(`DELETE FROM member WHERE sid=${res.locals.user.sid}`);
 });
 
