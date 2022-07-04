@@ -53,14 +53,14 @@ router.post('/login', upload.none(), async (req, res) => {
 });
 
 // 停用會員
-router.get('/false', (req, res) => {
+router.get('/stop', (req, res) => {
     const sql = db.query('UPDATE member SET mem_bollen=0 WHERE sid=?', [
         req.query.sid,
     ]);
 });
 
 // 激活會員
-router.get('/true', (req, res) => {
+router.get('/reboot', (req, res) => {
     const sql = db.query('UPDATE member SET mem_bollen=1 WHERE sid=?', [
         req.query.sid,
     ]);
