@@ -66,5 +66,5 @@ app.use((req, res) => {
     `)
 });
 app.listen(3000, () => {
-    console.log('Serve is running.');
+    console.log(`server started: http://localhost:3000`);
 });
