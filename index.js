@@ -53,8 +53,8 @@ app.use(express.json());
 
 app.use('/admin', require(__dirname + '/routes/admin'));
 app.use('/member', require(__dirname + '/routes/member'));
-
-app.use('/cart', require(__dirname + '/routes/cart.js'));
+app.use('/carts', require(__dirname + '/routes/carts.js'));
+app.use('/orders', require(__dirname + '/routes/orders.js'));
 // ------------------ routes end -------------------------
 app.get('/', (req, res) => {
     res.send('<h1>http://localhost:3000 is test running</h1>');
