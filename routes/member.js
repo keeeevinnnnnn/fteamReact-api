@@ -305,7 +305,8 @@ router.delete('/', (req, res) => {
     const sql = db.query(`DELETE FROM member WHERE sid=${res.locals.user.sid}`);
 });
 
-router.post('/upload', upload.single('avatar'), (req, res)=>{
+// 上傳頭貼
+router.post('/upload', upload.single('avatar'), (req, res) => {
     res.json(req.file);
 });
 
