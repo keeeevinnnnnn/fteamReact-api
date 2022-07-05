@@ -12,7 +12,7 @@ router.get('/login', async (req, res) => {
 });
 
 // 註冊
-router.post('/add', upload.none(), async (req, res) => {
+router.post('/register', upload.none(), async (req, res) => {
     const output = {
         success: false,
         code: 0,
