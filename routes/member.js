@@ -1,18 +1,18 @@
 const express = require('express');
 const db = require('../modules/connect_db');
 const router = express.Router();
-const upload = require('../modules/upload-images');
 const Joi = require('joi');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 require('dotenv').config();
+const upload = require('../modules/upload-avatar');
 
 router.get('/login', async (req, res) => {
     res.render('login');
 });
 
 // 註冊
-router.post('/add', upload.none(), async (req, res) => {
+router.post('/register', upload.none(), async (req, res) => {
     const output = {
         success: false,
         code: 0,
@@ -303,6 +303,11 @@ router.post('/password', upload.none(), async (req, res) => {
 // 刪除帳號
 router.delete('/', (req, res) => {
     const sql = db.query(`DELETE FROM member WHERE sid=${res.locals.user.sid}`);
+});
+
+// 上傳頭貼
+router.post('/upload', upload.single('avatar'), (req, res) => {
+    res.json(req.file);
 });
 
 module.exports = router;

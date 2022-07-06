@@ -59,7 +59,7 @@ router.get('/stop', (req, res) => {
     ]);
 });
 
-// 激活會員
+// 重啟會員
 router.get('/reboot', (req, res) => {
     const sql = db.query('UPDATE member SET mem_bollen=1 WHERE sid=?', [
         req.query.sid,
