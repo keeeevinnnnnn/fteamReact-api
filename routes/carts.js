@@ -28,6 +28,7 @@ router.post('/', upload.none(), async (req, res) => {
     if (inArray(req.body.sid, arr)) {
         output.code = 410;
         output.error = '商品已存在購物車';
+        res.json(output);
     } else {
         let r;
         if (req.body.type === "product") {
@@ -46,18 +47,39 @@ router.post('/', upload.none(), async (req, res) => {
             console.log(data);
             r = data;
         }
-        const sql2 = "INSERT INTO `carts`(`item_id`, `item_type`, `quantity`, `item_price`, `member_id`) VALUES (?,?,?,?,?)";
-        await db.execute(sql2, [
-            req.body.sid,
-            req.body.type,
-            req.body.quantity,
-            req.body.quantity * r.price,
-            fakeMember]); // 會員先寫死
-        output.success = true;
-        output.code = 200;
-        output.error = '商品新增成功';
+        if (r.quota !== 'undefined') {
+            if (r.quota - (+req.body.quantity) < 0) {
+                output.code = 420;
+                output.error = '課程報名人數已達上限';
+                res.json(output);
+            } else {
+                const sql2 = "INSERT INTO `carts`(`item_id`, `item_type`, `quantity`, `item_price`, `member_id`) VALUES (?,?,?,?,?)";
+                await db.execute(sql2, [
+                    req.body.sid,
+                    req.body.type,
+                    req.body.quantity,
+                    req.body.quantity * r.price,
+                    fakeMember]); // 會員先寫死
+                output.success = true;
+                output.code = 200;
+                output.error = '商品新增成功';
+                res.json(output);
+            }
+        } else {
+            const sql2 = "INSERT INTO `carts`(`item_id`, `item_type`, `quantity`, `item_price`, `member_id`) VALUES (?,?,?,?,?)";
+            await db.execute(sql2, [
+                req.body.sid,
+                req.body.type,
+                req.body.quantity,
+                req.body.quantity * r.price,
+                fakeMember]); // 會員先寫死
+            output.success = true;
+            output.code = 200;
+            output.error = '商品新增成功';
+            res.json(output);
+        }
+
     }
-    res.json(output);
 })
 
 // R need : member_id item_type

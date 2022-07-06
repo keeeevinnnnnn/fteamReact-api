@@ -55,6 +55,8 @@ app.use('/admin', require(__dirname + '/routes/admin'));
 app.use('/member', require(__dirname + '/routes/member'));
 app.use('/carts', require(__dirname + '/routes/carts.js'));
 app.use('/orders', require(__dirname + '/routes/orders.js'));
+
+// app.use('/test', require(__dirname + '/routes/test.js')); // 借我測試用  p.s.阿嘎留
 // ------------------ routes end -------------------------
 app.get('/', (req, res) => {
     res.send('<h1>http://localhost:3000 is test running</h1>');
