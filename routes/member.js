@@ -7,6 +7,11 @@ const bcrypt = require('bcryptjs');
 require('dotenv').config();
 const upload = require('../modules/upload-avatar');
 
+router.get('/all', async (req, res) => {
+    const sql = await db.query('SELECT * FROM `member` WHERE 1');
+    res.json(sql[0]);
+});
+
 router.get('/login', async (req, res) => {
     res.render('login');
 });
