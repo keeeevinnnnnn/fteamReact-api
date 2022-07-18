@@ -35,7 +35,7 @@ router.post('/register', upload.none(), async (req, res) => {
             //欄位變數名稱用中文顯示
             .label('姓名必填'),
         nickname: Joi.any(),
-        email: Joi.string().email(),
+        email: Joi.string().email().required(),
         mobile: Joi.string(),
         account: Joi.string().required(),
         password: Joi.string().required(),
