@@ -60,7 +60,7 @@ router.post('/register', upload.none(), async (req, res) => {
     // 給他們預設值 (前端不給欄位)
     // 如果沒給頭貼
     if (!req.body.avatar) {
-        req.body.avatar = '檔案名稱'; //之後給個預設頭貼
+        req.body.avatar = 'images.png';
     }
     if (!req.body.nickname) {
         req.body.nickname = '';
