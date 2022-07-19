@@ -18,9 +18,7 @@ router.post('/login', upload.none(), async (req, res) => {
         error: '',
     };
 
-    const [rs] = await db.query('SELECT * FROM admin WHERE ad_account=?', [
-        req.body.account,
-    ]);
+    const [rs] = await db.query('SELECT * FROM `admin` WHERE 1');
 
     if (!rs.length) {
         output.error = '帳密錯誤';
@@ -28,7 +26,9 @@ router.post('/login', upload.none(), async (req, res) => {
         return res.json(output);
     }
 
-    if (req.body.password !== row.ad_password) {
+    const row = rs[0];
+
+    if (req.body.password != row.ad_password) {
         output.error = '帳密錯誤';
         output.code = 402;
         return res.json(output);

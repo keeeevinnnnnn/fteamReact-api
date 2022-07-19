@@ -36,9 +36,10 @@ router.post('/register', upload.none(), async (req, res) => {
             .label('姓名必填'),
         nickname: Joi.any(),
         email: Joi.string().email().required(),
-        mobile: Joi.string(),
+        mobile: Joi.any(),
         account: Joi.string().required(),
         password: Joi.string().required(),
+        confirmPassword: Joi.string().required(),
         //可以是任何類型
         birthday: Joi.any(),
         address: Joi.any(),
@@ -143,9 +144,10 @@ router.post('/login', upload.none(), async (req, res) => {
         return res.json(output);
     }
 
-    if (row.mem_bollen == 1) {
+    if (row.mem_bollen === 1) {
         output.bollen = true;
     } else {
+        output.bollen = true;
         output.error = '帳號已被停用';
         output.code = 403;
         return res.json(output);
