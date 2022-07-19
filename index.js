@@ -39,8 +39,8 @@ app.use((req, res, next) => {
     // 如果有 token 就解析(驗證)完放在 res.locals.user
     res.locals.user = null; // 自訂的變數, 設定有沒有身份驗證, 預設值為 null
     let user = req.get('Authorization');
-    if (user && user.indexOf('fteam') === 0) {
-        user = user.slice(5);
+    if (user && user.indexOf('Bearer ') === 0) {
+        user = user.slice(7);
         const payload = jwt.verify(user, process.env.JWT_KEY);
         res.locals.user = payload;
     }
