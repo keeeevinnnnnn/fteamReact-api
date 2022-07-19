@@ -49,6 +49,8 @@ app.use((req, res, next) => {
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+// 會員頭貼
+app.use('/avatar', express.static(__dirname + '/public/avatar'));
 // ------------------ routes start -----------------------
 
 app.use('/admin', require(__dirname + '/routes/admin'));
