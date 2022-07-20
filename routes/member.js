@@ -160,9 +160,8 @@ router.post('/login', upload.none(), async (req, res) => {
 
     const { sid, mem_account, mem_nickname, mem_created_at, mem_avatar } = row;
 
-    const now = new Date();
-    const newOld = now - mem_created_at;
-
+    const now = Date.now();
+    const newOld = now - Date.now(mem_created_at);
     // 86400000是24小時的毫秒數
     if (newOld < 86400000) {
         output.new = true;
