@@ -207,8 +207,8 @@ router.post('/edit', upload.none(), async (req, res) => {
             //欄位變數名稱用中文顯示
             .label('姓名必填'),
         nickname: Joi.any(),
-        email: Joi.string().email(),
-        mobile: Joi.string(),
+        email: Joi.string().email().required(),
+        mobile: Joi.any(),
         account: Joi.string().required(),
         //可以是任何類型
         birthday: Joi.any(),
@@ -228,9 +228,6 @@ router.post('/edit', upload.none(), async (req, res) => {
     // 如果沒填 給空字串
     if (!req.body.nickname) {
         req.body.nickname = '';
-    }
-    if (!req.body.email) {
-        req.body.email = '';
     }
     if (!req.body.mobile) {
         req.body.mobile = '';
@@ -253,6 +250,7 @@ router.post('/edit', upload.none(), async (req, res) => {
     ]);
 
     output.success = true;
+    output.body=req.body;
     res.json(output);
 });
 
