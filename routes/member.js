@@ -272,7 +272,7 @@ router.post('/password', upload.none(), async (req, res) => {
 
     // 對比用戶輸入的原密碼是否一樣
     const compareResult = await bcrypt.compare(
-        req.body.old_password,
+        req.body.password,
         user_passsword
     );
 
@@ -284,8 +284,8 @@ router.post('/password', upload.none(), async (req, res) => {
 
     //後端檢查用 格式
     const schema = Joi.object({
-        old_password: Joi.string().required(),
-        new_password: Joi.string().required(),
+        password: Joi.string().required(),
+        newPassword: Joi.string().required(),
     });
 
     const find = schema.validate(req.body, { abortEarly: false });
@@ -299,10 +299,10 @@ router.post('/password', upload.none(), async (req, res) => {
     // 更改密碼
     const sql = `UPDATE member SET mem_password=? WHERE sid=${res.locals.user.sid}`;
 
-    const { new_password } = req.body;
+    const { newPassword } = req.body;
 
     // 新密碼加密後存資料庫
-    const hash = bcrypt.hashSync(new_password);
+    const hash = bcrypt.hashSync(newPassword);
 
     const [result] = await db.query(sql, [hash]);
 
