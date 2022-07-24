@@ -91,10 +91,21 @@ router.get('/', upload.none(), async (req, res) => {
         error: '',
     };
     let data;
-    if (req.query.type) {
-        const sql = "SELECT * FROM carts WHERE item_type=? AND member_id=? ORDER BY created_at";
+    if (req.query.type === 'product') {
+        const sql = "SELECT carts.*, product.name, product.img FROM `carts` JOIN product ON product.sid = carts.item_id WHERE item_type=? AND carts.member_id=? ORDER BY created_at;"
         const [r] = await db.query(sql, [req.query.type, fakeMember]);
-        console.log(r);
+        data = r;
+        output.success = true;
+        output.code = 205;
+    } else if (req.query.type === 'custom') {
+        const sql = "SELECT carts.*, custom.custom_product_name, custom.back_img FROM `carts` JOIN custom ON custom.sid = carts.item_id WHERE item_type=? AND carts.member_id=? ORDER BY created_at;"
+        const [r] = await db.query(sql, [req.query.type, fakeMember]);
+        data = r;
+        output.success = true;
+        output.code = 205;
+    } else if (req.query.type === 'lesson') {
+        const sql = "SELECT carts.*, lesson.name,lesson.duringtime_begin,lesson.duringtime_end, lesson.location FROM `carts` JOIN lesson ON lesson.sid = carts.item_id WHERE item_type=? AND carts.member_id=? ORDER BY created_at"
+        const [r] = await db.query(sql, [req.query.type, fakeMember]);
         data = r;
         output.success = true;
         output.code = 205;
