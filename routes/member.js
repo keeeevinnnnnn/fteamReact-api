@@ -320,4 +320,22 @@ router.post('/upload', upload.single('avatar'), (req, res) => {
     res.json(req.file);
 });
 
+// 會員中心單獨更換頭貼
+router.post('/avatar', upload.none(), async (req, res) => {
+    const output = {
+        success: false,
+        code: 0,
+        error: '',
+    };
+
+     // 更改頭貼
+     const sql = `UPDATE member SET mem_avatar=? WHERE sid=${res.locals.user.sid}`;
+    const {avatar}= req.body;
+    const [result] = await db.query(sql, [avatar]);
+    console.log(avatar);
+
+    output.success = true;
+    res.json(output);
+});
+
 module.exports = router;
