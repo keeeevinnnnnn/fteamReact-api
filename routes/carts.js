@@ -117,26 +117,29 @@ router.get('/', upload.none(), async (req, res) => {
 router.put('/', upload.none(), async (req, res) => {
     let output = {
         success: false,
-        postData: req.query,
+        postData: req.body,
         code: 0,
         error: '',
         msg: '',
     };
-    if (req.query) {
-        const sql = "UPDATE `carts` SET `quantity`=? WHERE item_id=? AND item_type=? AND member_id=?";
+    if (req.body) {
+        const sql = "UPDATE `carts` SET `quantity`=?,item_price=? WHERE item_id=? AND item_type=? AND member_id=?";
         const [r] = await db.query(sql, [
-            req.query.quantity,
-            req.query.sid,
-            req.query.type,
+            req.body.quantity,
+            req.body.price,
+            req.body.sid,
+            req.body.type,
             fakeMember,
         ])
         if (r.affectedRows === 1) {
+            console.log(r);
             output.success = true;
             output.code = 200;
             output.msg = '修改成功';
         }
     }
     res.json(output);
+
 })
 
 // D  need : item_type item_id

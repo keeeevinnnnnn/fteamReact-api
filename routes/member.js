@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 require('dotenv').config();
 const upload = require('../modules/upload-avatar');
+const moment = require('moment-timezone');
 
 // router.get('/login', async (req, res) => {
 //     res.render('login');
@@ -13,6 +14,9 @@ const upload = require('../modules/upload-avatar');
 
 router.get('/memberself', async (req, res) => {
     const [sql] = await db.query(`SELECT * FROM member WHERE sid=${res.locals.user.sid}`);
+    const birthday = moment(sql[0].mem_birthday).format('YYYY-MM-DD');
+    sql[0].mem_birthday = birthday;
+    console.log(sql[0]);
     res.json(sql[0]);
 });
 
@@ -160,9 +164,8 @@ router.post('/login', upload.none(), async (req, res) => {
 
     const { sid, mem_account, mem_nickname, mem_created_at, mem_avatar } = row;
 
-    const now = new Date();
-    const newOld = now - mem_created_at;
-
+    const now = Date.now();
+    const newOld = now - Date.now(mem_created_at);
     // 86400000是24小時的毫秒數
     if (newOld < 86400000) {
         output.new = true;
