@@ -2,7 +2,8 @@ const express = require("express");
 const db = require("../modules/connect_db");
 const router = express.Router();
 
-router.get("/product", async (req, res) => {
+// 全部商品
+router.post("/", async (req, res) => {
   let output = {
     perPage: 15,
     page: 1,
@@ -13,13 +14,10 @@ router.get("/product", async (req, res) => {
     query: {},
     rows: [],
   };
-  let page = +req.query.page || 1;
-  let search = req.query.search || "";
-  let where = " WHERE 1 ";
-  if (search) {
-    where += ` AND name LIKE ${db.escape("%" + search + "%")} `;
-    output.query.search = search;
-  }
+  let page = +req.body.filter.page || 1;
+  let where = " WHERE 1=1 ";
+  let orderField = "sid";
+  let sort = "asc";
 
   if (page < 1) {
     output.code = 410;
@@ -39,10 +37,45 @@ router.get("/product", async (req, res) => {
       return output;
     }
 
-    const sql02 = `SELECT * FROM product ${where} ORDER BY sid LIMIT ${
+    sort != null ? req.body.filter.sort : sort;
+
+    if (orderField != null) {
+      orderField = req.body.filter.orderField;
+    }
+
+    switch (orderField) {
+      case "categoryId":
+        orderField = "category_id";
+        break;
+      case "brand":
+        orderField = "brand";
+        break;
+      case "color":
+        orderField = "color";
+        break;
+      default:
+        orderField = "sid";
+        break;
+    }
+
+    let sql02 = `SELECT * FROM product ${where}`;
+
+    if (req.body.filter.categoryId != null) {
+      let categoryId = req.body.filter.categoryId;
+      sql02 = sql02 + " and category_id = " + categoryId;
+    }
+
+    // if (req.query.brand != "null") {
+    //   let brand = req.query.brand;
+    //   sql02 = sql02 + " and brand = " + brand;
+    // }
+    console.log(page);
+
+    const sql04 = ` ORDER BY ${orderField} ${sort} LIMIT ${
       (page - 1) * output.perPage
     }, ${output.perPage}`;
-    const [r2] = await db.query(sql02);
+
+    const [r2] = await db.query(sql02 + sql04);
     output.rows = r2;
   }
   output.code = 200;
