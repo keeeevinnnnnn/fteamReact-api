@@ -14,6 +14,7 @@ const jwt = require("jsonwebtoken");
 
 // static folder
 app.use(express.static("errPage"));
+app.use("/", express.static(__dirname + "/public"));
 // cors setting
 app.use(cors());
 
