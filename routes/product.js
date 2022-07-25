@@ -69,18 +69,21 @@ router.post("/", async (req, res) => {
 
     if (req.body.filter.brand != null) {
       let brand = req.body.filter.brand;
-      sql02 = sql02 + " and brand = " + brand;
+      sql02 = sql02 + " and brand = " + `"${brand}"`;
     }
 
     if (req.body.filter.color != null) {
       let color = req.body.filter.color;
-      sql02 = sql02 + " and color = " + color;
+      sql02 = sql02 + " and color = " + `"${color}"`;
     }
 
     if (req.body.filter.price != null) {
       let price = req.body.filter.price;
-      sql02 = sql02 + " and price = " + price;
+      sql02 = sql02 + " and prcie = " + price;
     }
+
+    // console.log(sql02);
+    // console.log(req.body.filter);
 
     const sql04 = ` ORDER BY ${orderField} ${sort} LIMIT ${
       (page - 1) * output.perPage
