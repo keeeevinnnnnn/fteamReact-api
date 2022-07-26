@@ -6,16 +6,23 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 require('dotenv').config();
 const upload = require('../modules/upload-avatar');
+const moment = require('moment-timezone');
 
-// router.get('/login', async (req, res) => {
-//     res.render('login');
-// });
+//讓創建日期+X天
+Date.prototype.addDays = function(days) {
+    this.setDate(this.getDate() + days);
+    return this;
+}
 
+// 登入中會員自己的資料
 router.get('/memberself', async (req, res) => {
     const [sql] = await db.query(`SELECT * FROM member WHERE sid=${res.locals.user.sid}`);
+    const birthday = moment(sql[0].mem_birthday).format('YYYY-MM-DD');
+    sql[0].mem_birthday = birthday;
     res.json(sql[0]);
 });
 
+// 所有會員的基本資料
 router.get('/all', async (req, res) => {
     const sql = await db.query('SELECT * FROM `member` WHERE 1');
     res.json(sql[0]);
@@ -160,9 +167,8 @@ router.post('/login', upload.none(), async (req, res) => {
 
     const { sid, mem_account, mem_nickname, mem_created_at, mem_avatar } = row;
 
-    const now = new Date();
-    const newOld = now - mem_created_at;
-
+    const now = Date.now();
+    const newOld = now - Date.now(mem_created_at);
     // 86400000是24小時的毫秒數
     if (newOld < 86400000) {
         output.new = true;
@@ -336,6 +342,17 @@ router.post('/avatar', upload.none(), async (req, res) => {
 
     output.success = true;
     res.json(output);
+});
+
+// 會員購買紀錄
+router.get('/record', async (req, res) => {
+    const [sql] = await db.query(`SELECT order_details.*, product.*, orders.order_date FROM order_details JOIN product ON order_details.item_id = product.sid JOIN orders ON order_details.order_id = orders.sid WHERE order_details.member_id =${res.locals.user.sid} AND item_type = 'product'`);
+    // 把時間格式改正常常見格式
+    const order_date = sql.map((v,i)=>moment(v.order_date).format('YYYY-MM-DD'));
+    // console.log(order_date);
+    // 把改好的覆蓋原本的
+    sql.map((v,i)=>v.order_date=order_date[i]);
+    res.json(sql);
 });
 
 module.exports = router;
