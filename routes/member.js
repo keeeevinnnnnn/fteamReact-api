@@ -83,6 +83,9 @@ router.post('/register', upload.none(), async (req, res) => {
     if (!req.body.mobile) {
         req.body.mobile = '';
     }
+    if (!req.body.birthday) {
+        req.body.birthday = null;
+    }
     if (!req.body.address) {
         req.body.address = '';
     }
