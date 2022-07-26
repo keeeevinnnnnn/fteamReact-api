@@ -347,9 +347,20 @@ router.post('/avatar', upload.none(), async (req, res) => {
     res.json(output);
 });
 
-// 會員購買紀錄
-router.get('/record', async (req, res) => {
+// 會員購買紀錄 商品
+router.get('/recordproducts', async (req, res) => {
     const [sql] = await db.query(`SELECT order_details.*, product.*, orders.order_date FROM order_details JOIN product ON order_details.item_id = product.sid JOIN orders ON order_details.order_id = orders.sid WHERE order_details.member_id =${res.locals.user.sid} AND item_type = 'product'`);
+    // 把時間格式改正常常見格式
+    const order_date = sql.map((v,i)=>moment(v.order_date).format('YYYY-MM-DD'));
+    // console.log(order_date);
+    // 把改好的覆蓋原本的
+    sql.map((v,i)=>v.order_date=order_date[i]);
+    res.json(sql);
+});
+
+// 會員購買紀錄 客製化商品
+router.get('/recordcustomized', async (req, res) => {
+    const [sql] = await db.query(`SELECT order_details.*, custom.*, orders.order_date FROM order_details JOIN custom ON order_details.item_id = custom.sid JOIN orders ON order_details.order_id = orders.sid WHERE order_details.member_id =${res.locals.user.sid} AND item_type = 'custom'`);
     // 把時間格式改正常常見格式
     const order_date = sql.map((v,i)=>moment(v.order_date).format('YYYY-MM-DD'));
     // console.log(order_date);
