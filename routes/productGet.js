@@ -3,7 +3,7 @@ const db = require("../modules/connect_db");
 const router = express.Router();
 
 // 全部商品
-router.post("/", async (req, res) => {
+router.get("/", async (req, res) => {
   let output = {
     perPage: 15,
     page: 1,
@@ -14,7 +14,7 @@ router.post("/", async (req, res) => {
     query: {},
     rows: [],
   };
-  let page = +req.body.filter.page || 1;
+  let page = +req.query.page || 1;
   let where = " WHERE 1=1 ";
   let orderField = "sid";
   let sort = "asc";
@@ -37,13 +37,13 @@ router.post("/", async (req, res) => {
       return output;
     }
 
-    sort != "" ? req.body.filter.sort : sort;
+    sort != null ? req.query.sort : sort;
 
-    if (orderField != "") {
-      orderField = req.body.filter.orderField;
+    if (orderField != null) {
+      orderField = req.query.orderField;
     }
 
-    // 預設 ORDER BY SID，如果要查詢更動 ORDER BY SID
+    // 預設 ORDER BY SID
     switch (orderField) {
       case "categoryId":
         orderField = "category_id";
@@ -62,27 +62,27 @@ router.post("/", async (req, res) => {
     let sql02 = `SELECT * FROM product ${where}`;
 
     // 預設都是null，如果不等於null，我才要執行前端送來的參數，不然都是null執行全部
-    if (req.body.filter.categoryId != 0) {
-      let categoryId = req.body.filter.categoryId;
+    if (req.query.categoryId != null) {
+      let categoryId = req.query.categoryId;
       sql02 = sql02 + " and category_id = " + categoryId;
     }
 
-    if (req.body.filter.brand != "") {
-      let brand = req.body.filter.brand;
+    if (req.query.brand != null) {
+      let brand = req.query.brand;
       sql02 = sql02 + " and brand = " + `"${brand}"`;
     }
 
-    if (req.body.filter.color != "") {
-      let color = req.body.filter.color;
+    if (req.query.color != null) {
+      let color = req.query.color;
       sql02 = sql02 + " and color = " + `"${color}"`;
     }
 
-    if (req.body.filter.price != 0) {
-      let price = req.body.filter.price;
+    if (req.query.price != null) {
+      let price = req.query.price;
       sql02 = sql02 + " and prcie = " + price;
     }
 
-    console.log(sql02);
+    // console.log(sql02);
     // console.log(req.body.filter);
 
     const sql04 = ` ORDER BY ${orderField} ${sort} LIMIT ${
