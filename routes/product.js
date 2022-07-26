@@ -16,8 +16,8 @@ router.post("/", async (req, res) => {
   };
   let page = +req.body.filter.page || 1;
   let where = " WHERE 1=1 ";
-  let orderField = "sid";
-  let sort = "asc";
+  let orderfield = "sid";
+  let sort = "ASC";
 
   if (page < 1) {
     output.code = 410;
@@ -37,25 +37,24 @@ router.post("/", async (req, res) => {
       return output;
     }
 
-    sort != "" ? req.body.filter.sort : sort;
-
-    if (orderField != "") {
-      orderField = req.body.filter.orderField;
-    }
+    console.log(req.body.filter);
 
     // 預設 ORDER BY SID，如果要查詢更動 ORDER BY SID
-    switch (orderField) {
+    switch (req.body.filter.orderfield) {
       case "categoryId":
-        orderField = "category_id";
+        orderfield = "category_id";
         break;
       case "brand":
-        orderField = "brand";
+        orderfield = "brand";
         break;
       case "color":
-        orderField = "color";
+        orderfield = "color";
+        break;
+      case "name":
+        orderfield = "name";
         break;
       default:
-        orderField = "sid";
+        orderfield = "sid";
         break;
     }
 
@@ -82,15 +81,22 @@ router.post("/", async (req, res) => {
       sql02 = sql02 + " and prcie = " + price;
     }
 
-    console.log(sql02);
+    if (req.body.filter.sort != "") {
+      sort = req.body.filter.sort;
+    }
+
+    console.log("orderfield=", orderfield);
+    console.log("sql02==", sql02);
     // console.log(req.body.filter);
 
-    const sql04 = ` ORDER BY ${orderField} ${sort} LIMIT ${
+    let sql04 = ` ORDER BY ${orderfield} ${sort} LIMIT ${
       (page - 1) * output.perPage
     }, ${output.perPage}`;
 
-    const [r2] = await db.query(sql02 + sql04);
+    let [r2] = await db.query(sql02 + sql04);
     output.rows = r2;
+
+    console.log("compSQL==", sql02 + sql04);
   }
   output.code = 200;
   output = { ...output, page, totalRows, totalPages };
