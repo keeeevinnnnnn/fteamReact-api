@@ -36,9 +36,6 @@ router.post("/", async (req, res) => {
       output.error = "頁碼太大";
       return output;
     }
-
-    console.log(req.body.filter);
-
     // 預設 ORDER BY SID，如果要查詢更動 ORDER BY SID
     switch (req.body.filter.orderfield) {
       case "categoryId":
@@ -47,14 +44,33 @@ router.post("/", async (req, res) => {
       case "brand":
         orderfield = "brand";
         break;
-      case "color":
-        orderfield = "color";
-        break;
       case "name":
         orderfield = "name";
         break;
+      case "price":
+        orderfield = "price";
+        break;
       default:
         orderfield = "sid";
+        break;
+    }
+
+    // 預設 WHERE = 1=1，如果查詢更動 WHERE
+    switch (req.body.filter.where) {
+      case "categoryId":
+        where = " WHERE categoryId ";
+        break;
+      case "brand":
+        where = " WHERE brand ";
+        break;
+      case "name":
+        where = " WHERE name ";
+        break;
+      case "price":
+        where = " WHERE price ";
+        break;
+      default:
+        where = " WHERE 1=1 ";
         break;
     }
 
@@ -85,9 +101,14 @@ router.post("/", async (req, res) => {
       sort = req.body.filter.sort;
     }
 
-    console.log("orderfield=", orderfield);
+    if (req.body.filter.priceRange.length > 0) {
+      let priceRange = req.body.filter.priceRange;
+      sql02 = sql02 + " BETWEEN " + priceRange[0] + " AND " + priceRange[1];
+    }
+
+    console.log("req.body.filter===", req.body.filter);
+
     console.log("sql02==", sql02);
-    // console.log(req.body.filter);
 
     let sql04 = ` ORDER BY ${orderfield} ${sort} LIMIT ${
       (page - 1) * output.perPage
