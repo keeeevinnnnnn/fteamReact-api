@@ -199,7 +199,7 @@ router.post('/login', upload.none(), async (req, res) => {
 });
 
 // 資料修改
-router.post('/edit', upload.none(), async (req, res) => {
+router.put('/edit', upload.none(), async (req, res) => {
     const output = {
         success: false,
         code: 0,
@@ -265,7 +265,7 @@ router.post('/edit', upload.none(), async (req, res) => {
 });
 
 // 密碼修改
-router.post('/password', upload.none(), async (req, res) => {
+router.put('/password', upload.none(), async (req, res) => {
     const output = {
         success: false,
         code: 0,
@@ -330,7 +330,7 @@ router.post('/upload', upload.single('avatar'), (req, res) => {
 });
 
 // 會員中心單獨更換頭貼
-router.post('/avatar', upload.none(), async (req, res) => {
+router.put('/avatar', upload.none(), async (req, res) => {
     const output = {
         success: false,
         code: 0,
