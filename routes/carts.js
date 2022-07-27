@@ -4,7 +4,7 @@ const db = require('../modules/connect_db');
 const router = express.Router();
 const upload = require('../modules/upload-images')
 
-const fakeMember = 1493;
+// const fakeMember = 1493;
 // 定義 inArray function
 function inArray(item, arr) {
     for (let i = 0; i < arr.length; i++) {
@@ -13,7 +13,9 @@ function inArray(item, arr) {
     return false;
 }
 
-// C need : item_type item_id quantity
+// C need : item_type item_id quantity 
+// 欄位格式 : {sid: ,type: ,quantity: ,memID:  ,}
+// type : 發送格式 字串  'product' or 'custom' or 'lesson'
 router.post('/', upload.none(), async (req, res) => {
     let output = {
         success: false,
@@ -22,7 +24,7 @@ router.post('/', upload.none(), async (req, res) => {
         error: '',
     };
     const sql = "SELECT item_id FROM carts WHERE member_id=? AND item_type=?";
-    const [data] = await db.query(sql, [fakeMember, req.body.type]);
+    const [data] = await db.query(sql, [req.body.memID, req.body.type]);
     const arr = data.map(obj => obj.item_id)
     if (inArray(req.body.sid, arr)) {
         output.code = 410;
@@ -58,7 +60,7 @@ router.post('/', upload.none(), async (req, res) => {
                     req.body.type,
                     req.body.quantity,
                     req.body.quantity * r.price,
-                    fakeMember]); // 會員先寫死
+                    req.body.memID]);
                 output.success = true;
                 output.code = 200;
                 output.error = '商品新增成功';
@@ -71,7 +73,7 @@ router.post('/', upload.none(), async (req, res) => {
                 req.body.type,
                 req.body.quantity,
                 req.body.quantity * r.price,
-                fakeMember]); // 會員先寫死
+                req.body.memID]);
             output.success = true;
             output.code = 200;
             output.error = '商品新增成功';
@@ -128,7 +130,7 @@ router.put('/', upload.none(), async (req, res) => {
             req.body.price,
             req.body.sid,
             req.body.type,
-            fakeMember,
+            req.body.memID,
         ])
         if (r.affectedRows === 1) {
             console.log(r);
@@ -152,7 +154,7 @@ router.delete('/', upload.none(), async (req, res) => {
     };
     if (req.query) {
         const sql = "DELETE FROM carts WHERE item_id=? AND item_type=? AND member_id=?";
-        const [r] = await db.query(sql, [req.query.sid, req.query.type, fakeMember])
+        const [r] = await db.query(sql, [req.query.sid, req.query.type, req.query.memID])
         console.log(r);
         output.success = true;
         output.code = 200;
