@@ -321,7 +321,14 @@ router.put('/password', upload.none(), async (req, res) => {
 
 // 刪除帳號
 router.delete('/', (req, res) => {
+    const output = {
+        success: false,
+        code: 0,
+        error: '',
+    };
     const sql = db.query(`DELETE FROM member WHERE sid=${res.locals.user.sid}`);
+    output.success = true;
+    res.json(output);
 });
 
 // 上傳頭貼
