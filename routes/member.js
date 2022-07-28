@@ -355,6 +355,13 @@ router.put('/avatar', upload.none(), async (req, res) => {
 });
 
 // 會員購買紀錄 商品
+router.get('/favorite', async (req, res) => {
+    const [sql] = await db.query(`SELECT * FROM favorite WHERE memId=${res.locals.user.sid}`);
+
+    res.json(sql);
+});
+
+// 會員購買紀錄 商品
 router.get('/recordproducts', async (req, res) => {
     const [sql] = await db.query(`SELECT order_details.*, product.*, orders.order_date FROM order_details JOIN product ON order_details.item_id = product.sid JOIN orders ON order_details.order_id = orders.sid WHERE order_details.member_id =${res.locals.user.sid} AND item_type = 'product'`);
     // 把時間格式改正常常見格式
