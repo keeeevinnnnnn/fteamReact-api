@@ -67,7 +67,7 @@ router.post('/', upload.none(), async (req, res) => {
         output.success = 'success';
         output.code = 210;
         output.msg = '訂單新增成功'
-        output.orderNunber = r1.insertId;
+        output.orderNumber = r1.insertId;
     }
     res.json(output);
 })
