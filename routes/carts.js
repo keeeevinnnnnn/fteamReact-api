@@ -23,6 +23,7 @@ router.post('/', upload.none(), async (req, res) => {
         code: 0,
         error: '',
     };
+    // console.log(res.locals.user.sid);
     const sql = "SELECT item_id FROM carts WHERE member_id=? AND item_type=?";
     const [data] = await db.query(sql, [req.body.memID, req.body.type]);
     const arr = data.map(obj => obj.item_id)
