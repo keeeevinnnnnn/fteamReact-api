@@ -82,14 +82,33 @@ router.post("/", async (req, res) => {
       sql02 = sql02 + " and category_id = " + categoryId;
     }
 
-    if (req.body.filter.brand != "") {
+    if (req.body.filter.brand.length > 0) {
       let brand = req.body.filter.brand;
-      sql02 = sql02 + " and brand = " + `"${brand}"`;
+      let brandStr = "";
+
+      for (let i = 0; i < brand.length; i++) {
+        // 陣列的長度 -1，等於索引值
+        if (brand.length - 1 == i) {
+          brandStr = brandStr + ("'" + brand[i] + "'");
+        } else {
+          brandStr = brandStr + ("'" + brand[i] + "'" + ",");
+        }
+      }
+      sql02 = sql02 + " and brand in (" + brandStr + ")";
     }
 
-    if (req.body.filter.color != "") {
+    if (req.body.filter.color.length > 0) {
       let color = req.body.filter.color;
-      sql02 = sql02 + " and color = " + `"${color}"`;
+      let colorStr = "";
+
+      for (let i = 0; i < color.length; i++) {
+        if (color.length - 1 == i) {
+          colorStr = colorStr + ("'" + color[i] + "'");
+        } else {
+          colorStr = colorStr + ("'" + color[i] + "'" + ",");
+        }
+      }
+      sql02 = sql02 + " and color in (" + colorStr + ")";
     }
 
     if (req.body.filter.price != 0) {
