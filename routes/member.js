@@ -9,18 +9,10 @@ const upload = require('../modules/upload-avatar');
 const moment = require('moment-timezone');
 
 //讓創建日期+X天
-Date.prototype.addDays = function(days) {
-    this.setDate(this.getDate() + days);
-    return this;
-}
-
-// 登入中會員自己的資料
-router.get('/memberself', async (req, res) => {
-    const [sql] = await db.query(`SELECT * FROM member WHERE sid=${res.locals.user.sid}`);
-    const birthday = moment(sql[0].mem_birthday).format('YYYY-MM-DD');
-    sql[0].mem_birthday = birthday;
-    res.json(sql[0]);
-});
+// Date.prototype.addDays = function(days) {
+//     this.setDate(this.getDate() + days);
+//     return this;
+// }
 
 // 所有會員的基本資料
 router.get('/all', async (req, res) => {
@@ -196,6 +188,14 @@ router.post('/login', upload.none(), async (req, res) => {
     );
 
     res.json(output);
+});
+
+// 登入中會員自己的資料
+router.get('/memberself', async (req, res) => {
+    const [sql] = await db.query(`SELECT * FROM member WHERE sid=${res.locals.user.sid}`);
+    const birthday = moment(sql[0].mem_birthday).format('YYYY-MM-DD');
+    sql[0].mem_birthday = birthday;
+    res.json(sql[0]);
 });
 
 // 資料修改
