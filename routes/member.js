@@ -9,18 +9,10 @@ const upload = require('../modules/upload-avatar');
 const moment = require('moment-timezone');
 
 //讓創建日期+X天
-Date.prototype.addDays = function(days) {
-    this.setDate(this.getDate() + days);
-    return this;
-}
-
-// 登入中會員自己的資料
-router.get('/memberself', async (req, res) => {
-    const [sql] = await db.query(`SELECT * FROM member WHERE sid=${res.locals.user.sid}`);
-    const birthday = moment(sql[0].mem_birthday).format('YYYY-MM-DD');
-    sql[0].mem_birthday = birthday;
-    res.json(sql[0]);
-});
+// Date.prototype.addDays = function(days) {
+//     this.setDate(this.getDate() + days);
+//     return this;
+// }
 
 // 所有會員的基本資料
 router.get('/all', async (req, res) => {
@@ -198,8 +190,19 @@ router.post('/login', upload.none(), async (req, res) => {
     res.json(output);
 });
 
+// 登入中會員自己的資料
+router.get('/memberself', async (req, res) => {
+    if(!res.locals.user.sid){
+        return
+    }
+    const [sql] = await db.query(`SELECT * FROM member WHERE sid=${res.locals.user.sid}`);
+    const birthday = moment(sql[0].mem_birthday).format('YYYY-MM-DD');
+    sql[0].mem_birthday = birthday;
+    res.json(sql[0]);
+});
+
 // 資料修改
-router.post('/edit', upload.none(), async (req, res) => {
+router.put('/edit', upload.none(), async (req, res) => {
     const output = {
         success: false,
         code: 0,
@@ -265,7 +268,7 @@ router.post('/edit', upload.none(), async (req, res) => {
 });
 
 // 密碼修改
-router.post('/password', upload.none(), async (req, res) => {
+router.put('/password', upload.none(), async (req, res) => {
     const output = {
         success: false,
         code: 0,
@@ -321,7 +324,14 @@ router.post('/password', upload.none(), async (req, res) => {
 
 // 刪除帳號
 router.delete('/', (req, res) => {
+    const output = {
+        success: false,
+        code: 0,
+        error: '',
+    };
     const sql = db.query(`DELETE FROM member WHERE sid=${res.locals.user.sid}`);
+    output.success = true;
+    res.json(output);
 });
 
 // 上傳頭貼
@@ -330,7 +340,7 @@ router.post('/upload', upload.single('avatar'), (req, res) => {
 });
 
 // 會員中心單獨更換頭貼
-router.post('/avatar', upload.none(), async (req, res) => {
+router.put('/avatar', upload.none(), async (req, res) => {
     const output = {
         success: false,
         code: 0,
@@ -345,6 +355,13 @@ router.post('/avatar', upload.none(), async (req, res) => {
 
     output.success = true;
     res.json(output);
+});
+
+// 會員購買紀錄 商品
+router.get('/favorite', async (req, res) => {
+    const [sql] = await db.query(`SELECT * FROM favorite WHERE memId=${res.locals.user.sid}`);
+
+    res.json(sql);
 });
 
 // 會員購買紀錄 商品
@@ -366,6 +383,21 @@ router.get('/recordcustomized', async (req, res) => {
     // console.log(order_date);
     // 把改好的覆蓋原本的
     sql.map((v,i)=>v.order_date=order_date[i]);
+    res.json(sql);
+});
+
+// 會員購買紀錄 課程
+router.get('/lesson', async (req, res) => {
+    const [sql] = await db.query(`SELECT orders.order_date ,order_details.price AS 'truePrice' ,lesson.*, dance_category.type,teacher_category.name AS 'teacherName' FROM orders JOIN order_details ON orders.sid=order_details.order_id JOIN lesson ON order_details.item_id= lesson.sid JOIN dance_category ON lesson.dance_id= dance_category.sid JOIN teacher_category ON teacher_category.sid=lesson.teacher_id WHERE orders.member_sid=${res.locals.user.sid} AND order_details.item_type='lesson'`);
+    // 把時間格式改正常常見格式
+    const order_date = sql.map((v,i)=>moment(v.order_date).format('YYYY-MM-DD'));
+    const begin = sql.map((v,i)=>moment(v.duringtime_begin).format('YYYY-MM-DD'));
+    const end = sql.map((v,i)=>moment(v.duringtime_end).format('YYYY-MM-DD'));
+    // console.log(order_date);
+    // 把改好的覆蓋原本的
+    sql.map((v,i)=>v.order_date=order_date[i]);
+    sql.map((v,i)=>v.duringtime_begin=begin[i]);
+    sql.map((v,i)=>v.duringtime_end=end[i]);
     res.json(sql);
 });
 
