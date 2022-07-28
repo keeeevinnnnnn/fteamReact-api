@@ -357,11 +357,27 @@ router.put('/avatar', upload.none(), async (req, res) => {
     res.json(output);
 });
 
-// 會員購買紀錄 商品
+// 會員商品收藏
 router.get('/favorite', async (req, res) => {
     const [sql] = await db.query(`SELECT * FROM favorite WHERE memId=${res.locals.user.sid}`);
 
     res.json(sql);
+});
+
+// 取消商品收藏
+router.post('/delfavorite', (req, res) => {
+    console.log(req.body.sid);
+    if(!req.body.sid){
+        return
+    }
+    const output = {
+        success: false,
+        code: 0,
+        error: '',
+    };
+    const sql = db.query(`DELETE FROM favorite WHERE sid=${req.body.sid}`);
+    output.success = true;
+    res.json(output);
 });
 
 // 會員購買紀錄 商品
