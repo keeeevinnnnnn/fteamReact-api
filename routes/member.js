@@ -192,6 +192,9 @@ router.post('/login', upload.none(), async (req, res) => {
 
 // 登入中會員自己的資料
 router.get('/memberself', async (req, res) => {
+    if(!res.locals.user.sid){
+        return
+    }
     const [sql] = await db.query(`SELECT * FROM member WHERE sid=${res.locals.user.sid}`);
     const birthday = moment(sql[0].mem_birthday).format('YYYY-MM-DD');
     sql[0].mem_birthday = birthday;
