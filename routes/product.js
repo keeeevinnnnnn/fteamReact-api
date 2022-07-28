@@ -87,7 +87,8 @@ router.post("/", async (req, res) => {
       let brandStr = "";
 
       for (let i = 0; i < brand.length; i++) {
-        // 陣列的長度 -1，等於索引值
+        // 陣列的長度 -1，等於索引值，如果只有一個的時候 沒有最後的逗號 (如果有就會報錯)
+        // 如果是多個就會在後面加上逗號，把陣列效果成功轉成sql語法
         if (brand.length - 1 == i) {
           brandStr = brandStr + ("'" + brand[i] + "'");
         } else {
