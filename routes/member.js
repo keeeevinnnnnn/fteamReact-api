@@ -376,4 +376,19 @@ router.get('/recordcustomized', async (req, res) => {
     res.json(sql);
 });
 
+// 會員購買紀錄 課程
+router.get('/lesson', async (req, res) => {
+    const [sql] = await db.query(`SELECT orders.order_date ,order_details.price AS 'truePrice' ,lesson.*, dance_category.type,teacher_category.name AS 'teacherName' FROM orders JOIN order_details ON orders.sid=order_details.order_id JOIN lesson ON order_details.item_id= lesson.sid JOIN dance_category ON lesson.dance_id= dance_category.sid JOIN teacher_category ON teacher_category.sid=lesson.teacher_id WHERE orders.member_sid=${res.locals.user.sid} AND order_details.item_type='lesson';`);
+    // 把時間格式改正常常見格式
+    const order_date = sql.map((v,i)=>moment(v.order_date).format('YYYY-MM-DD'));
+    const begin = sql.map((v,i)=>moment(v.duringtime_begin).format('YYYY-MM-DD'));
+    const end = sql.map((v,i)=>moment(v.duringtime_end).format('YYYY-MM-DD'));
+    // console.log(order_date);
+    // 把改好的覆蓋原本的
+    sql.map((v,i)=>v.order_date=order_date[i]);
+    sql.map((v,i)=>v.duringtime_begin=begin[i]);
+    sql.map((v,i)=>v.duringtime_end=end[i]);
+    res.json(sql);
+});
+
 module.exports = router;
