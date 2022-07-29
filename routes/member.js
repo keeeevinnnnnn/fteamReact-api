@@ -17,6 +17,10 @@ const moment = require('moment-timezone');
 // 所有會員的基本資料
 router.get('/all', async (req, res) => {
     const sql = await db.query('SELECT * FROM `member` WHERE 1');
+    const created = sql[0].map((v,i)=>moment(v.mem_created_at).format('YYYY-MM-DD'));
+    // console.log(created);
+    // 把改好的覆蓋原本的
+    sql[0].map((v,i)=>v.mem_created_at=created[i]);
     res.json(sql[0]);
 });
 
