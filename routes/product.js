@@ -1,3 +1,4 @@
+const { log } = require("console");
 const express = require("express");
 const db = require("../modules/connect_db");
 const router = express.Router();
@@ -126,9 +127,9 @@ router.post("/", async (req, res) => {
       sql02 = sql02 + " BETWEEN " + priceRange[0] + " AND " + priceRange[1];
     }
 
-    console.log("req.body.filter===", req.body.filter);
+    // console.log("req.body.filter===", req.body.filter);
 
-    console.log("sql02==", sql02);
+    // console.log("sql02==", sql02);
 
     let sql04 = ` ORDER BY ${orderfield} ${sort} LIMIT ${
       (page - 1) * output.perPage
@@ -137,10 +138,63 @@ router.post("/", async (req, res) => {
     let [r2] = await db.query(sql02 + sql04);
     output.rows = r2;
 
-    console.log("compSQL==", sql02 + sql04);
+    // console.log("compSQL==", sql02 + sql04);
   }
   output.code = 200;
   output = { ...output, page, totalRows, totalPages };
+  res.json(output);
+});
+
+router.post("/favorites", async (req, res) => {
+  const output = {
+    success: "",
+    error: "",
+  };
+
+  const memId = 5;
+
+  // 如果沒有收藏商品
+  if (!req.body.sid) {
+    output.error = "沒有商品";
+    return res.json(output);
+  }
+
+  // 判斷該商品是否已加加入收藏
+  const sql03 = `SELECT COUNT(1) num FROM favorite WHERE favoriteId=? AND memId=?`;
+  const [[{ num }]] = await db.query(sql03, [req.body.sid, memId]);
+  if (num > 0) {
+    const deleteSql03 = "DELETE FROM favorite WHERE memId=? AND favoriteId=?";
+    await db.query(deleteSql03, [memId, req.body.sid]);
+    output.error = "取消收藏成功";
+    return res.json(output);
+  }
+
+  // 拿到該商品編碼的商品明細
+  const sql = "SELECT * FROM `product` WHERE sid = ?";
+  const [r1] = await db.query(sql, [req.body.sid]);
+  if (!r1.length) {
+    output.error = "沒有這個商品";
+    return res.json(output);
+  }
+
+  const sql2 =
+    "INSERT INTO `favorite`(`memId`, `favoriteImg`, `favoriteName`,`favoriteBrand`,`favoritePrice`,`favoriteId`) VALUES (?, ?, ?,?,?,?)";
+  // 假設用戶編號 fake_user
+  const [r2] = await db.query(sql2, [
+    memId,
+    req.body.favoriteImg,
+    req.body.favoriteName,
+    req.body.favoriteBrand,
+    req.body.favoritePrice,
+    req.body.sid,
+  ]);
+  // 如果該商品有成功添加
+  if (r2.affectedRows) {
+    output.success = "收藏商品成功";
+  }
+  console.log("req.body==", req.body);
+  console.log("output==", output);
+
   res.json(output);
 });
 
