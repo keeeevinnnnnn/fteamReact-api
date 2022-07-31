@@ -143,7 +143,7 @@ router.get('/detail', upload.none(), async (req, res) => {
         const sql = 'SELECT * FROM order_details WHERE order_id=?';
         const [r] = await db.query(sql, [req.query.orderID]);
         if (r.length !== 0) {
-
+            res.json(r);
         } else {
             res.send('沒有資料')
         }
