@@ -421,4 +421,34 @@ router.get('/lesson', async (req, res) => {
     res.json(sql);
 });
 
+// 所有聊天室資料
+router.get('/chat', async (req, res) => {
+    const sql = await db.query('SELECT memberchat.*, member.mem_name, member.mem_nickname, member.mem_avatar FROM memberchat JOIN member WHERE memberchat.mem_sid = member.sid');
+
+    res.json(sql[0]);
+});
+
+// 聊天室
+router.post('/chat', upload.none(), async (req, res) => {
+    console.log(req.body);
+    const output = {
+        success: false,
+        code: 0,
+        error: '',
+    };
+
+    const sql =
+        'INSERT INTO `memberchat`(`mem_sid`, `message`) VALUES (?, ?)';
+
+    const {message} = req.body;
+
+    const [result] = await db.query(sql, [
+        res.locals.user.sid,
+        message,
+    ]);
+
+    output.success = true;
+    res.json(output);
+});
+
 module.exports = router;
