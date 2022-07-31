@@ -12,6 +12,18 @@ const moment = require("moment-timezone");
 const upload = require("./modules/upload-images");
 const jwt = require("jsonwebtoken");
 
+// 聊天室建立sever
+const http = require('http');
+const { Server } = require('socket.io');
+
+const server = http.createServer(app);
+const io = new Server(server,{
+    cors:{
+        origin: "http://localhost:3001",
+        methods: ["GET","POST"],
+    }
+});
+
 // static folder
 app.use(express.static("errPage"));
 app.use("/", express.static(__dirname + "/public"));
@@ -50,6 +62,16 @@ app.use((req, res, next) => {
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
+//socket連接
+io.on('connection', (socket) => {
+  //連上message(單純名稱) 會有name跟message
+  socket.on('message', ({ name, message, sid, img }) => {
+      //發出消息時
+      io.emit('message', { name, message,sid ,img});
+  });
+});
+
 // 會員頭貼
 app.use("/avatar", express.static(__dirname + "/public/avatar"));
 // ------------------ routes start -----------------------
@@ -75,4 +97,9 @@ app.use((req, res) => {
 });
 app.listen(3000, () => {
   console.log(`server started: http://localhost:3000`);
+});
+
+// 聊天室連線
+server.listen(4000, function () {
+  console.log('listening on port 4000');
 });
