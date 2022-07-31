@@ -3,16 +3,18 @@ const { exit } = require('process');
 const db = require('../modules/connect_db');
 const router = express.Router();
 const upload = require('../modules/upload-images');
-
+const Joi = require('joi');
+const { text } = require('stream/consumers');
 // const fakeMember = 1493;
 
-// 定義 inArray function
-function inArray(item, arr) {
-    for (let i = 0; i < arr.length; i++) {
-        if (arr[i] == item) return true;
-    }
-    return false;
-}
+//後端檢查用
+// const schema = Joi.object({
+//     //字串類型
+//     memID: Joi.number().required(),
+//     recipient: Joi.string().min(2).required(),
+//     address: Joi.string().required(),
+//     shipping: Joi.string().required(),
+// });
 
 // checkout to orders
 // need member_id carts's sid
@@ -23,8 +25,13 @@ router.post('/', upload.none(), async (req, res) => {
         code: 0,
         error: '',
         msg: '',
-        orderNunber: '',
+        orderNumber: '',
     };
+    // const test = schema.validate(req.body, { abortEarly: false });
+
+    // if (test.error) {
+    //     console.log(test.error);
+    // }
     // 取得此會員購物車內的商品
     const sql = `SELECT * FROM carts WHERE member_id = ${req.body.memID}`;
     const [r] = await db.query(sql);
@@ -71,5 +78,75 @@ router.post('/', upload.none(), async (req, res) => {
     }
     res.json(output);
 })
+// R : 讀取此會員 所有訂單 新到舊
+router.get('/', upload.none(), async (req, res) => {
+    let output = {
+        success: false,
+        paramsData: req.query,
+        code: 0,
+        error: '',
+        msg: '',
+    };
+    if (req.query) {
+        const sql = "SELECT * FROM orders WHERE member_sid = ? ORDER BY order_date DESC"
+        const [r] = await db.query(sql, [req.query.memID]);
+        if (r.length !== 0) {
+            output.success = true;
+            output.code = 200;
+            output.msg = '讀取成功';
+            output.result = r;
+            res.json(output)
+        } else {
+            output.success = false;
+            output.code = 400;
+            output.msg = '沒有購買紀錄';
+            res.json(output)
+        }
+    }
+})
+// R : 搜尋訂單
+router.get('/search', upload.none(), async (req, res) => {
+    let output = {
+        success: false,
+        paramsData: req.query,
+        code: 0,
+        error: '',
+        msg: '',
+    };
+    if (req.query) {
+        const sql = "SELECT * FROM orders WHERE member_sid = ? AND sid LIKE '%?%' ORDER BY order_date DESC"
+        const [r] = await db.query(sql, [req.query.memID, +req.query.search]);
+        if (r.length !== 0) {
+            output.success = true;
+            output.code = 200;
+            output.msg = '讀取成功';
+            output.result = r;
+            res.json(output)
+        } else {
+            output.success = false;
+            output.code = 400;
+            output.msg = '沒有購買紀錄';
+            res.json(output)
+        }
+    }
+})
+// 查看此訂單明細
+router.get('/detail', upload.none(), async (req, res) => {
+    let output = {
+        success: false,
+        paramsData: req.query,
+        code: 0,
+        error: '',
+        msg: '',
+    };
+    if (req.query) {
+        const sql = 'SELECT * FROM order_details WHERE order_id=?';
+        const [r] = await db.query(sql, [req.query.orderID]);
+        if (r.length !== 0) {
 
+        } else {
+            res.send('沒有資料')
+        }
+    }
+})
 module.exports = router;
