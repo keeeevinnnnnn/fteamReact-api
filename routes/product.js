@@ -151,7 +151,7 @@ router.post("/favorites", async (req, res) => {
     error: "",
   };
 
-  const memId = 5;
+  const memId = req.body.memId;
 
   // 如果沒有收藏商品
   if (!req.body.sid) {
