@@ -127,9 +127,13 @@ router.post("/", async (req, res) => {
       sql02 = sql02 + " BETWEEN " + priceRange[0] + " AND " + priceRange[1];
     }
 
-    // console.log("req.body.filter===", req.body.filter);
+    if (req.body.filter.searchName != "") {
+      let searchName = req.body.filter.searchName;
+      sql02 = sql02 + "LIKE" + `'%${searchName}%'`;
+    }
+    // console.log("req.body.filter==", req.body.filter);
 
-    // console.log("sql02==", sql02);
+    console.log("sql02==", sql02);
 
     let sql04 = ` ORDER BY ${orderfield} ${sort} LIMIT ${
       (page - 1) * output.perPage
@@ -138,7 +142,7 @@ router.post("/", async (req, res) => {
     let [r2] = await db.query(sql02 + sql04);
     output.rows = r2;
 
-    // console.log("compSQL==", sql02 + sql04);
+    console.log("compSQL==", sql02 + sql04);
   }
   output.code = 200;
   output = { ...output, page, totalRows, totalPages };
@@ -192,8 +196,8 @@ router.post("/favorites", async (req, res) => {
   if (r2.affectedRows) {
     output.success = "收藏商品成功";
   }
-  console.log("req.body==", req.body);
-  console.log("output==", output);
+  // console.log("req.body==", req.body);
+  // console.log("output==", output);
 
   res.json(output);
 });
