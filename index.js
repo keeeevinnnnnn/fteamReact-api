@@ -11,6 +11,7 @@ const sessionStore = new MysqlStore({}, db);
 const moment = require("moment-timezone");
 const upload = require("./modules/upload-images");
 const jwt = require("jsonwebtoken");
+const bodyParser = require("body-parser")
 
 // 聊天室建立sever
 const http = require('http');
@@ -29,6 +30,10 @@ app.use(express.static("errPage"));
 app.use("/", express.static(__dirname + "/public"));
 // cors setting
 app.use(cors());
+
+//bodyparser
+app.use(bodyParser.json({limit:'50mb'}))
+app.use(bodyParser.urlencoded({limit:'50mb',extended:true}))
 
 //ejs set
 app.set("view engine", "ejs");
