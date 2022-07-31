@@ -129,7 +129,7 @@ router.post("/", async (req, res) => {
 
     if (req.body.filter.searchName != "") {
       let searchName = req.body.filter.searchName;
-      sql02 = sql02 + "LIKE" + `'%${searchName}%'`;
+      sql02 = sql02 + "AND name LIKE" + `'%${searchName}%'`;
     }
     // console.log("req.body.filter==", req.body.filter);
 
