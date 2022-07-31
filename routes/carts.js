@@ -164,5 +164,25 @@ router.delete('/', upload.none(), async (req, res) => {
     res.json(output);
 })
 
+// 登入就計算購物車數量
+router.get('/getTotal', upload.none(), async (req, res) => {
+    if (req.query.memID) {
+        let output = {
+            productResult: [],
+            customResult: [],
+            lessonResult: []
+        }
+        const sql = "SELECT * FROM carts WHERE member_id = ? AND item_type = 'product'";
+        const [r1] = await db.query(sql, [req.query.memID])
+        const sql2 = "SELECT * FROM carts WHERE member_id = ? AND item_type = 'custom'";
+        const [r2] = await db.query(sql2, [req.query.memID])
+        const sql3 = "SELECT * FROM carts WHERE member_id = ? AND item_type = 'lesson'";
+        const [r3] = await db.query(sql3, [req.query.memID])
+        output.productResult = r1;
+        output.customResult = r2;
+        output.lessonResult = r3;
+        res.json(output)
+    }
+})
 
 module.exports = router;

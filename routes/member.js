@@ -207,6 +207,9 @@ router.get('/memberself', async (req, res) => {
 
 // 資料修改
 router.put('/edit', upload.none(), async (req, res) => {
+    if(!res.locals.user.sid){
+        return
+    }
     const output = {
         success: false,
         code: 0,
@@ -273,6 +276,9 @@ router.put('/edit', upload.none(), async (req, res) => {
 
 // 密碼修改
 router.put('/password', upload.none(), async (req, res) => {
+    if(!res.locals.user.sid){
+        return
+    }
     const output = {
         success: false,
         code: 0,
@@ -328,6 +334,9 @@ router.put('/password', upload.none(), async (req, res) => {
 
 // 刪除帳號
 router.delete('/', (req, res) => {
+    if(!res.locals.user.sid){
+        return
+    }
     const output = {
         success: false,
         code: 0,
@@ -345,6 +354,9 @@ router.post('/upload', upload.single('avatar'), (req, res) => {
 
 // 會員中心單獨更換頭貼
 router.put('/avatar', upload.none(), async (req, res) => {
+    if(!res.locals.user.sid){
+        return
+    }
     const output = {
         success: false,
         code: 0,
@@ -363,6 +375,9 @@ router.put('/avatar', upload.none(), async (req, res) => {
 
 // 會員商品收藏
 router.get('/favorite', async (req, res) => {
+    if(!res.locals.user.sid){
+        return
+    }
     const [sql] = await db.query(`SELECT * FROM favorite WHERE memId=${res.locals.user.sid}`);
 
     res.json(sql);
@@ -370,7 +385,6 @@ router.get('/favorite', async (req, res) => {
 
 // 取消商品收藏
 router.post('/delfavorite', (req, res) => {
-    console.log(req.body.sid);
     if(!req.body.sid){
         return
     }
@@ -386,6 +400,9 @@ router.post('/delfavorite', (req, res) => {
 
 // 會員購買紀錄 商品
 router.get('/recordproducts', async (req, res) => {
+    if(!res.locals.user.sid){
+        return
+    }
     const [sql] = await db.query(`SELECT order_details.*, product.*, orders.order_date FROM order_details JOIN product ON order_details.item_id = product.sid JOIN orders ON order_details.order_id = orders.sid WHERE order_details.member_id =${res.locals.user.sid} AND item_type = 'product'`);
     // 把時間格式改正常常見格式
     const order_date = sql.map((v,i)=>moment(v.order_date).format('YYYY-MM-DD'));
@@ -397,6 +414,9 @@ router.get('/recordproducts', async (req, res) => {
 
 // 會員購買紀錄 客製化商品
 router.get('/recordcustomized', async (req, res) => {
+    if(!res.locals.user.sid){
+        return
+    }
     const [sql] = await db.query(`SELECT order_details.*, custom.*, orders.order_date FROM order_details JOIN custom ON order_details.item_id = custom.sid JOIN orders ON order_details.order_id = orders.sid WHERE order_details.member_id =${res.locals.user.sid} AND item_type = 'custom'`);
     // 把時間格式改正常常見格式
     const order_date = sql.map((v,i)=>moment(v.order_date).format('YYYY-MM-DD'));
@@ -408,6 +428,9 @@ router.get('/recordcustomized', async (req, res) => {
 
 // 會員購買紀錄 課程
 router.get('/lesson', async (req, res) => {
+    if(!res.locals.user.sid){
+        return
+    }
     const [sql] = await db.query(`SELECT orders.order_date ,order_details.price AS 'truePrice' ,lesson.*, dance_category.type,teacher_category.name AS 'teacherName' FROM orders JOIN order_details ON orders.sid=order_details.order_id JOIN lesson ON order_details.item_id= lesson.sid JOIN dance_category ON lesson.dance_id= dance_category.sid JOIN teacher_category ON teacher_category.sid=lesson.teacher_id WHERE orders.member_sid=${res.locals.user.sid} AND order_details.item_type='lesson'`);
     // 把時間格式改正常常見格式
     const order_date = sql.map((v,i)=>moment(v.order_date).format('YYYY-MM-DD'));
@@ -419,6 +442,38 @@ router.get('/lesson', async (req, res) => {
     sql.map((v,i)=>v.duringtime_begin=begin[i]);
     sql.map((v,i)=>v.duringtime_end=end[i]);
     res.json(sql);
+});
+
+// 所有聊天室資料
+router.get('/chat', async (req, res) => {
+    const sql = await db.query('SELECT memberchat.*, member.mem_name, member.mem_nickname, member.mem_avatar FROM memberchat JOIN member WHERE memberchat.mem_sid = member.sid');
+
+    res.json(sql[0]);
+});
+
+// 聊天室
+router.post('/chat', upload.none(), async (req, res) => {
+    if(!res.locals.user.sid){
+        return
+    }
+    const output = {
+        success: false,
+        code: 0,
+        error: '',
+    };
+
+    const sql =
+        'INSERT INTO `memberchat`(`mem_sid`, `message`) VALUES (?, ?)';
+
+    const {message} = req.body;
+
+    const [result] = await db.query(sql, [
+        res.locals.user.sid,
+        message,
+    ]);
+
+    output.success = true;
+    res.json(output);
 });
 
 module.exports = router;
