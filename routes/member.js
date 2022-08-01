@@ -460,6 +460,7 @@ router.post('/chat', upload.none(), async (req, res) => {
     if(!res.locals.user.sid){
         return
     }
+
     const output = {
         success: false,
         code: 0,
@@ -470,6 +471,10 @@ router.post('/chat', upload.none(), async (req, res) => {
         'INSERT INTO `memberchat`(`mem_sid`, `message`) VALUES (?, ?)';
 
     const {message} = req.body;
+
+    if(!message){
+        return
+    }
 
     const [result] = await db.query(sql, [
         res.locals.user.sid,
