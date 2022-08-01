@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 require('dotenv').config();
 const upload = require('../modules/upload-avatar');
+const uploadimg = require('../modules/upload-chatimg');
 const moment = require('moment-timezone');
 
 //讓創建日期+X天
@@ -477,6 +478,11 @@ router.post('/chat', upload.none(), async (req, res) => {
 
     output.success = true;
     res.json(output);
+});
+
+// 聊天室上傳照片
+router.post('/chatupload', uploadimg.single('chatimg'), (req, res) => {
+    res.json(req.file);
 });
 
 module.exports = router;
