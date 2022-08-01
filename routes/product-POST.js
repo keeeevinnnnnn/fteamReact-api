@@ -4,7 +4,7 @@ const db = require("../modules/connect_db");
 const router = express.Router();
 
 // 全部商品
-router.get("/", async (req, res) => {
+router.post("/", async (req, res) => {
   let output = {
     perPage: 15,
     page: 1,
@@ -15,7 +15,7 @@ router.get("/", async (req, res) => {
     query: {},
     rows: [],
   };
-  let page = +req.query.page || 1;
+  let page = +req.body.filter.page || 1;
   let where = " WHERE 1=1 ";
   let orderfield = "sid";
   let sort = "ASC";
@@ -38,7 +38,7 @@ router.get("/", async (req, res) => {
       return output;
     }
     // 預設 ORDER BY SID，如果要查詢更動 ORDER BY SID
-    switch (req.query.orderfield) {
+    switch (req.body.filter.orderfield) {
       case "categoryId":
         orderfield = "category_id";
         break;
@@ -56,15 +56,35 @@ router.get("/", async (req, res) => {
         break;
     }
 
+    // 預設 WHERE = 1=1，如果查詢更動 WHERE
+    switch (req.body.filter.where) {
+      case "categoryId":
+        where = " WHERE categoryId ";
+        break;
+      case "brand":
+        where = " WHERE brand ";
+        break;
+      case "name":
+        where = " WHERE name ";
+        break;
+      case "price":
+        where = " WHERE price ";
+        break;
+      default:
+        where = " WHERE 1=1 ";
+        break;
+    }
+
     let sql02 = `SELECT * FROM product ${where}`;
 
     // 預設都是null，如果不等於null，我才要執行前端送來的參數，不然都是null執行全部
-    if (req.query.categoryId != 0) {
-      let categoryId = req.query.categoryId;
+    if (req.body.filter.categoryId != 0) {
+      let categoryId = req.body.filter.categoryId;
       sql02 = sql02 + " and category_id = " + categoryId;
     }
-    if (req.query.brand != null) {
-      let brand = req.query.brand;
+
+    if (req.body.filter.brand.length > 0) {
+      let brand = req.body.filter.brand;
       let brandStr = "";
 
       for (let i = 0; i < brand.length; i++) {
@@ -79,8 +99,8 @@ router.get("/", async (req, res) => {
       sql02 = sql02 + " and brand in (" + brandStr + ")";
     }
 
-    if (req.query.color != null) {
-      let color = req.query.color;
+    if (req.body.filter.color.length > 0) {
+      let color = req.body.filter.color;
       let colorStr = "";
 
       for (let i = 0; i < color.length; i++) {
@@ -93,23 +113,27 @@ router.get("/", async (req, res) => {
       sql02 = sql02 + " and color in (" + colorStr + ")";
     }
 
-    if (req.query.sort != "") {
-      sort = req.query.sort;
+    if (req.body.filter.price != 0) {
+      let price = req.body.filter.price;
+      sql02 = sql02 + " and prcie = " + price;
     }
 
-    if (req.query.priceRange != null) {
-      let priceRange = req.query.priceRange;
-      sql02 =
-        sql02 + "and price BETWEEN " + priceRange[0] + " AND " + priceRange[1];
+    if (req.body.filter.sort != "") {
+      sort = req.body.filter.sort;
     }
 
-    if (req.query.searchName != "") {
-      let searchName = req.query.searchName;
+    if (req.body.filter.priceRange.length > 0) {
+      let priceRange = req.body.filter.priceRange;
+      sql02 = sql02 + " BETWEEN " + priceRange[0] + " AND " + priceRange[1];
+    }
+
+    if (req.body.filter.searchName != "") {
+      let searchName = req.body.filter.searchName;
       sql02 = sql02 + "AND name LIKE" + `'%${searchName}%'`;
     }
-    console.log("req.query==", req.query);
+    // console.log("req.body.filter==", req.body.filter);
 
-    console.log("sql02==", sql02);
+    // console.log("sql02==", sql02);
 
     let sql04 = ` ORDER BY ${orderfield} ${sort} LIMIT ${
       (page - 1) * output.perPage
@@ -118,7 +142,7 @@ router.get("/", async (req, res) => {
     let [r2] = await db.query(sql02 + sql04);
     output.rows = r2;
 
-    console.log("compSQL==", sql02 + sql04);
+    // console.log("compSQL==", sql02 + sql04);
   }
   output.code = 200;
   output = { ...output, page, totalRows, totalPages };
@@ -191,18 +215,6 @@ router.post("/details", async (req, res) => {
     return res.json(output);
   }
   res.json(r1);
-});
-
-router.get("/:productId", async (req, res) => {
-  if (req.params.productId != null) {
-    let sql =
-      "SELECT * FROM `product` WHERE 1=1 and sid = " + req.params.productId;
-    const [product] = await db.query(sql);
-
-    if (product.length > 0) {
-      res.json(product[0]);
-    }
-  }
 });
 
 module.exports = router;

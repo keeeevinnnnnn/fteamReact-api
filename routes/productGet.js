@@ -1,3 +1,4 @@
+const { log } = require("console");
 const express = require("express");
 const db = require("../modules/connect_db");
 const router = express.Router();
@@ -95,6 +96,18 @@ router.get("/", async (req, res) => {
   output.code = 200;
   output = { ...output, page, totalRows, totalPages };
   res.json(output);
+});
+
+router.get("/:productId", async (req, res) => {
+  if (req.params.productId != null) {
+    let sql =
+      "SELECT * FROM `product` WHERE 1=1 and sid = " + req.params.productId;
+    const [product] = await db.query(sql);
+
+    if (product.length > 0) {
+      res.json(product[0]);
+    }
+  }
 });
 
 module.exports = router;
