@@ -71,14 +71,17 @@ app.use(express.json());
 //socket連接
 io.on('connection', (socket) => {
   //連上message(單純名稱) 會有name跟message
-  socket.on('message', ({ name, message, sid, img }) => {
+  socket.on('message', ({ name, message, sid, avatar, chatimg }) => {
+    console.log(avatar);
       //發出消息時
-      io.emit('message', { name, message,sid ,img});
+      io.emit('message', { name, message,sid , avatar, chatimg});
   });
 });
 
 // 會員頭貼
 app.use("/avatar", express.static(__dirname + "/public/avatar"));
+// 聊天室照片
+app.use("/chatimg", express.static(__dirname + "/public/chatimg"));
 // ------------------ routes start -----------------------
 
 app.use("/admin", require(__dirname + "/routes/admin"));

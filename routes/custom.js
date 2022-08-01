@@ -42,42 +42,44 @@ router.post("/", upload.none(),async (req, res) => {
 });
 
 //更新輪子//
-router.post("/wheel", upload.none(), (req, res) => {
+router.post("/wheel", upload.none(),async (req, res) => {
   const sid = req.body.sid;
   const wheel_style = req.body.wheel_style;
 
   const sql = "UPDATE `custom` SET `wheel_style` = ? WHERE `custom`.`sid` = ?";
 
-  db.query(sql, [req.body.wheel_style,req.body.sid]);
+  const [r] = await db.query(sql, [req.body.wheel_style,req.body.sid]);
+  res.json(r);
   
 });
 
 //更新輪架//
-router.post("/carrier", upload.none(), (req, res) => {
+router.post("/carrier", upload.none(),async (req, res) => {
     const sid = req.body.sid;
     const carrier = req.body.carrier;
   
     const sql = "UPDATE `custom` SET `carrier` = ? WHERE `custom`.`sid` = ?";
   
-    db.query(sql, [req.body.carrier,req.body.sid]);
-    
+    const [r] = await db.query(sql, [req.body.carrier,req.body.sid]);
+    res.json(r);
+
   });
 
   //前板顏色//
 
-  router.post("/frontcolor", upload.none(), (req, res) => {
+  router.post("/frontcolor", upload.none(), async(req, res) => {
     const sid = req.body.sid;
     const front_color = req.body.front_color;
   
     const sql = "UPDATE `custom` SET `front_color` = ? WHERE `custom`.`sid` = ?";
   
-    db.query(sql, [req.body.front_color,req.body.sid]);
-    
+    const [r] = await db.query(sql, [req.body.front_color,req.body.sid]);
+    res.json(r);
   });
 
     //背板各種樣式//
 
-    router.post("/back", upload.none(), (req, res) => {
+    router.post("/back", upload.none(), async (req, res) => {
       const sid = req.body.sid;
       const back_style = req.body.back_style;
       const back_pattern = req.body.back_pattern;
@@ -88,7 +90,8 @@ router.post("/carrier", upload.none(), (req, res) => {
     
       const sql = "UPDATE `custom` SET `back_style`=?,`back_pattern`=?,`back_color`=?,`back_text`=?,`back_sticker`=? WHERE `custom`.`sid` = ?";
     
-      db.query(sql, [req.body.back_style,req.body.back_pattern,req.body.back_color,req.body.back_text,req.body.back_sticker,req.body.sid]);
+      const [r] = await db.query(sql, [req.body.back_style,req.body.back_pattern,req.body.back_color,req.body.back_text,req.body.back_sticker,req.body.sid]);
+      res.json(r);
       
     });
 
@@ -126,6 +129,26 @@ router.get("/confirm", upload.none(),async (req, res) => {
 
   const sql = "SELECT `sid`, `member_id`, `custom_product_name`, `wheel_style`, `carrier`, `front_color`, `back_style`, `back_pattern`, `back_color`, `back_text`, `back_sticker`, `back_img`, `price`, `created_date` FROM `custom` WHERE sid = ?";
    const [r]=await db.query(sql, [req.query.sid]);
+   console.log(r)  
+    res.json(r) 
+});
+
+//分享牆//
+router.get("/share", upload.none(),async (req, res) => {
+ 
+
+  const sql = "SELECT custom.*, member.mem_name, member.mem_nickname, member.mem_avatar FROM `custom` JOIN `member` ON `custom`.`member_id`=`member`.`sid`";
+   const [r] = await db.query(sql);
+   console.log(r)  
+    res.json(r) 
+});
+
+//只撈一筆//
+router.get("/sharedetail", upload.none(),async (req, res) => {
+  const sid = req.body.sid;
+
+  const sql = "SELECT * FROM `custom` JOIN `member` ON `custom`.`member_id`=`member`.`sid` WHERE custom.sid=?";
+  const [r]=await db.query(sql, [req.query.sid]);
    console.log(r)  
     res.json(r) 
 });

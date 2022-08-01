@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 require('dotenv').config();
 const upload = require('../modules/upload-avatar');
+const uploadimg = require('../modules/upload-chatimg');
 const moment = require('moment-timezone');
 
 //讓創建日期+X天
@@ -200,6 +201,9 @@ router.get('/memberself', async (req, res) => {
         return
     }
     const [sql] = await db.query(`SELECT * FROM member WHERE sid=${res.locals.user.sid}`);
+    if(sql[0].mem_birthday===undefined){
+        return res.json(sql[0]);
+    }
     const birthday = moment(sql[0].mem_birthday).format('YYYY-MM-DD');
     sql[0].mem_birthday = birthday;
     res.json(sql[0]);
@@ -456,6 +460,7 @@ router.post('/chat', upload.none(), async (req, res) => {
     if(!res.locals.user.sid){
         return
     }
+
     const output = {
         success: false,
         code: 0,
@@ -467,6 +472,10 @@ router.post('/chat', upload.none(), async (req, res) => {
 
     const {message} = req.body;
 
+    if(!message){
+        return
+    }
+
     const [result] = await db.query(sql, [
         res.locals.user.sid,
         message,
@@ -474,6 +483,11 @@ router.post('/chat', upload.none(), async (req, res) => {
 
     output.success = true;
     res.json(output);
+});
+
+// 聊天室上傳照片
+router.post('/chatupload', uploadimg.single('chatimg'), (req, res) => {
+    res.json(req.file);
 });
 
 module.exports = router;
