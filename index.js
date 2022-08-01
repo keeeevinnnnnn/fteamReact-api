@@ -72,7 +72,6 @@ app.use(express.json());
 io.on('connection', (socket) => {
   //連上message(單純名稱) 會有name跟message
   socket.on('message', ({ name, message, sid, avatar, chatimg }) => {
-    console.log(avatar);
       //發出消息時
       io.emit('message', { name, message,sid , avatar, chatimg});
   });
