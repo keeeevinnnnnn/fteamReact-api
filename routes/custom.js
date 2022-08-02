@@ -137,7 +137,7 @@ router.get("/confirm", upload.none(),async (req, res) => {
 router.get("/share", upload.none(),async (req, res) => {
  
 
-  const sql = "SELECT custom.*, member.mem_name, member.mem_nickname, member.mem_avatar FROM `custom` JOIN `member` ON `custom`.`member_id`=`member`.`sid`";
+  const sql = "SELECT custom.*, member.mem_name, member.mem_nickname, member.mem_avatar FROM `custom` JOIN `member` ON `custom`.`member_id`=`member`.`sid` ORDER BY `custom`.`sid` DESC";
    const [r] = await db.query(sql);
    console.log(r)  
     res.json(r) 
@@ -152,6 +152,46 @@ router.get("/sharedetail", upload.none(),async (req, res) => {
    console.log(r)  
     res.json(r) 
 });
+
+//看自己的舊單//
+router.get("/prevcusproduct", upload.none(),async (req, res) => {
+  const member_id = req.body.member_id;
+
+  const sql = "SELECT * FROM `custom` JOIN `member` ON `custom`.`member_id`=`member`.`sid` WHERE custom.member_id=?";
+  const [r]=await db.query(sql, [req.query.member_id]);
+   console.log(r)  
+    res.json(r) 
+});
+
+
+//留言//
+router.post("/comment", upload.none(),async (req, res) => {
+  const id = req.body.id;
+  const mes_cusproduct_id = req.body.mes_cusproduct_id;
+  const mes_member_id = req.body.mes_member_id;
+  const stars = req.body.stars;
+  const comment = req.body.comment;
+
+  const sql = "INSERT INTO `cus_message`( `mes_cusproduct_id`, `mes_member_id`, `stars`, `comment`, `created_time`) VALUES (?,?,?,?,NOW())";
+
+  const [r] = await db.query(sql, [req.body.mes_cusproduct_id,req.body.mes_member_id,req.body.stars,req.body.comment]);
+  res.json(r);
+  
+});
+
+//讀取留言//
+router.get("/messageboard", upload.none(),async (req, res) => {
+  // const sid = req.body.sid;
+  const mes_cusproduct_id = req.body.mes_cusproduct_id
+
+  const sql = "SELECT * FROM custom JOIN cus_message ON custom.sid = cus_message.mes_cusproduct_id JOIN member ON cus_message.mes_member_id = member.sid WHERE custom.sid=? ;";
+  const [r]=await db.query(sql, [req.query.mes_cusproduct_id]);
+   console.log(r)  
+    res.json(r) 
+});
+
+
+
 
 
 
