@@ -125,6 +125,7 @@ router.post('/register', upload.none(), async (req, res) => {
     // 密碼加密再存進資料庫
     const hashpassword = bcrypt.hashSync(password);
 
+    // 把註冊資料存進資料庫 verify預設給off是為了讓信箱驗證
     const [result] = await db.query(sql, [
         name,
         nickname,
