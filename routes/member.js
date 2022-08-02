@@ -8,6 +8,7 @@ require('dotenv').config();
 const upload = require('../modules/upload-avatar');
 const uploadimg = require('../modules/upload-chatimg');
 const moment = require('moment-timezone');
+const nodemailer = require('nodemailer');
 
 //讓創建日期+X天
 // Date.prototype.addDays = function(days) {
@@ -64,7 +65,7 @@ router.post('/register', upload.none(), async (req, res) => {
     }
 
     const sql =
-        'INSERT INTO `member`(`mem_name`,`mem_nickname`,`mem_level`,`mem_account`,`mem_password`, `mem_email`, `mem_mobile`, `mem_birthday`, `mem_address`, `mem_avatar`, `mem_bollen`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)';
+        'INSERT INTO `member`(`mem_name`,`mem_nickname`,`mem_level`,`mem_account`,`mem_password`, `mem_email`, `mem_mobile`, `mem_birthday`, `mem_address`, `mem_avatar`, `mem_bollen`, `hash`, `verify`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?)';
 
     // 給他們預設值 (前端不給欄位)
     // 如果沒給頭貼
@@ -99,24 +100,74 @@ router.post('/register', upload.none(), async (req, res) => {
         avatar,
     } = req.body;
 
-    // 密碼加密再存進資料庫
-    const hash = bcrypt.hashSync(password);
+    // 亂數出五位數整數
+    const userHash = parseInt(Math.random()*100000)
 
+    // 寄出Gmail
+    const transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 465,
+        auth: {
+          user: '26fteam@gmail.com',
+          pass: 'yunmyhyrcyxdjloq',
+        },
+      });
+
+      transporter.sendMail({
+        from: '26fteam@gmail.com',
+        to: email,
+        subject: 'SB感謝您的註冊，請通過驗證碼開通您的會員',
+        html: `<h2>您的驗證碼為 : ${userHash}</h2>`,
+      }).then(info => {
+        console.log({ info });
+      }).catch(console.error);
+
+    // 密碼加密再存進資料庫
+    const hashpassword = bcrypt.hashSync(password);
+
+    // 把註冊資料存進資料庫 verify預設給off是為了讓信箱驗證
     const [result] = await db.query(sql, [
         name,
         nickname,
         '平民',
         account,
-        hash,
+        hashpassword,
         email,
         mobile,
         birthday,
         address,
         avatar,
+        userHash,
+        'off',
     ]);
 
     output.success = true;
     res.json(output);
+});
+
+// 開通驗證
+router.post('/verify', upload.none(), async (req, res) => {
+    const output = {
+        success: false,
+        code: 0,
+        error: '',
+    };
+
+    const [sql] = await db.query(`SELECT * FROM member WHERE mem_email='${req.body.email}'`);
+
+    if(req.body.verify !== sql[0].hash){
+        output.error='驗證碼不符'
+        return res.json(output);
+    }
+
+     // 開通帳號
+     const changeverify = `UPDATE member SET verify=? WHERE mem_email='${req.body.email}'`;
+
+     const [result] = await db.query(changeverify, ['on']);
+
+     output.success =true
+
+     res.json(output);
 });
 
 // 登入 JWT
@@ -153,6 +204,13 @@ router.post('/login', upload.none(), async (req, res) => {
     if (!compareResult) {
         output.error = '密碼錯誤';
         output.code = 402;
+        return res.json(output);
+    }
+
+    // 沒驗證帳號
+    if(row.verify !== 'on'){
+        output.error = '帳號沒驗證';
+        output.code = 403;
         return res.json(output);
     }
 
