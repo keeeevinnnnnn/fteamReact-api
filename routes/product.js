@@ -100,7 +100,7 @@ router.get("/", async (req, res) => {
     if (req.query.priceRange != null) {
       let priceRange = req.query.priceRange;
       sql02 =
-        sql02 + "and price BETWEEN " + priceRange[0] + " AND " + priceRange[1];
+        sql02 + " and price BETWEEN " + priceRange[0] + " AND " + priceRange[1];
     }
 
     if (req.query.searchName != "") {
