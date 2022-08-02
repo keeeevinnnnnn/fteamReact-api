@@ -201,9 +201,7 @@ router.get('/memberself', async (req, res) => {
         return
     }
     const [sql] = await db.query(`SELECT * FROM member WHERE sid=${res.locals.user.sid}`);
-    if(sql[0].mem_birthday===undefined){
-        return res.json(sql[0]);
-    }
+
     const birthday = moment(sql[0].mem_birthday).format('YYYY-MM-DD');
     sql[0].mem_birthday = birthday;
     res.json(sql[0]);
