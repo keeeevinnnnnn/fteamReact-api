@@ -144,7 +144,7 @@ router.post('/register', upload.none(), async (req, res) => {
     res.json(output);
 });
 
-// 註冊驗證
+// 開通驗證
 router.post('/verify', upload.none(), async (req, res) => {
     const output = {
         success: false,
