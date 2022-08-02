@@ -11,18 +11,18 @@ const sessionStore = new MysqlStore({}, db);
 const moment = require("moment-timezone");
 const upload = require("./modules/upload-images");
 const jwt = require("jsonwebtoken");
-const bodyParser = require("body-parser")
+const bodyParser = require("body-parser");
 
 // 聊天室建立sever
-const http = require('http');
-const { Server } = require('socket.io');
+const http = require("http");
+const { Server } = require("socket.io");
 
 const server = http.createServer(app);
-const io = new Server(server,{
-    cors:{
-        origin: "http://localhost:3001",
-        methods: ["GET","POST"],
-    }
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3001",
+    methods: ["GET", "POST"],
+  },
 });
 
 // static folder
@@ -32,8 +32,8 @@ app.use("/", express.static(__dirname + "/public"));
 app.use(cors());
 
 //bodyparser
-app.use(bodyParser.json({limit:'50mb'}))
-app.use(bodyParser.urlencoded({limit:'50mb',extended:true}))
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
 //ejs set
 app.set("view engine", "ejs");
@@ -69,11 +69,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 //socket連接
-io.on('connection', (socket) => {
+io.on("connection", (socket) => {
   //連上message(單純名稱) 會有name跟message
-  socket.on('message', ({ name, message, sid, avatar, chatimg }) => {
-      //發出消息時
-      io.emit('message', { name, message,sid , avatar, chatimg});
+  socket.on("message", ({ name, message, sid, avatar, chatimg }) => {
+    //發出消息時
+    io.emit("message", { name, message, sid, avatar, chatimg });
   });
 });
 
@@ -88,7 +88,6 @@ app.use("/member", require(__dirname + "/routes/member"));
 app.use("/carts", require(__dirname + "/routes/carts.js"));
 app.use("/orders", require(__dirname + "/routes/orders.js"));
 app.use("/product", require(__dirname + "/routes/product"));
-app.use("/productGet", require(__dirname + "/routes/productGet"));
 app.use("/custom", require(__dirname + "/routes/custom"));
 
 // app.use('/test', require(__dirname + '/routes/test.js')); // 借我測試用  p.s.阿嘎留
@@ -108,5 +107,5 @@ app.listen(3000, () => {
 
 // 聊天室連線
 server.listen(4000, function () {
-  console.log('listening on port 4000');
+  console.log("listening on port 4000");
 });
