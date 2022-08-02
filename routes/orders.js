@@ -5,6 +5,7 @@ const router = express.Router();
 const upload = require('../modules/upload-images');
 const Joi = require('joi');
 const { text } = require('stream/consumers');
+const nodemailer = require('nodemailer');
 // const fakeMember = 1493;
 
 //後端檢查用
@@ -53,6 +54,24 @@ router.post('/', upload.none(), async (req, res) => {
     console.log(r1);
     // if 訂單新增成功 1.寫入訂單明細 2.刪除已結帳完畢的商品
     if (r1.affectedRows === 1) {
+        const transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 465,
+            auth: {
+                user: '26fteam@gmail.com',
+                pass: 'yunmyhyrcyxdjloq',
+            },
+        });
+
+        transporter.sendMail({
+            from: '26fteam@gmail.com',
+            to: 'a403440322@gmail.com',
+            subject: 'SB感謝您的註冊，請通過驗證碼開通您的會員',
+            html: `<h2>您的訂單編號為 : ${r1.insertId}</h2>`,
+        }).then(info => {
+            console.log({ info });
+        }).catch(console.error);
+
         for (let i of r) {
             // console.log(i);
             if (i.item_type === 'lesson') {
