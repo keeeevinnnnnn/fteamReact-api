@@ -107,9 +107,9 @@ router.get("/", async (req, res) => {
       let searchName = req.query.searchName;
       sql02 = sql02 + "AND name LIKE" + `'%${searchName}%'`;
     }
-    console.log("req.query==", req.query);
+    // console.log("req.query==", req.query);
 
-    console.log("sql02==", sql02);
+    // console.log("sql02==", sql02);
 
     let sql04 = ` ORDER BY ${orderfield} ${sort} LIMIT ${
       (page - 1) * output.perPage
@@ -118,7 +118,7 @@ router.get("/", async (req, res) => {
     let [r2] = await db.query(sql02 + sql04);
     output.rows = r2;
 
-    console.log("compSQL==", sql02 + sql04);
+    // console.log("compSQL==", sql02 + sql04);
   }
   output.code = 200;
   output = { ...output, page, totalRows, totalPages };
@@ -185,12 +185,20 @@ router.post("/details", async (req, res) => {
   };
   const sql = "SELECT * FROM `product` WHERE sid = ?";
   const [r1] = await db.query(sql, [req.body.detailsID.sid]);
-  console.log("req.body====", req.body.detailsID.sid);
+  // console.log("req.body====", req.body.detailsID.sid);
   if (!r1.length) {
     output.error = "沒有這個商品";
     return res.json(output);
   }
   res.json(r1);
+});
+
+router.get("/favoriteCount", async (req, res) => {
+  const sql = "select count(sid) from favorite where memId = ?";
+  const [r1] = await db.query(sql, [req.query.memId]);
+  // console.log("r1====", r1);
+  // console.log("sql==", sql);
+  res.json(r1[0]);
 });
 
 router.get("/:productId", async (req, res) => {
@@ -200,6 +208,7 @@ router.get("/:productId", async (req, res) => {
     const [product] = await db.query(sql);
 
     if (product.length > 0) {
+      // console.log(product[0]);
       res.json(product[0]);
     }
   }
