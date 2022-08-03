@@ -190,7 +190,7 @@ router.post("/details", async (req, res) => {
     output.error = "沒有這個商品";
     return res.json(output);
   }
-  res.json(r1);
+  res.json(r1[0]);
 });
 
 router.get("/favoriteCount", async (req, res) => {
@@ -199,6 +199,15 @@ router.get("/favoriteCount", async (req, res) => {
   // console.log("r1====", r1);
   // console.log("sql==", sql);
   res.json(r1[0]);
+});
+
+router.get("/whoFavorites", async (req, res) => {
+  const sql =
+    "SELECT product.sid FROM product LEFT JOIN favorite ON product.sid = favorite.favoriteId WHERE 1=1 AND favorite.memId = ?";
+  const [r1] = await db.query(sql, [req.query.memId]);
+  console.log("r1====", r1);
+  // console.log("sql==", sql);
+  res.json(r1);
 });
 
 router.get("/:productId", async (req, res) => {
