@@ -62,15 +62,15 @@ router.post('/', upload.none(), async (req, res) => {
                 pass: 'yunmyhyrcyxdjloq',
             },
         });
-
-        transporter.sendMail({
-            from: '26fteam@gmail.com',
-            to: 'a403440322@gmail.com',
-            subject: 'SB感謝您的註冊，請通過驗證碼開通您的會員',
-            html: `<h2>您的訂單編號為 : ${r1.insertId}</h2>`,
-        }).then(info => {
-            console.log({ info });
-        }).catch(console.error);
+        //發送mail設定
+        // transporter.sendMail({
+        //     from: '26fteam@gmail.com',
+        //     to: 'a403440322@gmail.com',
+        //     subject: 'SB感謝您的註冊，請通過驗證碼開通您的會員',
+        //     html: `<h2>您的訂單編號為 : ${r1.insertId}</h2>`,
+        // }).then(info => {
+        //     console.log({ info });
+        // }).catch(console.error);
 
         for (let i of r) {
             // console.log(i);

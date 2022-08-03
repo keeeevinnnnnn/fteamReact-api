@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： localhost
--- 產生時間： 2022 年 08 月 03 日 00:57
+-- 產生時間： 2022 年 08 月 03 日 23:31
 -- 伺服器版本： 10.4.21-MariaDB
 -- PHP 版本： 7.4.29
 
@@ -58,18 +58,6 @@ CREATE TABLE `carts` (
   `member_id` varchar(50) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- 傾印資料表的資料 `carts`
---
-
-INSERT INTO `carts` (`sid`, `item_id`, `item_type`, `quantity`, `item_price`, `member_id`, `created_at`) VALUES
-(79, '1', 'product', 1, 6800, '1544', '2022-08-03 00:43:27'),
-(80, '2', 'product', 1, 6300, '1544', '2022-08-03 00:43:30'),
-(81, '3', 'product', 1, 7400, '1544', '2022-08-03 00:43:33'),
-(82, '1', 'lesson', 1, 3000, '1544', '2022-08-03 00:44:46'),
-(83, '2', 'lesson', 1, 2700, '1544', '2022-08-03 00:44:49'),
-(84, '3', 'lesson', 1, 2500, '1544', '2022-08-03 00:44:52');
 
 -- --------------------------------------------------------
 
@@ -131,7 +119,8 @@ INSERT INTO `custom` (`sid`, `member_id`, `custom_product_name`, `wheel_style`, 
 (9, '1234', '5566', 'PurpleStart', 'iron', '#925454', 'style_02', 'Parallel', '#123456', 'SAMPLE', 'Dot', 'cus2c017d94-f1b9-4759-b74d-71e8cd41f275.png', '3990', '2022-07-31 14:11:29'),
 (10, '2234', '2234bbbb', 'PinkWave', 'iron', '#895252', 'style_02', 'Parallel', '#123456', '11111111', 'Waves', 'cus29ba6e0c-3b17-4ce3-9887-1ed8bbfef58a.png', '1990', '2022-07-31 14:44:57'),
 (11, '3456', '3456bordddddd', 'PinkWave', 'iron', '#9573d3', 'style_02', 'Disturb', '#a3d1ff', '345666666', 'Waves', 'cusd0b76669-e156-49aa-8db7-e495bd6d77e6.png', '2990', '2022-07-31 14:52:44'),
-(12, '4321', '4321board', 'PinkWave', 'iron', '#399027', 'style_02', 'Parallel', '#ffa914', '43211111', 'skew', 'cus4204dbe8-7ab4-43b0-bffa-734a2ad5e94b.png', '3990', '2022-07-31 15:05:32');
+(12, '4321', '4321board', 'PinkWave', 'iron', '#399027', 'style_02', 'Parallel', '#ffa914', '43211111', 'skew', 'cus4204dbe8-7ab4-43b0-bffa-734a2ad5e94b.png', '3990', '2022-07-31 15:05:32'),
+(13, '1544', '123', 'PinkWave', 'iron', '#E9573F', '', '', '', '', '', '', '', '2022-08-03 01:17:06');
 
 -- --------------------------------------------------------
 
@@ -226,16 +215,11 @@ CREATE TABLE `favorite` (
 --
 
 INSERT INTO `favorite` (`sid`, `memId`, `favoriteImg`, `favoriteName`, `favoriteBrand`, `favoritePrice`, `favoriteId`) VALUES
-(1, 5, '637894478781770000.jpg', 'Zhengmei stares so cool, the whole group of skateboards 8.0', 'POLAR', 7400, 3),
-(3, 5, '637894479560230000.jpg', 'Doberman Dog Skateboard 8.1', 'PALACE', 5999, 7),
-(4, 5, '637894482029730000.jpg', 'Renaissance Full Skateboard 8.25', 'PALACE', 8250, 9),
-(5, 5, '637894478401770000.jpg', 'GTA cartoon version of the whole set of skateboard', 'POLAR', 6800, 1),
-(6, 5, '637894478830100000.jpg', 'Street Scenery Full Skateboard 8.25', 'PALACE', 6600, 6),
-(7, 5, '637894482025330000.jpg', 'Chaopai Dou The whole set of skateboards 7.75', 'PALACE', 6999, 8),
-(8, 5, '637894482992030000.jpg', 'Smoke a cigarette The whole set of skateboards 8.18', 'FUCKING AWESOME', 6999, 15),
-(9, 5, '637894482956200000.jpg', 'Summon the beast the whole group of skateboards 8.25', 'FUCKING AWESOME', 6999, 14),
-(10, 5, '637894482948870000.jpg', 'One Spider Whole Skateboard 8.0', 'FUCKING AWESOME', 6999, 13),
-(11, 5, '637894478801800000.jpg', 'Shark jump up the whole set of skateboards 8.25', 'POLAR', 7499, 4);
+(5, 1544, '637894478401770000.jpg', 'GTA cartoon version of the whole set of skateboard', 'POLAR', 6800, 1),
+(6, 1544, '637894478830100000.jpg', 'Street Scenery Full Skateboard 8.25', 'PALACE', 6600, 6),
+(7, 1544, '637894482025330000.jpg', 'Chaopai Dou The whole set of skateboards 7.75', 'PALACE', 6999, 8),
+(8, 1544, '637894482992030000.jpg', 'Smoke a cigarette The whole set of skateboards 8.18', 'FUCKING AWESOME', 6999, 15),
+(11, 1544, '637894478801800000.jpg', 'Shark jump up the whole set of skateboards 8.25', 'POLAR', 7499, 4);
 
 -- --------------------------------------------------------
 
@@ -261,10 +245,54 @@ CREATE TABLE `lesson` (
 --
 
 INSERT INTO `lesson` (`sid`, `name`, `dance_id`, `duringtime_begin`, `duringtime_end`, `number_of_people`, `price`, `teacher_id`, `location`, `quota`) VALUES
-(1, 'Key Glock - Ambition For Cash', 1, '2022-08-25', '2022-09-25', 8, 3000, 1, '忠孝館', 5),
-(2, 'Collapse - Eminem / Baiba Klints', 1, '2022-09-24', '2022-10-24', 8, 2700, 1, '忠孝館', 5),
+(1, 'Key Glock - Ambition For Cash', 1, '2022-08-25', '2022-09-25', 8, 3000, 1, '忠孝館', 8),
+(2, 'Collapse - Eminem / Baiba Klints', 1, '2022-09-26', '2022-10-26', 8, 2700, 1, '忠孝館', 8),
 (3, 'Easy Dance Routine ', 1, '2022-10-27', '2022-11-27', 8, 2500, 1, '忠孝館', 8),
-(4, 'Salute - Competition Dance', 1, '2022-11-28', '2022-12-28', 8, 2700, 1, '忠孝館', 6);
+(4, 'Salute - Competition Dance', 1, '2022-11-28', '2022-12-28', 8, 2700, 1, '忠孝館', 8),
+(5, 'Key Glock - Ambition For Cash\r\n', 1, '2022-08-25', '2022-09-25', 8, 3000, 2, '板橋民生旗艦館', 8),
+(6, 'Collapse - Eminem / Baiba Klints', 1, '2022-09-26', '2022-10-26', 7, 2700, 2, '板橋民生旗艦館', 8),
+(7, 'Easy Dance Routine ', 1, '2022-10-27', '2022-11-27', 6, 2500, 2, '板橋民生旗艦館', 8),
+(8, 'Salute - Competition Dance', 1, '2022-11-28', '2022-12-28', 8, 2700, 2, '板橋民生旗艦館', 8),
+(9, 'Key Glock - Ambition For Cash', 1, '2022-08-25', '2022-09-25', 8, 3000, 3, '台中精誠館', 8),
+(10, 'Collapse - Eminem / Baiba Klints', 1, '2022-09-26', '2022-10-26', 8, 2700, 3, '台中精誠館', 8),
+(11, 'Easy Dance Routine ', 1, '2022-10-27', '2022-11-27', 8, 2500, 3, '台中精誠館', 8),
+(12, 'Salute - Competition Dance', 1, '2022-11-28', '2022-12-28', 8, 2700, 3, '台中精誠館', 8),
+(13, 'G\'z from 21st Floor', 2, '2022-08-25', '2022-09-25', 8, 3000, 4, '忠孝館', 8),
+(14, 'Ants - Edits', 2, '2022-09-26', '2022-10-26', 7, 2700, 4, '忠孝館', 5),
+(15, 'Technologic - Daft Punk', 2, '2022-10-27', '2022-11-27', 6, 3000, 4, '忠孝館', 6),
+(16, 'TroyBoi - Automatic', 2, '2022-11-28', '2022-12-28', 5, 2700, 4, '忠孝館', 8),
+(17, 'G\'z from 21st Floor', 2, '2022-08-25', '2022-09-25', 8, 3000, 5, '板橋民生旗艦館', 8),
+(18, 'Ants - Edits', 2, '2022-09-26', '2022-10-26', 7, 2700, 5, '板橋民生旗艦館', 5),
+(19, 'Technologic - Daft Punk', 2, '2022-10-27', '2022-11-27', 6, 3000, 5, '板橋民生旗艦館', 6),
+(20, 'TroyBoi - Automatic', 2, '2022-11-28', '2022-12-28', 5, 2700, 5, '板橋民生旗艦館', 8),
+(21, 'G\'z from 21st Floor', 2, '2022-08-25', '2022-09-25', 8, 3000, 6, '台中精誠館', 8),
+(22, 'Ants - Edits', 2, '2022-09-26', '2022-10-26', 7, 2700, 6, '台中精誠館', 5),
+(23, 'Technologic - Daft Punk', 2, '2022-10-27', '2022-11-27', 6, 3000, 6, '台中精誠館', 6),
+(24, 'TroyBoi - Automatic', 2, '2022-11-28', '2022-12-28', 5, 2700, 6, '台中精誠館', 8),
+(25, 'Anderson .Paak - TINTS', 3, '2022-08-25', '2022-09-25', 8, 3000, 7, '忠孝館', 8),
+(26, 'Jap\'s Gap\'s - Dance To The Music', 3, '2022-09-26', '2022-10-26', 7, 2700, 7, '忠孝館', 5),
+(27, 'Cameo -It\'s Serious', 3, '2022-10-27', '2022-11-27', 6, 3000, 7, '忠孝館', 6),
+(28, 'Perry & Sanlin -Keep Dancing', 3, '2022-11-28', '2022-12-28', 5, 2700, 7, '忠孝館', 8),
+(29, 'Anderson .Paak - TINTS', 3, '2022-08-25', '2022-09-25', 8, 3000, 8, '板橋民生旗艦館', 8),
+(30, 'Jap\'s Gap\'s - Dance To The Music', 3, '2022-09-26', '2022-10-26', 7, 2700, 8, '板橋民生旗艦館', 5),
+(31, 'Cameo -It\'s Serious', 3, '2022-10-27', '2022-11-27', 6, 3000, 8, '板橋民生旗艦館', 6),
+(32, 'Perry & Sanlin -Keep Dancing', 3, '2022-11-28', '2022-12-28', 5, 2700, 8, '板橋民生旗艦館', 8),
+(33, 'Anderson .Paak - TINTS', 3, '2022-08-25', '2022-09-25', 8, 3000, 9, '台中精誠館', 8),
+(34, 'Jap\'s Gap\'s - Dance To The Music', 3, '2022-09-26', '2022-10-26', 7, 2700, 9, '台中精誠館', 5),
+(35, 'Cameo -It\'s Serious', 3, '2022-10-27', '2022-11-27', 6, 3000, 9, '台中精誠館', 6),
+(36, 'Perry & Sanlin -Keep Dancing', 3, '2022-11-28', '2022-12-28', 5, 2700, 9, '台中精誠館', 8),
+(37, 'KSI - Poppin', 4, '2022-08-25', '2022-09-25', 8, 3000, 10, '忠孝館', 8),
+(38, 'Ø𝗭𝗜 -𝗵𝗮𝗶𝗿 𝘁𝗶𝗲', 4, '2022-09-26', '2022-10-26', 7, 2700, 10, '忠孝館', 5),
+(39, '𝗝𝗼𝘀𝗵 𝗟𝗲𝘃𝗶 - 𝗦𝗲𝗲𝗻 𝗜𝘁 𝗔𝗹𝗹', 4, '2022-10-27', '2022-11-27', 6, 3000, 10, '忠孝館', 6),
+(40, 'DPR LIVE - Martini Blue ', 4, '2022-11-28', '2022-12-28', 5, 2700, 10, '忠孝館', 8),
+(41, 'KSI - Poppin', 4, '2022-08-25', '2022-09-25', 8, 3000, 11, '板橋民生旗艦館', 8),
+(42, 'Ø𝗭𝗜 -𝗵𝗮𝗶𝗿 𝘁𝗶𝗲', 4, '2022-09-26', '2022-10-26', 7, 2700, 11, '板橋民生旗艦館', 5),
+(43, '𝗝𝗼𝘀𝗵 𝗟𝗲𝘃𝗶 - 𝗦𝗲𝗲𝗻 𝗜𝘁 𝗔𝗹𝗹', 4, '2022-10-27', '2022-11-27', 6, 3000, 11, '板橋民生旗艦館', 6),
+(44, 'DPR LIVE - Martini Blue ', 4, '2022-11-28', '2022-12-28', 5, 2700, 11, '板橋民生旗艦館', 8),
+(45, 'KSI - Poppin', 4, '2022-08-25', '2022-09-25', 8, 3000, 12, '台中精誠館', 8),
+(46, 'Ø𝗭𝗜 -𝗵𝗮𝗶𝗿 𝘁𝗶𝗲', 4, '2022-09-26', '2022-10-26', 7, 2700, 12, '台中精誠館', 5),
+(47, '𝗝𝗼𝘀𝗵 𝗟𝗲𝘃𝗶 - 𝗦𝗲𝗲𝗻 𝗜𝘁 𝗔𝗹𝗹', 4, '2022-10-27', '2022-11-27', 6, 3000, 12, '台中精誠館', 6),
+(48, 'DPR LIVE - Martini Blue ', 4, '2022-11-28', '2022-12-28', 5, 2700, 12, '台中精誠館', 8);
 
 -- --------------------------------------------------------
 
@@ -410,7 +438,8 @@ INSERT INTO `orders` (`sid`, `member_sid`, `recipient`, `address`, `shipping_met
 (202200148, 1546, '123131', '基隆市信義區243243134', 'toHome', 33799, '2022-07-29 22:27:39'),
 (202200149, 1546, '123', '基隆市仁愛區123', 'toHome', 14998, '2022-07-29 22:29:32'),
 (202200150, 1546, 'superGary', '台北市中正區八德路123號', 'toHome', 51670, '2022-07-31 22:06:42'),
-(202200151, 1546, '123', '基隆市信義區213', 'toHome', 67130, '2022-08-03 00:28:17');
+(202200151, 1546, '123', '基隆市信義區213', 'toHome', 67130, '2022-08-03 00:28:17'),
+(202200152, 1544, '123', '基隆市仁愛區123123', 'toHome', 56947, '2022-08-03 01:29:25');
 
 -- --------------------------------------------------------
 
@@ -446,7 +475,17 @@ INSERT INTO `order_details` (`sid`, `order_id`, `member_id`, `item_id`, `item_ty
 (211, 202200151, 1546, 1, 'lesson', 1, 3000),
 (212, 202200151, 1546, 2, 'lesson', 1, 2700),
 (213, 202200151, 1546, 1, 'product', 4, 27200),
-(214, 202200151, 1546, 2, 'product', 1, 6300);
+(214, 202200151, 1546, 2, 'product', 1, 6300),
+(215, 202200152, 1544, 1, 'product', 1, 6800),
+(216, 202200152, 1544, 2, 'product', 1, 6300),
+(217, 202200152, 1544, 3, 'product', 1, 7400),
+(218, 202200152, 1544, 1, 'lesson', 1, 3000),
+(219, 202200152, 1544, 2, 'lesson', 1, 2700),
+(220, 202200152, 1544, 3, 'lesson', 1, 2500),
+(221, 202200152, 1544, 13, 'product', 1, 6999),
+(222, 202200152, 1544, 14, 'product', 1, 6999),
+(223, 202200152, 1544, 7, 'product', 1, 5999),
+(224, 202200152, 1544, 9, 'product', 1, 8250);
 
 -- --------------------------------------------------------
 
@@ -720,13 +759,13 @@ ALTER TABLE `admin`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `custom`
 --
 ALTER TABLE `custom`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `cus_like`
@@ -756,7 +795,7 @@ ALTER TABLE `favorite`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `lesson`
 --
 ALTER TABLE `lesson`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `member`
@@ -780,13 +819,13 @@ ALTER TABLE `news`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `sid` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=202200152;
+  MODIFY `sid` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=202200153;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `order_details`
 --
 ALTER TABLE `order_details`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=215;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=225;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `teacher_category`
