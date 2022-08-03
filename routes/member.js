@@ -405,7 +405,7 @@ router.put('/password', upload.none(), async (req, res) => {
 });
 
 // 刪除帳號
-router.delete('/', (req, res) => {
+router.delete('/', async (req, res) => {
     if(!res.locals.user.sid){
         return
     }
@@ -414,7 +414,7 @@ router.delete('/', (req, res) => {
         code: 0,
         error: '',
     };
-    const sql = db.query(`DELETE FROM member WHERE sid=${res.locals.user.sid}`);
+    const sql = await db.query(`DELETE FROM member WHERE sid=${res.locals.user.sid}`);
     output.success = true;
     res.json(output);
 });
@@ -456,7 +456,7 @@ router.get('/favorite', async (req, res) => {
 });
 
 // 取消商品收藏
-router.post('/delfavorite', (req, res) => {
+router.post('/delfavorite', async (req, res) => {
     if(!req.body.sid){
         return
     }
@@ -465,7 +465,7 @@ router.post('/delfavorite', (req, res) => {
         code: 0,
         error: '',
     };
-    const sql = db.query(`DELETE FROM favorite WHERE sid=${req.body.sid}`);
+    const sql = await db.query(`DELETE FROM favorite WHERE sid=${req.body.sid}`);
     output.success = true;
     res.json(output);
 });
