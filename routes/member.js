@@ -64,8 +64,6 @@ router.post('/register', upload.none(), async (req, res) => {
         return res.json(output);
     }
 
-    const sql =
-        'INSERT INTO `member`(`mem_name`,`mem_nickname`,`mem_level`,`mem_account`,`mem_password`, `mem_email`, `mem_mobile`, `mem_birthday`, `mem_address`, `mem_avatar`, `mem_bollen`, `hash`, `verify`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?)';
 
     // 給他們預設值 (前端不給欄位)
     // 如果沒給頭貼
@@ -108,22 +106,26 @@ router.post('/register', upload.none(), async (req, res) => {
         host: 'smtp.gmail.com',
         port: 465,
         auth: {
-          user: '26fteam@gmail.com',
-          pass: 'yunmyhyrcyxdjloq',
+            user: '26fteam@gmail.com',
+            pass: 'yunmyhyrcyxdjloq',
         },
-      });
+    });
 
-      transporter.sendMail({
+    transporter.sendMail({
         from: '26fteam@gmail.com',
         to: email,
-        subject: 'SB感謝您的註冊，請通過驗證碼開通您的會員',
-        html: `<h2>您的驗證碼為 : ${userHash}</h2>`,
-      }).then(info => {
+        subject: 'SB感謝您的註冊，請開通帳號',
+        html: `<h2>您的驗證碼為 : ${userHash}</h2>
+                <p>***該驗證碼5分鐘內有效***</p>`,
+    }).then(info => {
         console.log({ info });
-      }).catch(console.error);
+    }).catch(console.error);
 
     // 密碼加密再存進資料庫
     const hashpassword = bcrypt.hashSync(password);
+
+    const sql =
+        'INSERT INTO `member`(`mem_name`,`mem_nickname`,`mem_level`,`mem_account`,`mem_password`, `mem_email`, `mem_mobile`, `mem_birthday`, `mem_address`, `mem_avatar`, `mem_bollen`, `hash`, `verify`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?)';
 
     // 把註冊資料存進資料庫 verify預設給off是為了讓信箱驗證
     const [result] = await db.query(sql, [
@@ -143,6 +145,16 @@ router.post('/register', upload.none(), async (req, res) => {
 
     output.success = true;
     res.json(output);
+
+    // 5分鐘後再給一次新的亂數使原先驗證碼失效
+    setTimeout(async () => {
+        // 亂數出新的五位數整數
+        const newUserHash = parseInt(Math.random()*100000)
+        // 更改原先驗證碼
+        const changeHash = `UPDATE member SET hash=? WHERE mem_email='${req.body.email}'`;
+        const [resultChange] = await db.query(changeHash, [newUserHash]);
+        //時間設定為5分鐘
+    }, 1000*60*5);
 });
 
 // 開通驗證
