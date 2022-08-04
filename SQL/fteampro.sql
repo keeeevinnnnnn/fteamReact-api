@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： localhost
--- 產生時間： 2022 年 08 月 04 日 16:02
+-- 產生時間： 2022 年 08 月 04 日 21:48
 -- 伺服器版本： 10.4.21-MariaDB
 -- PHP 版本： 7.4.29
 
@@ -58,6 +58,13 @@ CREATE TABLE `carts` (
   `member_id` varchar(50) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- 傾印資料表的資料 `carts`
+--
+
+INSERT INTO `carts` (`sid`, `item_id`, `item_type`, `quantity`, `item_price`, `member_id`, `created_at`) VALUES
+(115, '2', 'lesson', 1, 2700, '1544', '2022-08-04 16:47:43');
 
 -- --------------------------------------------------------
 
@@ -480,7 +487,9 @@ INSERT INTO `orders` (`sid`, `member_sid`, `recipient`, `email`, `address`, `shi
 (202200159, 1544, 'Gary', 'a403440322@gmail.com', '台北市松山區中崙門市', 'pickSelf', 93370, '2022-08-04 13:43:30'),
 (202200160, 1544, 'Gary', 'a403440322@gmail.com', '基隆市仁愛區sadd', 'toHome', 3990, '2022-08-04 14:38:36'),
 (202200161, 1544, 'Gary', 'a403440322@gmail.com', '台北市士林區sdad', 'toHome', 20500, '2022-08-04 14:50:56'),
-(202200162, 1544, 'Gary', 'a403440322@gmail.com', '基隆市仁愛區基隆', 'toHome', 13100, '2022-08-04 14:57:43');
+(202200162, 1544, 'Gary', 'a403440322@gmail.com', '基隆市仁愛區基隆', 'toHome', 13100, '2022-08-04 14:57:43'),
+(202200163, 1544, 'Gary', 'a403440322@gmail.com', '基隆市信義區213', 'toHome', 6300, '2022-08-04 16:37:42'),
+(202200164, 1544, 'Gary', 'a403440322@gmail.com', '台北市中正區123', 'toHome', 6300, '2022-08-04 16:38:46');
 
 -- --------------------------------------------------------
 
@@ -550,7 +559,9 @@ INSERT INTO `order_details` (`sid`, `order_id`, `member_id`, `item_id`, `item_ty
 (245, 202200161, 1544, 2, 'product', 1, 6300),
 (246, 202200161, 1544, 3, 'product', 1, 7400),
 (247, 202200162, 1544, 1, 'product', 1, 6800),
-(248, 202200162, 1544, 2, 'product', 1, 6300);
+(248, 202200162, 1544, 2, 'product', 1, 6300),
+(249, 202200163, 1544, 2, 'product', 1, 6300),
+(250, 202200164, 1544, 2, 'product', 1, 6300);
 
 -- --------------------------------------------------------
 
@@ -694,15 +705,15 @@ INSERT INTO `teacher_category` (`sid`, `name`) VALUES
 (1, 'Nike'),
 (2, '小博'),
 (3, '雅君'),
-(5, '龔妹'),
-(6, '紀威'),
-(7, '皓子'),
-(9, '阿邦'),
-(10, '卡布'),
-(11, '小剛'),
-(13, '剛一'),
-(14, '阿信'),
-(15, '球球');
+(4, '龔妹'),
+(5, '紀威'),
+(6, '皓子'),
+(7, '阿邦'),
+(8, '卡布'),
+(9, '小剛'),
+(10, '剛一'),
+(11, '阿信'),
+(12, '球球');
 
 --
 -- 已傾印資料表的索引
@@ -830,7 +841,7 @@ ALTER TABLE `admin`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=116;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `custom`
@@ -896,13 +907,13 @@ ALTER TABLE `news`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `sid` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=202200163;
+  MODIFY `sid` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=202200165;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `order_details`
 --
 ALTER TABLE `order_details`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=249;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=251;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `teacher_category`
