@@ -6,16 +6,6 @@ const upload = require('../modules/upload-images');
 const Joi = require('joi');
 const { text } = require('stream/consumers');
 const nodemailer = require('nodemailer');
-// const fakeMember = 1493;
-
-//後端檢查用
-// const schema = Joi.object({
-//     //字串類型
-//     memID: Joi.number().required(),
-//     recipient: Joi.string().min(2).required(),
-//     address: Joi.string().required(),
-//     shipping: Joi.string().required(),
-// });
 
 // checkout to orders
 // need member_id carts's sid
@@ -49,8 +39,8 @@ router.post('/', upload.none(), async (req, res) => {
         res.json(output);
     }
     // 寫入訂單
-    const sql1 = "INSERT INTO `orders`(`member_sid`, `recipient`, `address`, `shipping_method`, `total`) VALUES (?,?,?,?,?)"
-    const [r1] = await db.query(sql1, [req.body.memID, req.body.recipient, req.body.address, req.body.shipping, total]);
+    const sql1 = "INSERT INTO `orders`(`member_sid`, `recipient`,`email`, `address`, `shipping_method`, `total`) VALUES (?,?,?,?,?,?)"
+    const [r1] = await db.query(sql1, [req.body.memID, req.body.recipient, req.body.email, req.body.address, req.body.shipping, total]);
     console.log(r1);
     // if 訂單新增成功 1.寫入訂單明細 2.刪除已結帳完畢的商品
     if (r1.affectedRows === 1) {
@@ -62,15 +52,15 @@ router.post('/', upload.none(), async (req, res) => {
                 pass: 'yunmyhyrcyxdjloq',
             },
         });
-        //發送mail設定
-        // transporter.sendMail({
-        //     from: '26fteam@gmail.com',
-        //     to: 'a403440322@gmail.com',
-        //     subject: 'SB感謝您的註冊，請通過驗證碼開通您的會員',
-        //     html: `<h2>您的訂單編號為 : ${r1.insertId}</h2>`,
-        // }).then(info => {
-        //     console.log({ info });
-        // }).catch(console.error);
+        // 發送mail設定
+        transporter.sendMail({
+            from: '26fteam@gmail.com',
+            to: req.body.email,
+            subject: 'Street Born, 恭喜您訂購成功',
+            html: `<h2>您的訂單編號為 : ${r1.insertId}</h2>`,
+        }).then(info => {
+            console.log({ info });
+        }).catch(console.error);
 
         for (let i of r) {
             // console.log(i);
