@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： localhost
--- 產生時間： 2022 年 08 月 03 日 23:31
+-- 產生時間： 2022 年 08 月 04 日 21:48
 -- 伺服器版本： 10.4.21-MariaDB
 -- PHP 版本： 7.4.29
 
@@ -58,6 +58,13 @@ CREATE TABLE `carts` (
   `member_id` varchar(50) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- 傾印資料表的資料 `carts`
+--
+
+INSERT INTO `carts` (`sid`, `item_id`, `item_type`, `quantity`, `item_price`, `member_id`, `created_at`) VALUES
+(115, '2', 'lesson', 1, 2700, '1544', '2022-08-04 16:47:43');
 
 -- --------------------------------------------------------
 
@@ -297,6 +304,36 @@ INSERT INTO `lesson` (`sid`, `name`, `dance_id`, `duringtime_begin`, `duringtime
 -- --------------------------------------------------------
 
 --
+-- 資料表結構 `lesson_favorite`
+--
+
+CREATE TABLE `lesson_favorite` (
+  `sid` int(11) NOT NULL,
+  `memsid` int(30) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `dance_id` int(11) DEFAULT NULL,
+  `duringtime_begin` date NOT NULL,
+  `duringtime_end` date NOT NULL,
+  `number_of_people` int(255) NOT NULL,
+  `price` int(255) NOT NULL,
+  `teacher_id` int(11) NOT NULL,
+  `location` varchar(255) NOT NULL,
+  `quota` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- 傾印資料表的資料 `lesson_favorite`
+--
+
+INSERT INTO `lesson_favorite` (`sid`, `memsid`, `name`, `dance_id`, `duringtime_begin`, `duringtime_end`, `number_of_people`, `price`, `teacher_id`, `location`, `quota`) VALUES
+(1, 0, 'Key Glock - Ambition For Cash', 1, '2022-08-25', '2022-09-25', 8, 3000, 1, '忠孝館', 7),
+(2, 0, 'Collapse - Eminem / Baiba Klints', 1, '2022-09-26', '2022-10-26', 8, 2700, 1, '忠孝館', 7),
+(3, 0, 'Easy Dance Routine ', 1, '2022-10-27', '2022-11-27', 8, 2500, 1, '忠孝館', 8),
+(4, 0, 'Salute - Competition Dance', 1, '2022-11-28', '2022-12-28', 8, 2700, 1, '忠孝館', 6);
+
+-- --------------------------------------------------------
+
+--
 -- 資料表結構 `member`
 --
 
@@ -336,7 +373,7 @@ INSERT INTO `member` (`sid`, `mem_name`, `mem_nickname`, `mem_level`, `mem_accou
 (1499, '會員', '', '平民', '45454', '45454', '', '', '0000-00-00', '', 'images.png', '2022-06-11 14:02:43', 0, '0', ''),
 (1502, '會員', '', '平民', 'dfdfd', 'dfdfd', '', '', '0000-00-00', '', 'images.png', '2022-06-11 21:23:33', 1, '0', ''),
 (1503, '會員', '', '平民', 'fff', 'fff', '', '', '0000-00-00', '', 'images.png', '2022-06-12 00:18:06', 1, '0', ''),
-(1544, 'Gary', '蓋瑞北鼻', '平民', 'gary', '$2a$10$1./ZkK7lJUjivkc1XD/e9OxX8Bb0BDcJd6u7j6yMmIsDihHWNq/uG', 'garylin0969@gmail.com', '', '2022-07-01', '', 'ef1d7cba-27ee-4a78-bd9b-3080f51e2d04.jpg', '2022-07-23 20:58:35', 1, '0', 'on'),
+(1544, 'Gary', '蓋瑞北鼻', '平民', 'gary', '$2a$10$1./ZkK7lJUjivkc1XD/e9OxX8Bb0BDcJd6u7j6yMmIsDihHWNq/uG', 'a403440322@gmail.com', '0912345678', '2022-07-01', '', 'ef1d7cba-27ee-4a78-bd9b-3080f51e2d04.jpg', '2022-07-23 20:58:35', 1, '0', 'on'),
 (1545, '林宸皞', '安妮亞', '平民', '999', '$2a$10$XbvKJCQpgFitaPqw8Q7wY.38h/abSlpoi4e76/lU1ouJj26Ez/CZS', 'garylin0969@gmail.com', '', '0000-00-00', '', 'images.png', '2022-07-26 21:44:57', 1, '0', ''),
 (1547, 'Gary', '', '平民', 'asas', '$2a$10$Vc/TYeCi1UHUbrU1rnPDOeCO31rgwGuXu1zc8FxxasvtDn0SYULIm', 'garylin0969@gmail.com', '', '0000-00-00', '', 'images.png', '2022-07-26 21:55:49', 1, '0', ''),
 (1548, '林宸皞', '', '平民', 'jjj', '$2a$10$W27RUbmE6zzkW.6lL89wze9W7.MBl6ltA3C4P/xB63jj0gVuzSAt6', 'garylin0969@gmail.com', '', '0000-00-00', '', 'images.png', '2022-07-26 22:00:43', 1, '0', ''),
@@ -424,6 +461,7 @@ CREATE TABLE `orders` (
   `sid` int(50) NOT NULL,
   `member_sid` int(50) NOT NULL,
   `recipient` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
   `address` varchar(255) NOT NULL,
   `shipping_method` varchar(255) NOT NULL,
   `total` int(50) NOT NULL,
@@ -434,12 +472,24 @@ CREATE TABLE `orders` (
 -- 傾印資料表的資料 `orders`
 --
 
-INSERT INTO `orders` (`sid`, `member_sid`, `recipient`, `address`, `shipping_method`, `total`, `order_date`) VALUES
-(202200148, 1546, '123131', '基隆市信義區243243134', 'toHome', 33799, '2022-07-29 22:27:39'),
-(202200149, 1546, '123', '基隆市仁愛區123', 'toHome', 14998, '2022-07-29 22:29:32'),
-(202200150, 1546, 'superGary', '台北市中正區八德路123號', 'toHome', 51670, '2022-07-31 22:06:42'),
-(202200151, 1546, '123', '基隆市信義區213', 'toHome', 67130, '2022-08-03 00:28:17'),
-(202200152, 1544, '123', '基隆市仁愛區123123', 'toHome', 56947, '2022-08-03 01:29:25');
+INSERT INTO `orders` (`sid`, `member_sid`, `recipient`, `email`, `address`, `shipping_method`, `total`, `order_date`) VALUES
+(202200148, 1546, '123131', '', '基隆市信義區243243134', 'toHome', 33799, '2022-07-29 22:27:39'),
+(202200149, 1546, '123', '', '基隆市仁愛區123', 'toHome', 14998, '2022-07-29 22:29:32'),
+(202200150, 1546, 'superGary', '', '台北市中正區八德路123號', 'toHome', 51670, '2022-07-31 22:06:42'),
+(202200151, 1546, '123', '', '基隆市信義區213', 'toHome', 67130, '2022-08-03 00:28:17'),
+(202200152, 1544, '123', '', '基隆市仁愛區123123', 'toHome', 56947, '2022-08-03 01:29:25'),
+(202200153, 1544, 'Gary', 'garylin0969@gmail.com', '基隆市仁愛區kldsajfjefwojow', 'toHome', 27999, '2022-08-04 13:08:21'),
+(202200154, 1544, 'Gary', 'garylin0969@gmail.com', '基隆市信義區', 'toHome', 27999, '2022-08-04 13:09:03'),
+(202200155, 1544, 'Gary', 'a403440322@gmail.com', '台北市松山區中崙門市', 'pickSelf', 27999, '2022-08-04 13:15:39'),
+(202200156, 1544, 'Gary', 'a403440322@gmail.com', '台北市松山區上弘門市', 'pickSelf', 13799, '2022-08-04 13:20:19'),
+(202200157, 1544, 'Gary', 'a403440322@gmail.com', '台北市松山區中崙門市', 'pickSelf', 6300, '2022-08-04 13:23:47'),
+(202200158, 1544, 'Gary', 'a403440322@gmail.com', '台北市松山區上弘門市', 'pickSelf', 6800, '2022-08-04 13:24:58'),
+(202200159, 1544, 'Gary', 'a403440322@gmail.com', '台北市松山區中崙門市', 'pickSelf', 93370, '2022-08-04 13:43:30'),
+(202200160, 1544, 'Gary', 'a403440322@gmail.com', '基隆市仁愛區sadd', 'toHome', 3990, '2022-08-04 14:38:36'),
+(202200161, 1544, 'Gary', 'a403440322@gmail.com', '台北市士林區sdad', 'toHome', 20500, '2022-08-04 14:50:56'),
+(202200162, 1544, 'Gary', 'a403440322@gmail.com', '基隆市仁愛區基隆', 'toHome', 13100, '2022-08-04 14:57:43'),
+(202200163, 1544, 'Gary', 'a403440322@gmail.com', '基隆市信義區213', 'toHome', 6300, '2022-08-04 16:37:42'),
+(202200164, 1544, 'Gary', 'a403440322@gmail.com', '台北市中正區123', 'toHome', 6300, '2022-08-04 16:38:46');
 
 -- --------------------------------------------------------
 
@@ -485,7 +535,33 @@ INSERT INTO `order_details` (`sid`, `order_id`, `member_id`, `item_id`, `item_ty
 (221, 202200152, 1544, 13, 'product', 1, 6999),
 (222, 202200152, 1544, 14, 'product', 1, 6999),
 (223, 202200152, 1544, 7, 'product', 1, 5999),
-(224, 202200152, 1544, 9, 'product', 1, 8250);
+(224, 202200152, 1544, 9, 'product', 1, 8250),
+(225, 202200154, 1544, 1, 'product', 1, 6800),
+(226, 202200154, 1544, 2, 'product', 1, 6300),
+(227, 202200154, 1544, 3, 'product', 1, 7400),
+(228, 202200154, 1544, 4, 'product', 1, 7499),
+(229, 202200155, 1544, 1, 'product', 1, 6800),
+(230, 202200155, 1544, 2, 'product', 1, 6300),
+(231, 202200155, 1544, 3, 'product', 1, 7400),
+(232, 202200155, 1544, 4, 'product', 1, 7499),
+(233, 202200156, 1544, 4, 'product', 1, 7499),
+(234, 202200156, 1544, 2, 'product', 1, 6300),
+(235, 202200157, 1544, 2, 'product', 1, 6300),
+(236, 202200158, 1544, 1, 'product', 1, 6800),
+(237, 202200159, 1544, 1, 'product', 5, 34000),
+(238, 202200159, 1544, 2, 'product', 4, 25200),
+(239, 202200159, 1544, 3, 'product', 3, 22200),
+(240, 202200159, 1544, 7, 'custom', 1, 3990),
+(241, 202200159, 1544, 8, 'custom', 1, 3990),
+(242, 202200159, 1544, 9, 'custom', 1, 3990),
+(243, 202200160, 1544, 9, 'custom', 1, 3990),
+(244, 202200161, 1544, 1, 'product', 1, 6800),
+(245, 202200161, 1544, 2, 'product', 1, 6300),
+(246, 202200161, 1544, 3, 'product', 1, 7400),
+(247, 202200162, 1544, 1, 'product', 1, 6800),
+(248, 202200162, 1544, 2, 'product', 1, 6300),
+(249, 202200163, 1544, 2, 'product', 1, 6300),
+(250, 202200164, 1544, 2, 'product', 1, 6300);
 
 -- --------------------------------------------------------
 
@@ -629,15 +705,15 @@ INSERT INTO `teacher_category` (`sid`, `name`) VALUES
 (1, 'Nike'),
 (2, '小博'),
 (3, '雅君'),
-(5, '龔妹'),
-(6, '紀威'),
-(7, '皓子'),
-(9, '阿邦'),
-(10, '卡布'),
-(11, '小剛'),
-(13, '剛一'),
-(14, '阿信'),
-(15, '球球');
+(4, '龔妹'),
+(5, '紀威'),
+(6, '皓子'),
+(7, '阿邦'),
+(8, '卡布'),
+(9, '小剛'),
+(10, '剛一'),
+(11, '阿信'),
+(12, '球球');
 
 --
 -- 已傾印資料表的索引
@@ -695,6 +771,12 @@ ALTER TABLE `favorite`
 -- 資料表索引 `lesson`
 --
 ALTER TABLE `lesson`
+  ADD PRIMARY KEY (`sid`);
+
+--
+-- 資料表索引 `lesson_favorite`
+--
+ALTER TABLE `lesson_favorite`
   ADD PRIMARY KEY (`sid`);
 
 --
@@ -759,7 +841,7 @@ ALTER TABLE `admin`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=116;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `custom`
@@ -798,6 +880,12 @@ ALTER TABLE `lesson`
   MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
+-- 使用資料表自動遞增(AUTO_INCREMENT) `lesson_favorite`
+--
+ALTER TABLE `lesson_favorite`
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
 -- 使用資料表自動遞增(AUTO_INCREMENT) `member`
 --
 ALTER TABLE `member`
@@ -819,13 +907,13 @@ ALTER TABLE `news`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `sid` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=202200153;
+  MODIFY `sid` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=202200165;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `order_details`
 --
 ALTER TABLE `order_details`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=225;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=251;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `teacher_category`
