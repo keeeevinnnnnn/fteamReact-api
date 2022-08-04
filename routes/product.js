@@ -205,9 +205,12 @@ router.get("/whoFavorites", async (req, res) => {
   const sql =
     "SELECT product.sid FROM product LEFT JOIN favorite ON product.sid = favorite.favoriteId WHERE 1=1 AND favorite.memId = ?";
   const [r1] = await db.query(sql, [req.query.memId]);
-  // console.log("r1====", r1);
+  const r2 = [];
+  for (let i = 0; i < r1.length; i++) {
+    r2.push(r1[i].sid);
+  }
   // console.log("sql==", sql);
-  res.json(r1);
+  res.json(r2);
 });
 
 router.get("/:productId", async (req, res) => {
