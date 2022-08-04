@@ -109,7 +109,7 @@ router.get("/", async (req, res) => {
     }
     // console.log("req.query==", req.query);
 
-    // console.log("sql02==", sql02);
+    console.log("sql02==", sql02);
 
     let sql04 = ` ORDER BY ${orderfield} ${sort} LIMIT ${
       (page - 1) * output.perPage
@@ -118,7 +118,7 @@ router.get("/", async (req, res) => {
     let [r2] = await db.query(sql02 + sql04);
     output.rows = r2;
 
-    // console.log("compSQL==", sql02 + sql04);
+    console.log("compSQL==", sql02 + sql04);
   }
   output.code = 200;
   output = { ...output, page, totalRows, totalPages };
@@ -205,7 +205,7 @@ router.get("/whoFavorites", async (req, res) => {
   const sql =
     "SELECT product.sid FROM product LEFT JOIN favorite ON product.sid = favorite.favoriteId WHERE 1=1 AND favorite.memId = ?";
   const [r1] = await db.query(sql, [req.query.memId]);
-  console.log("r1====", r1);
+  // console.log("r1====", r1);
   // console.log("sql==", sql);
   res.json(r1);
 });
