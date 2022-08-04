@@ -147,13 +147,14 @@ router.post('/register', upload.none(), async (req, res) => {
     res.json(output);
 
     // 5分鐘後再給一次新的亂數使原先驗證碼失效
-    setTimeout(async () => {
+    const newhashTimeout = setTimeout(async () => {
         // 亂數出新的五位數整數
         const newUserHash = parseInt(Math.random()*100000)
         // 更改原先驗證碼
         const changeHash = `UPDATE member SET hash=? WHERE mem_email='${req.body.email}'`;
         const [resultChange] = await db.query(changeHash, [newUserHash]);
         //時間設定為5分鐘
+        return clearTimeout(newhashTimeout)
     }, 1000*60*5);
 });
 
