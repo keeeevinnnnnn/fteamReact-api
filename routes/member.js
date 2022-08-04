@@ -439,7 +439,6 @@ router.put('/avatar', upload.none(), async (req, res) => {
      const sql = `UPDATE member SET mem_avatar=? WHERE sid=${res.locals.user.sid}`;
     const {avatar}= req.body;
     const [result] = await db.query(sql, [avatar]);
-    console.log(avatar);
 
     output.success = true;
     res.json(output);
