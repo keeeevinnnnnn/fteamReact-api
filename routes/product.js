@@ -2,6 +2,7 @@ const { log } = require("console");
 const express = require("express");
 const db = require("../modules/connect_db");
 const router = express.Router();
+const jwt = require("jsonwebtoken");
 
 // 全部商品
 router.get("/", async (req, res) => {
@@ -109,7 +110,7 @@ router.get("/", async (req, res) => {
     }
     // console.log("req.query==", req.query);
 
-    console.log("sql02==", sql02);
+    // console.log("sql02==", sql02);
 
     let sql04 = ` ORDER BY ${orderfield} ${sort} LIMIT ${
       (page - 1) * output.perPage
@@ -118,7 +119,7 @@ router.get("/", async (req, res) => {
     let [r2] = await db.query(sql02 + sql04);
     output.rows = r2;
 
-    console.log("compSQL==", sql02 + sql04);
+    // console.log("compSQL==", sql02 + sql04);
   }
   output.code = 200;
   output = { ...output, page, totalRows, totalPages };
@@ -131,7 +132,7 @@ router.post("/favorites", async (req, res) => {
     error: "",
   };
 
-  const memId = req.body.memId;
+  const memId = res.locals.user.sid;
 
   // 如果沒有收藏商品
   if (!req.body.sid) {
@@ -160,6 +161,7 @@ router.post("/favorites", async (req, res) => {
   const sql2 =
     "INSERT INTO `favorite`(`memId`, `favoriteImg`, `favoriteName`,`favoriteBrand`,`favoritePrice`,`favoriteId`) VALUES (?, ?, ?,?,?,?)";
   // 假設用戶編號 fake_user
+  // console.log("dasasasdas", res.locals.user.sid);
   const [r2] = await db.query(sql2, [
     memId,
     req.body.favoriteImg,
@@ -194,17 +196,17 @@ router.post("/details", async (req, res) => {
 });
 
 router.get("/favoriteCount", async (req, res) => {
-  const sql = "select count(sid) from favorite where memId = ?";
-  const [r1] = await db.query(sql, [req.query.memId]);
-  // console.log("r1====", r1);
-  // console.log("sql==", sql);
+  const sql = `select count(sid) from favorite where memId =${res.locals.user.sid}`;
+  const [r1] = await db.query(sql);
+  console.log("r1-----01", r1);
+  console.log("sql------02", sql);
   res.json(r1[0]);
 });
 
 router.get("/whoFavorites", async (req, res) => {
   const sql =
     "SELECT product.sid FROM product LEFT JOIN favorite ON product.sid = favorite.favoriteId WHERE 1=1 AND favorite.memId = ?";
-  const [r1] = await db.query(sql, [req.query.memId]);
+  const [r1] = await db.query(sql, [res.locals.user.sid]);
   const r2 = [];
   for (let i = 0; i < r1.length; i++) {
     r2.push(r1[i].sid);
