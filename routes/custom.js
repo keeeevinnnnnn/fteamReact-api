@@ -149,18 +149,15 @@ router.get("/sharedetail", upload.none(),async (req, res) => {
 
   const sql = "SELECT * FROM `custom` JOIN `member` ON `custom`.`member_id`=`member`.`sid` WHERE custom.sid=?";
   const [r]=await db.query(sql, [req.query.sid]);
-   console.log(r)  
+  //  console.log(r)  
     res.json(r) 
 });
 
 //看自己的舊單//
 router.get("/prevcusproduct", upload.none(),async (req, res) => {
-  const member_id = req.body.member_id;
-
-  const sql = "SELECT * FROM `custom` JOIN `member` ON `custom`.`member_id`=`member`.`sid` WHERE custom.member_id=?";
-  const [r]=await db.query(sql, [req.query.member_id]);
-   console.log(r)  
-    res.json(r) 
+  const sql = "SELECT custom.*,member.mem_name,member.mem_avatar FROM custom JOIN member ON member.sid = custom.member_id WHERE custom.member_id = ?";
+  const [r] = await db.query(sql,[req.query.member_id])
+  res.json(r);
 });
 
 
