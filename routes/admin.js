@@ -88,4 +88,14 @@ router.delete('/', (req, res) => {
     res.json(output);
 });
 
+// 會員商品收藏
+router.get('/memberfavorite/:memberId', async (req, res) => {
+    if(!req.params.memberId){
+        return
+    }
+    const [sql] = await db.query(`SELECT * FROM favorite WHERE memId=${req.params.memberId} ORDER BY favorite.sid DESC`);
+
+    res.json(sql);
+});
+
 module.exports = router;
