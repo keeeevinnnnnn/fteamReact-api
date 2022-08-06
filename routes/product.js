@@ -198,8 +198,8 @@ router.post("/details", async (req, res) => {
 router.get("/favoriteCount", async (req, res) => {
   const sql = `select count(sid) from favorite where memId =${res.locals.user.sid}`;
   const [r1] = await db.query(sql);
-  console.log("r1-----01", r1);
-  console.log("sql------02", sql);
+  // console.log("r1-----01", r1);
+  // console.log("sql------02", sql);
   res.json(r1[0]);
 });
 
@@ -213,6 +213,13 @@ router.get("/whoFavorites", async (req, res) => {
   }
   // console.log("sql==", sql);
   res.json(r2);
+});
+
+router.get("/iconFavorites", async (req, res) => {
+  const sql = "SELECT * FROM `favorite` WHERE memId = ?";
+  const [r1] = await db.query(sql, [res.locals.user.sid]);
+
+  res.json(r1);
 });
 
 router.get("/:productId", async (req, res) => {
