@@ -502,7 +502,7 @@ router.get('/lesson', async (req, res) => {
     if(!res.locals.user.sid){
         return
     }
-    const [sql] = await db.query(`SELECT orders.order_date ,order_details.price AS 'truePrice' ,lesson.*, dance_category.type,teacher_category.name AS 'teacherName' FROM orders JOIN order_details ON orders.sid=order_details.order_id JOIN lesson ON order_details.item_id= lesson.sid JOIN dance_category ON lesson.dance_id= dance_category.sid JOIN teacher_category ON teacher_category.sid=lesson.teacher_id WHERE orders.member_sid=${res.locals.user.sid} AND order_details.item_type='lesson' ORDER BY order_details.sid DESC`);
+    const [sql] = await db.query(`SELECT orders.order_date ,order_details.price AS 'truePrice' ,lesson.*, dance_category.type,teacher_category.teacher_name AS 'teacherName' FROM orders JOIN order_details ON orders.sid=order_details.order_id JOIN lesson ON order_details.item_id= lesson.sid JOIN dance_category ON lesson.dance_id= dance_category.sid JOIN teacher_category ON teacher_category.sid=lesson.teacher_id WHERE orders.member_sid=${res.locals.user.sid} AND order_details.item_type='lesson' ORDER BY order_details.sid DESC`);
     // 把時間格式改正常常見格式
     const order_date = sql.map((v,i)=>moment(v.order_date).format('YYYY-MM-DD'));
     const begin = sql.map((v,i)=>moment(v.duringtime_begin).format('YYYY-MM-DD'));
