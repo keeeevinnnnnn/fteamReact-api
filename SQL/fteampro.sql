@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： localhost
--- 產生時間： 2022 年 08 月 04 日 21:48
+-- 產生時間： 2022 年 08 月 07 日 23:47
 -- 伺服器版本： 10.4.21-MariaDB
 -- PHP 版本： 7.4.29
 
@@ -59,13 +59,6 @@ CREATE TABLE `carts` (
   `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- 傾印資料表的資料 `carts`
---
-
-INSERT INTO `carts` (`sid`, `item_id`, `item_type`, `quantity`, `item_price`, `member_id`, `created_at`) VALUES
-(115, '2', 'lesson', 1, 2700, '1544', '2022-08-04 16:47:43');
-
 -- --------------------------------------------------------
 
 --
@@ -118,16 +111,12 @@ CREATE TABLE `custom` (
 --
 
 INSERT INTO `custom` (`sid`, `member_id`, `custom_product_name`, `wheel_style`, `carrier`, `front_color`, `back_style`, `back_pattern`, `back_color`, `back_text`, `back_sticker`, `back_img`, `price`, `created_date`) VALUES
-(2, '1438', 'BANANA', 'PurpleStart', 'copper', '#abff2e', 'style_03', 'Startwave', '#ffdc2e', 'BANANA', 'skew', 'cus89da5736-d27e-43bc-ae83-ef660bff5b58.png', '3990', '2022-07-31 11:16:26'),
-(4, '1438', 'HEYYYYYYY', 'BlackBlue', 'iron', '#cdb8ff', 'style_02', 'Disturb', '#ff94c8', 'HAYYY', 'Dot', 'cus4727530c-bf0d-47b7-9f65-192b9243bdc5.png', '3990', '2022-07-31 11:22:55'),
-(5, '1461', 'COOL THING', 'NeonGreen', 'black', '#4f4f4f', 'style_02', 'Disturb', '#000000', 'COOL', 'skew', 'cus88ce629b-9a4a-4281-8539-a002c68d1a4f.png', '3990', '2022-07-31 11:24:58'),
-(7, '1471', 'Yoyoyo', 'PinkWave', 'iron', '#676ea8', 'style_04', 'Disturb', '#384756', 'WHYYYYY', 'waves', 'cus3779f7fa-6639-46c3-9880-34624c1f4e51.png', '3990', '2022-07-31 11:28:50'),
-(8, '1473', 'TEST BOARD', 'PurpleStart', 'black', '#ffaf7a', 'style_02', 'Startwave', '#b4ff94', 'TESTTT', 'Dot', 'cusaabee7e5-fc48-453e-8c8b-74c939839b60.png', '3990', '2022-07-31 11:31:53'),
-(9, '1234', '5566', 'PurpleStart', 'iron', '#925454', 'style_02', 'Parallel', '#123456', 'SAMPLE', 'Dot', 'cus2c017d94-f1b9-4759-b74d-71e8cd41f275.png', '3990', '2022-07-31 14:11:29'),
-(10, '2234', '2234bbbb', 'PinkWave', 'iron', '#895252', 'style_02', 'Parallel', '#123456', '11111111', 'Waves', 'cus29ba6e0c-3b17-4ce3-9887-1ed8bbfef58a.png', '1990', '2022-07-31 14:44:57'),
-(11, '3456', '3456bordddddd', 'PinkWave', 'iron', '#9573d3', 'style_02', 'Disturb', '#a3d1ff', '345666666', 'Waves', 'cusd0b76669-e156-49aa-8db7-e495bd6d77e6.png', '2990', '2022-07-31 14:52:44'),
-(12, '4321', '4321board', 'PinkWave', 'iron', '#399027', 'style_02', 'Parallel', '#ffa914', '43211111', 'skew', 'cus4204dbe8-7ab4-43b0-bffa-734a2ad5e94b.png', '3990', '2022-07-31 15:05:32'),
-(13, '1544', '123', 'PinkWave', 'iron', '#E9573F', '', '', '', '', '', '', '', '2022-08-03 01:17:06');
+(1, '1560', '瑪莉的小羊', 'PinkWave', 'iron', '#ecb1b1', 'style_03', 'Startwave', '#dbedff', 'SHEEP', 'Dot', 'cus9519f0d6-b7e4-4c7a-b361-af7b74050e58.png', '', '2022-08-05 17:32:15'),
+(2, '1561', 'anny\'s board', 'NeonGreen', 'black', '#7a95ff', 'style_02', 'Disturb', '#06d0cc', 'ANNY', 'waves', 'cus3cab41cc-6a96-4d77-ab22-d87f524dc7d7.png', '', '2022-08-05 17:35:37'),
+(3, '1562', 'BLACK BLACK', 'PurpleStart', 'black', '#160e0e', 'style_01', 'Triangles', '#000000', 'BLACL', 'Dot', 'cus48950cbd-f107-46cd-91dd-b9805319f3e0.png', '', '2022-08-05 17:39:12'),
+(4, '1562', '黑心', 'BlackBlue', 'black', '#a30505', 'style_02', 'Parallel', '#ff0000', 'HEART', 'Dot', 'cus13d52b93-86e6-43ba-a064-8e2085d60aec.png', '', '2022-08-05 17:41:31'),
+(5, '1563', 'GREENY', 'NeonGreen', 'iron', '#33ffd6', 'style_04', 'Startwave', '#33ff96', 'FRESH', 'skew', 'cus0dbc7aad-609e-4954-96c9-8a4b127de6f9.png', '', '2022-08-05 17:45:59'),
+(6, '1564', '好廢喔', 'PinkWave', 'copper', '#ffbb5c', 'style_03', 'Parallel', '#fbc05b', 'NOTHING', 'stars', 'cus2b3177e7-55af-4634-88b5-d98fbc835464.png', '', '2022-08-05 17:50:04');
 
 -- --------------------------------------------------------
 
@@ -161,24 +150,18 @@ CREATE TABLE `cus_message` (
 --
 
 INSERT INTO `cus_message` (`id`, `mes_cusproduct_id`, `mes_member_id`, `stars`, `comment`, `created_time`) VALUES
-(4, '32', '1545', '✶✶✶✶', 'iiiiiiiiiiiiiiiiiii', '2022-08-01'),
-(5, '25', '1545', '✶✶✶', '我喜歡這個酷東西', '2022-08-02'),
-(6, '20', '1545', '', '粉紅色漂亮', '2022-08-02'),
-(7, '26', '1545', '✶✶', '花紋很可愛', '2022-08-02'),
-(8, '13', '1545', '✶✶✶✶', '喜歡這個綠色', '2022-08-02'),
-(9, '10', '1545', '', '帥欸', '2022-08-02'),
-(10, '33', '1546', '✶', '阿尼亞不喜歡黃色', '2022-08-02'),
-(11, '31', '1546', '✶✶✶✶', '粉紅色可愛', '2022-08-02'),
-(12, '26', '1546', '✶✶✶✶', '粉藍色可愛', '2022-08-02'),
-(13, '25', '1546', '✶✶✶', '綠色卡哇伊', '2022-08-02'),
-(14, '22', '1546', '✶✶', '我也要這個版版', '2022-08-02'),
-(15, '20', '1546', '', '老闆再來一塊', '2022-08-02'),
-(16, '19', '1546', '✶', '為什麼～～～～', '2022-08-02'),
-(17, '5', '1544', '✶✶✶✶', '13161', '2022-08-03'),
-(18, '5', '1544', '✶✶✶✶', '13161', '2022-08-03'),
-(19, '5', '1544', '✶✶✶✶✶', '13161', '2022-08-03'),
-(20, '5', '1544', '✶✶✶', '13161', '2022-08-03'),
-(21, '5', '1544', '✶', '13161', '2022-08-03');
+(1, '1', '1561', '✶✶✶', 'cool color', '2022-08-05'),
+(2, '2', '1562', '✶✶', '綠色好看', '2022-08-05'),
+(3, '1', '1562', '✶✶✶✶', 'mememememe', '2022-08-05'),
+(4, '4', '1563', '', '好黑好黑', '2022-08-05'),
+(5, '3', '1563', '', '好看欸欸', '2022-08-05'),
+(6, '2', '1563', '✶✶✶✶', 'LOVE IT', '2022-08-05'),
+(7, '1', '1563', '✶✶✶', '漂亮', '2022-08-05'),
+(8, '5', '1564', '✶✶✶✶', '很清新', '2022-08-05'),
+(9, '4', '1564', '', '真心不騙', '2022-08-05'),
+(10, '3', '1564', '✶✶✶', '太黑了', '2022-08-05'),
+(11, '2', '1564', '✶✶', '   不賴', '2022-08-05'),
+(12, '1', '1564', '', '好可愛 喜歡', '2022-08-05');
 
 -- --------------------------------------------------------
 
@@ -222,11 +205,12 @@ CREATE TABLE `favorite` (
 --
 
 INSERT INTO `favorite` (`sid`, `memId`, `favoriteImg`, `favoriteName`, `favoriteBrand`, `favoritePrice`, `favoriteId`) VALUES
-(5, 1544, '637894478401770000.jpg', 'GTA cartoon version of the whole set of skateboard', 'POLAR', 6800, 1),
 (6, 1544, '637894478830100000.jpg', 'Street Scenery Full Skateboard 8.25', 'PALACE', 6600, 6),
 (7, 1544, '637894482025330000.jpg', 'Chaopai Dou The whole set of skateboards 7.75', 'PALACE', 6999, 8),
 (8, 1544, '637894482992030000.jpg', 'Smoke a cigarette The whole set of skateboards 8.18', 'FUCKING AWESOME', 6999, 15),
-(11, 1544, '637894478801800000.jpg', 'Shark jump up the whole set of skateboards 8.25', 'POLAR', 7499, 4);
+(11, 1544, '637894478801800000.jpg', 'Shark jump up the whole set of skateboards 8.25', 'POLAR', 7499, 4),
+(33, 1544, '637894478778200000.jpg', 'That dog has three pairs of Inner 0.0 The whole set of skateboards', 'POLAR', 6300, 2),
+(34, 1544, '637894478781770000.jpg', 'Zhengmei stares so cool, the whole group of skateboards 8.0', 'POLAR', 7400, 3);
 
 -- --------------------------------------------------------
 
@@ -252,8 +236,8 @@ CREATE TABLE `lesson` (
 --
 
 INSERT INTO `lesson` (`sid`, `name`, `dance_id`, `duringtime_begin`, `duringtime_end`, `number_of_people`, `price`, `teacher_id`, `location`, `quota`) VALUES
-(1, 'Key Glock - Ambition For Cash', 1, '2022-08-25', '2022-09-25', 8, 3000, 1, '忠孝館', 8),
-(2, 'Collapse - Eminem / Baiba Klints', 1, '2022-09-26', '2022-10-26', 8, 2700, 1, '忠孝館', 8),
+(1, 'Key Glock - Ambition For Cash', 1, '2022-08-25', '2022-09-25', 8, 3000, 1, '忠孝館', 7),
+(2, 'Collapse - Eminem / Baiba Klints', 1, '2022-09-26', '2022-10-26', 8, 2700, 1, '忠孝館', 6),
 (3, 'Easy Dance Routine ', 1, '2022-10-27', '2022-11-27', 8, 2500, 1, '忠孝館', 8),
 (4, 'Salute - Competition Dance', 1, '2022-11-28', '2022-12-28', 8, 2700, 1, '忠孝館', 8),
 (5, 'Key Glock - Ambition For Cash\r\n', 1, '2022-08-25', '2022-09-25', 8, 3000, 2, '板橋民生旗艦館', 8),
@@ -373,7 +357,7 @@ INSERT INTO `member` (`sid`, `mem_name`, `mem_nickname`, `mem_level`, `mem_accou
 (1499, '會員', '', '平民', '45454', '45454', '', '', '0000-00-00', '', 'images.png', '2022-06-11 14:02:43', 0, '0', ''),
 (1502, '會員', '', '平民', 'dfdfd', 'dfdfd', '', '', '0000-00-00', '', 'images.png', '2022-06-11 21:23:33', 1, '0', ''),
 (1503, '會員', '', '平民', 'fff', 'fff', '', '', '0000-00-00', '', 'images.png', '2022-06-12 00:18:06', 1, '0', ''),
-(1544, 'Gary', '蓋瑞北鼻', '平民', 'gary', '$2a$10$1./ZkK7lJUjivkc1XD/e9OxX8Bb0BDcJd6u7j6yMmIsDihHWNq/uG', 'a403440322@gmail.com', '0912345678', '2022-07-01', '', 'ef1d7cba-27ee-4a78-bd9b-3080f51e2d04.jpg', '2022-07-23 20:58:35', 1, '0', 'on'),
+(1544, 'Gary', 'Gary', '平民', 'gary', '$2a$10$1./ZkK7lJUjivkc1XD/e9OxX8Bb0BDcJd6u7j6yMmIsDihHWNq/uG', 'a403440322@gmail.com', '0912345678', '2022-07-01', '', 'ef1d7cba-27ee-4a78-bd9b-3080f51e2d04.jpg', '2022-07-23 20:58:35', 1, '0', 'on'),
 (1545, '林宸皞', '安妮亞', '平民', '999', '$2a$10$XbvKJCQpgFitaPqw8Q7wY.38h/abSlpoi4e76/lU1ouJj26Ez/CZS', 'garylin0969@gmail.com', '', '0000-00-00', '', 'images.png', '2022-07-26 21:44:57', 1, '0', ''),
 (1547, 'Gary', '', '平民', 'asas', '$2a$10$Vc/TYeCi1UHUbrU1rnPDOeCO31rgwGuXu1zc8FxxasvtDn0SYULIm', 'garylin0969@gmail.com', '', '0000-00-00', '', 'images.png', '2022-07-26 21:55:49', 1, '0', ''),
 (1548, '林宸皞', '', '平民', 'jjj', '$2a$10$W27RUbmE6zzkW.6lL89wze9W7.MBl6ltA3C4P/xB63jj0gVuzSAt6', 'garylin0969@gmail.com', '', '0000-00-00', '', 'images.png', '2022-07-26 22:00:43', 1, '0', ''),
@@ -381,7 +365,12 @@ INSERT INTO `member` (`sid`, `mem_name`, `mem_nickname`, `mem_level`, `mem_accou
 (1552, 'Gary', '', '平民', 'ghgh', '$2a$10$rylTINNKINszWHgrtDQuvOsTSsH.xIKQsxn3CgmZrEvPcDo.htL.G', 'garylin0969@gmail.com', '', '0000-00-00', '', 'images.png', '2022-07-26 22:22:12', 0, '0', ''),
 (1553, '安安安', '', '平民', 'cvcv', '$2a$10$Vx8oTp/YtLYTj83/yu4PQuHLoeSmeuqXyuzhHd//u0P87wLsyKFES', 'garylin0969@gmail.com', '', '2022-07-27', '', 'images.png', '2022-07-26 22:22:54', 0, '0', ''),
 (1558, 'Gary', '', '平民', '0000', '$2a$10$cmiQqFgcA1G/8sPvqa1SXOq3pgkJ9m5T3/5qEjkyOjsNPpGAy6vwG', 'garylin0969@gmail.com', '', NULL, '', 'images.png', '2022-07-31 15:18:42', 1, '0', ''),
-(1559, 'Gary', '', '平民', 'mmm', '$2a$10$MlVsHsNnTNf7LDexeaY40OtmdnDY.0sWYBo8/VURuk7fo04LqxYU6', '26fteam@gmail.com', '', NULL, '', 'images.png', '2022-08-02 22:37:36', 1, '43047', 'on');
+(1559, 'Gary', '', '平民', 'mmm', '$2a$10$MlVsHsNnTNf7LDexeaY40OtmdnDY.0sWYBo8/VURuk7fo04LqxYU6', '26fteam@gmail.com', '', NULL, '', 'images.png', '2022-08-02 22:37:36', 1, '43047', 'on'),
+(1560, 'mary', '', '平民', 'mary', '$2a$10$YewpgIrUKaK.vDxZJ3/TS.N8iPUX80Dbzbm5bV2wPVgKvCsFRg.dq', 'mary@gmail.com', '', NULL, '', 'abbc13e2-61fd-47c9-9dd5-49719ac9a0ce.jpg', '2022-08-05 17:24:59', 1, '31388', 'on'),
+(1561, 'anny', '', '平民', 'anny', '$2a$10$qhnILIRU5htCxMYKOmZFeu7.KMDg0n1vIsM2PiTO4ZP63LFigqRku', 'anny@gmail.com', '', NULL, '', '2c086d5e-b8d9-4f6f-af4c-2ac20b8503f2.jpg', '2022-08-05 17:33:52', 1, '24450', 'on'),
+(1562, 'john', '', '平民', 'john', '$2a$10$FFv4TiGKSCK.AnytYRhs8uGW8TIIUrtOHl0wHC4H/L/C/uHlDYeGq', 'john@gmail.com', '', NULL, '', '7357c4c1-c525-44cd-99ff-9d770405b048.jpg', '2022-08-05 17:37:35', 1, '83065', 'on'),
+(1563, 'Dan', '', '平民', 'dan', '$2a$10$WCZmMxBoNHLrNncZD5u9pepf.TsheZ7/JzUtaQj1qiMVca3h3LWLy', 'dan@gmail.com', '', NULL, '', 'cf683608-4b50-4b53-8ab3-6ae8b84d73b1.jpg', '2022-08-05 17:43:29', 1, '33716', 'on'),
+(1564, 'lazy', '', '平民', 'lazy', '$2a$10$z4W45yYBjsFtPjwSYAe.Xuj7sa6fWSHdjGwRawBLCkdFWq/tQzIOy', 'lazy@gmail.com', '', NULL, '', '540ba730-d098-4995-bd87-f27e7e2ee54b.jpg', '2022-08-05 17:49:12', 1, '75036', 'on');
 
 -- --------------------------------------------------------
 
@@ -464,6 +453,7 @@ CREATE TABLE `orders` (
   `email` varchar(255) NOT NULL,
   `address` varchar(255) NOT NULL,
   `shipping_method` varchar(255) NOT NULL,
+  `pay_method` varchar(255) NOT NULL,
   `total` int(50) NOT NULL,
   `order_date` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -472,24 +462,31 @@ CREATE TABLE `orders` (
 -- 傾印資料表的資料 `orders`
 --
 
-INSERT INTO `orders` (`sid`, `member_sid`, `recipient`, `email`, `address`, `shipping_method`, `total`, `order_date`) VALUES
-(202200148, 1546, '123131', '', '基隆市信義區243243134', 'toHome', 33799, '2022-07-29 22:27:39'),
-(202200149, 1546, '123', '', '基隆市仁愛區123', 'toHome', 14998, '2022-07-29 22:29:32'),
-(202200150, 1546, 'superGary', '', '台北市中正區八德路123號', 'toHome', 51670, '2022-07-31 22:06:42'),
-(202200151, 1546, '123', '', '基隆市信義區213', 'toHome', 67130, '2022-08-03 00:28:17'),
-(202200152, 1544, '123', '', '基隆市仁愛區123123', 'toHome', 56947, '2022-08-03 01:29:25'),
-(202200153, 1544, 'Gary', 'garylin0969@gmail.com', '基隆市仁愛區kldsajfjefwojow', 'toHome', 27999, '2022-08-04 13:08:21'),
-(202200154, 1544, 'Gary', 'garylin0969@gmail.com', '基隆市信義區', 'toHome', 27999, '2022-08-04 13:09:03'),
-(202200155, 1544, 'Gary', 'a403440322@gmail.com', '台北市松山區中崙門市', 'pickSelf', 27999, '2022-08-04 13:15:39'),
-(202200156, 1544, 'Gary', 'a403440322@gmail.com', '台北市松山區上弘門市', 'pickSelf', 13799, '2022-08-04 13:20:19'),
-(202200157, 1544, 'Gary', 'a403440322@gmail.com', '台北市松山區中崙門市', 'pickSelf', 6300, '2022-08-04 13:23:47'),
-(202200158, 1544, 'Gary', 'a403440322@gmail.com', '台北市松山區上弘門市', 'pickSelf', 6800, '2022-08-04 13:24:58'),
-(202200159, 1544, 'Gary', 'a403440322@gmail.com', '台北市松山區中崙門市', 'pickSelf', 93370, '2022-08-04 13:43:30'),
-(202200160, 1544, 'Gary', 'a403440322@gmail.com', '基隆市仁愛區sadd', 'toHome', 3990, '2022-08-04 14:38:36'),
-(202200161, 1544, 'Gary', 'a403440322@gmail.com', '台北市士林區sdad', 'toHome', 20500, '2022-08-04 14:50:56'),
-(202200162, 1544, 'Gary', 'a403440322@gmail.com', '基隆市仁愛區基隆', 'toHome', 13100, '2022-08-04 14:57:43'),
-(202200163, 1544, 'Gary', 'a403440322@gmail.com', '基隆市信義區213', 'toHome', 6300, '2022-08-04 16:37:42'),
-(202200164, 1544, 'Gary', 'a403440322@gmail.com', '台北市中正區123', 'toHome', 6300, '2022-08-04 16:38:46');
+INSERT INTO `orders` (`sid`, `member_sid`, `recipient`, `email`, `address`, `shipping_method`, `pay_method`, `total`, `order_date`) VALUES
+(202200148, 1546, '123131', '', '基隆市信義區243243134', 'toHome', 'cash', 33799, '2022-07-29 22:27:39'),
+(202200149, 1546, '123', '', '基隆市仁愛區123', 'toHome', 'cash', 14998, '2022-07-29 22:29:32'),
+(202200150, 1546, 'superGary', '', '台北市中正區八德路123號', 'toHome', 'cash', 51670, '2022-07-31 22:06:42'),
+(202200151, 1546, '123', '', '基隆市信義區213', 'toHome', 'cash', 67130, '2022-08-03 00:28:17'),
+(202200152, 1544, '123', '', '基隆市仁愛區123123', 'toHome', 'cash', 56947, '2022-08-03 01:29:25'),
+(202200153, 1544, 'Gary', 'garylin0969@gmail.com', '基隆市仁愛區kldsajfjefwojow', 'toHome', 'cash', 27999, '2022-08-04 13:08:21'),
+(202200154, 1544, 'Gary', 'garylin0969@gmail.com', '基隆市信義區', 'toHome', 'cash', 27999, '2022-08-04 13:09:03'),
+(202200155, 1544, 'Gary', 'a403440322@gmail.com', '台北市松山區中崙門市', 'pickSelf', 'cash', 27999, '2022-08-04 13:15:39'),
+(202200156, 1544, 'Gary', 'a403440322@gmail.com', '台北市松山區上弘門市', 'pickSelf', 'cash', 13799, '2022-08-04 13:20:19'),
+(202200157, 1544, 'Gary', 'a403440322@gmail.com', '台北市松山區中崙門市', 'pickSelf', 'cash', 6300, '2022-08-04 13:23:47'),
+(202200158, 1544, 'Gary', 'a403440322@gmail.com', '台北市松山區上弘門市', 'pickSelf', 'cash', 6800, '2022-08-04 13:24:58'),
+(202200159, 1544, 'Gary', 'a403440322@gmail.com', '台北市松山區中崙門市', 'pickSelf', 'cash', 93370, '2022-08-04 13:43:30'),
+(202200160, 1544, 'Gary', 'a403440322@gmail.com', '基隆市仁愛區sadd', 'toHome', 'cash', 3990, '2022-08-04 14:38:36'),
+(202200161, 1544, 'Gary', 'a403440322@gmail.com', '台北市士林區sdad', 'toHome', 'cash', 20500, '2022-08-04 14:50:56'),
+(202200162, 1544, 'Gary', 'a403440322@gmail.com', '基隆市仁愛區基隆', 'toHome', 'cash', 13100, '2022-08-04 14:57:43'),
+(202200163, 1544, 'Gary', 'a403440322@gmail.com', '基隆市信義區213', 'toHome', 'cash', 6300, '2022-08-04 16:37:42'),
+(202200164, 1544, 'Gary', 'a403440322@gmail.com', '台北市中正區123', 'toHome', 'cash', 6300, '2022-08-04 16:38:46'),
+(202200165, 1544, 'Gary', 'a403440322@gmail.com', '新北市板橋區千群門市', 'pickSelf', 'cash', 2700, '2022-08-05 10:46:02'),
+(202200166, 1544, 'Gary', 'a403440322@gmail.com', '基隆市仁愛區仁愛路115號', 'toHome', 'cash', 21600, '2022-08-05 10:51:26'),
+(202200182, 1544, 'Gary', 'a403440322@gmail.com', '台北市松山區上弘門市', 'pickSelf', 'cash', 3000, '2022-08-06 18:12:27'),
+(202200183, 1544, 'Gary', 'garylin0969@gmail.com', '基隆市仁愛區gdfsda', 'toHome', 'cash', 13600, '2022-08-06 18:47:51'),
+(202200184, 1544, 'Gary', 'garylin0969@gmail.com', '台北市松山區上弘門市', 'pickSelf', 'cash', 34000, '2022-08-07 16:28:29'),
+(202200185, 1544, 'Gary', 'a403440322@gmail.com', '基隆市仁愛區qe213e1e3e', 'toHome', 'credit', 6800, '2022-08-07 23:42:13'),
+(202200186, 1544, 'Gary', 'a403440322@gmail.com', '台北市松山區北體門市', 'pickSelf', 'credit', 6800, '2022-08-07 23:46:59');
 
 -- --------------------------------------------------------
 
@@ -561,7 +558,30 @@ INSERT INTO `order_details` (`sid`, `order_id`, `member_id`, `item_id`, `item_ty
 (247, 202200162, 1544, 1, 'product', 1, 6800),
 (248, 202200162, 1544, 2, 'product', 1, 6300),
 (249, 202200163, 1544, 2, 'product', 1, 6300),
-(250, 202200164, 1544, 2, 'product', 1, 6300);
+(250, 202200164, 1544, 2, 'product', 1, 6300),
+(251, 202200165, 1544, 2, 'lesson', 1, 2700),
+(252, 202200166, 1544, 2, 'lesson', 1, 2700),
+(253, 202200166, 1544, 2, 'product', 3, 18900),
+(254, 202200167, 1544, 2, 'product', 1, 6300),
+(255, 202200168, 1544, 1, 'product', 1, 6800),
+(256, 202200169, 1544, 1, 'product', 1, 6800),
+(257, 202200170, 1544, 1, 'product', 1, 6800),
+(258, 202200171, 1544, 1, 'product', 1, 6800),
+(259, 202200172, 1544, 1, 'product', 1, 6800),
+(260, 202200174, 1544, 1, 'product', 1, 6800),
+(261, 202200175, 1544, 1, 'product', 1, 6800),
+(262, 202200176, 1544, 1, 'product', 1, 6800),
+(263, 202200177, 1544, 1, 'product', 1, 6800),
+(264, 202200178, 1544, 1, 'product', 1, 6800),
+(265, 202200179, 1544, 1, 'product', 1, 6800),
+(266, 202200180, 1544, 1, 'product', 1, 6800),
+(267, 202200181, 1544, 1, 'product', 1, 6800),
+(268, 202200182, 1544, 1, 'lesson', 1, 3000),
+(269, 202200183, 1544, 1, 'product', 2, 13600),
+(270, 202200184, 1544, 1, 'product', 5, 34000),
+(271, 202200184, 1544, 1, 'custom', 1, 0),
+(272, 202200185, 1544, 1, 'product', 1, 6800),
+(273, 202200186, 1544, 1, 'product', 1, 6800);
 
 -- --------------------------------------------------------
 
@@ -694,14 +714,14 @@ CREATE TABLE `sessions` (
 
 CREATE TABLE `teacher_category` (
   `sid` int(11) NOT NULL,
-  `name` varchar(255) CHARACTER SET utf8 NOT NULL
+  `teacher_name` varchar(255) CHARACTER SET utf8 NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- 傾印資料表的資料 `teacher_category`
 --
 
-INSERT INTO `teacher_category` (`sid`, `name`) VALUES
+INSERT INTO `teacher_category` (`sid`, `teacher_name`) VALUES
 (1, 'Nike'),
 (2, '小博'),
 (3, '雅君'),
@@ -841,13 +861,13 @@ ALTER TABLE `admin`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=116;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=147;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `custom`
 --
 ALTER TABLE `custom`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `cus_like`
@@ -859,7 +879,7 @@ ALTER TABLE `cus_like`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `cus_message`
 --
 ALTER TABLE `cus_message`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `dance_category`
@@ -871,7 +891,7 @@ ALTER TABLE `dance_category`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `favorite`
 --
 ALTER TABLE `favorite`
-  MODIFY `sid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `sid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `lesson`
@@ -889,7 +909,7 @@ ALTER TABLE `lesson_favorite`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `member`
 --
 ALTER TABLE `member`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1560;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1565;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `memberchat`
@@ -907,13 +927,13 @@ ALTER TABLE `news`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `sid` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=202200165;
+  MODIFY `sid` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=202200187;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `order_details`
 --
 ALTER TABLE `order_details`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=251;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=274;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `teacher_category`
