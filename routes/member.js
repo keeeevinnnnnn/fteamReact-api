@@ -18,7 +18,7 @@ const nodemailer = require('nodemailer');
 
 // 所有會員的基本資料
 router.get('/all', async (req, res) => {
-    const sql = await db.query('SELECT * FROM `member` WHERE 1');
+    const sql = await db.query('SELECT * FROM `member` WHERE 1 ORDER BY `member`.sid DESC');
     const created = sql[0].map((v,i)=>moment(v.mem_created_at).format('YYYY-MM-DD'));
     // console.log(created);
     // 把改好的覆蓋原本的
@@ -158,7 +158,7 @@ router.post('/register', upload.none(), async (req, res) => {
 });
 
 // 開通驗證
-router.post('/verify', upload.none(), async (req, res) => {
+router.put('/verify', upload.none(), async (req, res) => {
     const output = {
         success: false,
         code: 0,
@@ -522,7 +522,7 @@ router.get('/chat', async (req, res) => {
     res.json(sql[0]);
 });
 
-// 聊天室
+// 寫入聊天室
 router.post('/chat', upload.none(), async (req, res) => {
     if(!res.locals.user.sid){
         return
