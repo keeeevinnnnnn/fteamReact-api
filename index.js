@@ -89,6 +89,7 @@ app.use("/carts", require(__dirname + "/routes/carts.js"));
 app.use("/orders", require(__dirname + "/routes/orders.js"));
 app.use("/product", require(__dirname + "/routes/product"));
 app.use("/custom", require(__dirname + "/routes/custom"));
+app.use("/lesson", require(__dirname + "/routes/lesson"));
 
 // app.use('/test', require(__dirname + '/routes/test.js')); // 借我測試用  p.s.阿嘎留
 // ------------------ routes end -------------------------
