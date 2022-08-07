@@ -21,111 +21,104 @@ router.get("/", async (req, res) => {
   let orderfield = "sid";
   let sort = "ASC";
 
-  if (page < 1) {
-    output.code = 410;
-    output.error = "頁碼太小";
-    return output;
+  // 預設 ORDER BY SID，如果要查詢更動 ORDER BY SID
+  switch (req.query.orderfield) {
+    case "categoryId":
+      orderfield = "category_id";
+      break;
+    case "brand":
+      orderfield = "brand";
+      break;
+    case "name":
+      orderfield = "name";
+      break;
+    case "price":
+      orderfield = "price";
+      break;
+    default:
+      orderfield = "sid";
+      break;
   }
 
-  const sql01 = `SELECT COUNT(1) totalRows FROM product ${where} `;
-  const [[{ totalRows }]] = await db.query(sql01);
-  let totalPages = 0;
-  if (totalRows) {
-    totalPages = Math.ceil(totalRows / output.perPage);
-    if (page > totalPages) {
-      output.totalPages = totalPages;
-      output.code = 420;
-      output.error = "頁碼太大";
-      return output;
-    }
-    // 預設 ORDER BY SID，如果要查詢更動 ORDER BY SID
-    switch (req.query.orderfield) {
-      case "categoryId":
-        orderfield = "category_id";
-        break;
-      case "brand":
-        orderfield = "brand";
-        break;
-      case "name":
-        orderfield = "name";
-        break;
-      case "price":
-        orderfield = "price";
-        break;
-      default:
-        orderfield = "sid";
-        break;
-    }
+  let sql02 = `SELECT * FROM product ${where}`;
 
-    let sql02 = `SELECT * FROM product ${where}`;
-
-    // 預設都是null，如果不等於null，我才要執行前端送來的參數，不然都是null執行全部
-    if (req.query.categoryId != 0) {
-      let categoryId = req.query.categoryId;
-      sql02 = sql02 + " and category_id = " + categoryId;
-    }
-    if (req.query.brand != null) {
-      let brand = req.query.brand;
-      let brandStr = "";
-
-      for (let i = 0; i < brand.length; i++) {
-        // 陣列的長度 -1，等於索引值，如果只有一個的時候 沒有最後的逗號 (如果有就會報錯)
-        // 如果是多個就會在後面加上逗號，把陣列效果成功轉成sql語法
-        if (brand.length - 1 == i) {
-          brandStr = brandStr + ("'" + brand[i] + "'");
-        } else {
-          brandStr = brandStr + ("'" + brand[i] + "'" + ",");
-        }
-      }
-      sql02 = sql02 + " and brand in (" + brandStr + ")";
-    }
-
-    if (req.query.color != null) {
-      let color = req.query.color;
-      let colorStr = "";
-
-      for (let i = 0; i < color.length; i++) {
-        if (color.length - 1 == i) {
-          colorStr = colorStr + ("'" + color[i] + "'");
-        } else {
-          colorStr = colorStr + ("'" + color[i] + "'" + ",");
-        }
-      }
-      sql02 = sql02 + " and color in (" + colorStr + ")";
-    }
-
-    if (req.query.sort != "") {
-      sort = req.query.sort;
-    }
-
-    if (req.query.priceRange != null) {
-      let priceRange = req.query.priceRange;
-      sql02 =
-        sql02 + " and price BETWEEN " + priceRange[0] + " AND " + priceRange[1];
-    }
-
-    if (req.query.searchName != "") {
-      let searchName = req.query.searchName;
-      sql02 = sql02 + "AND name LIKE" + `'%${searchName}%'`;
-    }
-    // console.log("req.query==", req.query);
-
-    // console.log("sql02==", sql02);
-
-    let sql04 = ` ORDER BY ${orderfield} ${sort} LIMIT ${
-      (page - 1) * output.perPage
-    }, ${output.perPage}`;
-
-    let [r2] = await db.query(sql02 + sql04);
-    output.rows = r2;
-
-    // console.log("compSQL==", sql02 + sql04);
+  // 預設都是null，如果不等於null，我才要執行前端送來的參數，不然都是null執行全部
+  if (req.query.categoryId != 0) {
+    let categoryId = req.query.categoryId;
+    sql02 = sql02 + " and category_id = " + categoryId;
   }
+  if (req.query.brand != null) {
+    let brand = req.query.brand;
+    let brandStr = "";
+
+    for (let i = 0; i < brand.length; i++) {
+      // 陣列的長度 -1，等於索引值，如果只有一個的時候 沒有最後的逗號 (如果有就會報錯)
+      // 如果是多個就會在後面加上逗號，把陣列效果成功轉成sql語法
+      if (brand.length - 1 == i) {
+        brandStr = brandStr + ("'" + brand[i] + "'");
+      } else {
+        brandStr = brandStr + ("'" + brand[i] + "'" + ",");
+      }
+    }
+    sql02 = sql02 + " and brand in (" + brandStr + ")";
+  }
+
+  if (req.query.color != null) {
+    let color = req.query.color;
+    let colorStr = "";
+
+    for (let i = 0; i < color.length; i++) {
+      if (color.length - 1 == i) {
+        colorStr = colorStr + ("'" + color[i] + "'");
+      } else {
+        colorStr = colorStr + ("'" + color[i] + "'" + ",");
+      }
+    }
+    sql02 = sql02 + " and color in (" + colorStr + ")";
+  }
+
+  if (req.query.sort != "") {
+    sort = req.query.sort;
+  }
+
+  if (req.query.priceRange != null) {
+    let priceRange = req.query.priceRange;
+    sql02 =
+      sql02 + " and price BETWEEN " + priceRange[0] + " AND " + priceRange[1];
+  }
+
+  if (req.query.searchName != "") {
+    let searchName = req.query.searchName;
+    sql02 = sql02 + "AND name LIKE" + `'%${searchName}%'`;
+  }
+  // console.log("req.query==", req.query);
+
+  // console.log("sql02==", sql02);
+
+  // 限制商品有幾筆
+  let sql04 = ` ORDER BY ${orderfield} ${sort} LIMIT ${
+    (page - 1) * output.perPage
+  }, ${output.perPage}`;
+
+  let [r2] = await db.query(sql02 + sql04);
+  output.rows = r2;
+
+  // console.log("compSQL==", sql02 + sql04);
+
+  // 拿到總數量
+  let [r3] = await db.query(sql02);
+  const totalRows = r3.length;
+
+  // 拿到總頁數
+  let totalPages = Math.ceil(totalRows / output.perPage);
   output.code = 200;
   output = { ...output, page, totalRows, totalPages };
   res.json(output);
 });
 
+// ----------------------------------------------------------------------------------------------------
+
+// 加入收藏
 router.post("/favorites", async (req, res) => {
   const output = {
     success: "",
@@ -180,21 +173,9 @@ router.post("/favorites", async (req, res) => {
   res.json(output);
 });
 
-router.post("/details", async (req, res) => {
-  const output = {
-    success: "",
-    error: "",
-  };
-  const sql = "SELECT * FROM `product` WHERE sid = ?";
-  const [r1] = await db.query(sql, [req.body.detailsID.sid]);
-  // console.log("req.body====", req.body.detailsID.sid);
-  if (!r1.length) {
-    output.error = "沒有這個商品";
-    return res.json(output);
-  }
-  res.json(r1[0]);
-});
+// --------------------------------------------------------------------------------------
 
+// 收藏總數
 router.get("/favoriteCount", async (req, res) => {
   const sql = `select count(sid) from favorite where memId =${res.locals.user.sid}`;
   const [r1] = await db.query(sql);
@@ -203,6 +184,9 @@ router.get("/favoriteCount", async (req, res) => {
   res.json(r1[0]);
 });
 
+// ---------------------------------------------------------------------------------------
+
+// 比對該會員收藏哪些商品
 router.get("/whoFavorites", async (req, res) => {
   const sql =
     "SELECT product.sid FROM product LEFT JOIN favorite ON product.sid = favorite.favoriteId WHERE 1=1 AND favorite.memId = ?";
@@ -215,6 +199,9 @@ router.get("/whoFavorites", async (req, res) => {
   res.json(r2);
 });
 
+// ---------------------------------------------------------------------------------------
+
+// 拿到該會員的收藏商品清單
 router.get("/iconFavorites", async (req, res) => {
   const sql = "SELECT * FROM `favorite` WHERE memId = ?";
   const [r1] = await db.query(sql, [res.locals.user.sid]);
@@ -222,6 +209,19 @@ router.get("/iconFavorites", async (req, res) => {
   res.json(r1);
 });
 
+// ---------------------------------------------------------------------------------------
+
+// 商品細節頁隨機猜你喜歡商品
+router.get("/guessULike", async (req, res) => {
+  const sql = "SELECT * FROM product ORDER BY RAND() LIMIT 6;";
+  const [r1] = await db.query(sql);
+
+  res.json(r1);
+});
+
+//  --------------------------------------------------------------------------------------
+
+// 拿到該商品的細節資訊
 router.get("/:productId", async (req, res) => {
   if (req.params.productId != null) {
     let sql =
