@@ -103,7 +103,7 @@ router.get("/", async (req, res) => {
   let [r2] = await db.query(sql02 + sql04);
   output.rows = r2;
 
-  // console.log("compSQL==", sql02 + sql04);
+  console.log("compSQL==", sql02 + sql04);
 
   // 拿到總數量
   let [r3] = await db.query(sql02);
