@@ -103,7 +103,7 @@ router.get("/", async (req, res) => {
   let [r2] = await db.query(sql02 + sql04);
   output.rows = r2;
 
-  console.log("compSQL==", sql02 + sql04);
+  // console.log("compSQL==", sql02 + sql04);
 
   // 拿到總數量
   let [r3] = await db.query(sql02);
@@ -220,6 +220,19 @@ router.get("/guessULike", async (req, res) => {
 });
 
 //  --------------------------------------------------------------------------------------
+
+// 各月份銷售數據
+router.get("/priceHistory", async (req, res) => {
+  const sql =
+    "SELECT month(order_date), order_details.item_id, sum(order_details.quantity) FROM orders LEFT JOIN order_details ON orders.sid = order_details.order_id WHERE 1=1 AND order_details.item_type = 'product' AND order_details.item_id = ? GROUP BY month(order_date), order_details.item_id;";
+
+  const [r1] = await db.query(sql, [req.query.sid]);
+
+  console.log(r1);
+  res.json(r1);
+});
+
+// ---------------------------------------------------------------------------------------
 
 // 拿到該商品的細節資訊
 router.get("/:productId", async (req, res) => {

@@ -714,14 +714,14 @@ CREATE TABLE `sessions` (
 
 CREATE TABLE `teacher_category` (
   `sid` int(11) NOT NULL,
-  `teacher_name` varchar(255) CHARACTER SET utf8 NOT NULL
+  `name` varchar(255) CHARACTER SET utf8 NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- 傾印資料表的資料 `teacher_category`
 --
 
-INSERT INTO `teacher_category` (`sid`, `teacher_name`) VALUES
+INSERT INTO `teacher_category` (`sid`, `name`) VALUES
 (1, 'Nike'),
 (2, '小博'),
 (3, '雅君'),
