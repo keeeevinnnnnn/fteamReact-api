@@ -222,13 +222,14 @@ router.get("/guessULike", async (req, res) => {
 //  --------------------------------------------------------------------------------------
 
 // 各月份銷售數據
-router.get("/priceHistory", async (req, res) => {
+router.get("/priceHistory/:productId", async (req, res) => {
   const sql =
-    "SELECT month(order_date), order_details.item_id, sum(order_details.quantity) FROM orders LEFT JOIN order_details ON orders.sid = order_details.order_id WHERE 1=1 AND order_details.item_type = 'product' AND order_details.item_id = ? GROUP BY month(order_date), order_details.item_id;";
+    "SELECT month(order_date) as orderData, order_details.item_id as itemId, sum(order_details.quantity) as quantity FROM orders LEFT JOIN order_details ON orders.sid = order_details.order_id WHERE 1=1 AND order_details.item_type = 'product' AND order_details.item_id = " +
+    req.params.productId +
+    " GROUP BY month(order_date), order_details.item_id;";
 
-  const [r1] = await db.query(sql, [req.query.sid]);
+  const [r1] = await db.query(sql);
 
-  console.log(r1);
   res.json(r1);
 });
 
