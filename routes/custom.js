@@ -41,27 +41,40 @@ router.post("/", upload.none(),async (req, res) => {
   res.json(r);
 });
 
+//看有多少錢//
+router.get("/price", upload.none(),async (req, res) => {
+  const sid = req.body.sid;
+
+  const sql = "SELECT * FROM `custom` WHERE sid=?";
+  const [r]=await db.query(sql, [req.query.sid]);
+  //  console.log(r)  
+    res.json(r) 
+});
+
+
 //更新輪子//
 router.post("/wheel", upload.none(),async (req, res) => {
   const sid = req.body.sid;
   const wheel_style = req.body.wheel_style;
+  const price = req.body.price;
 
-  const sql = "UPDATE `custom` SET `wheel_style` = ? WHERE `custom`.`sid` = ?";
+  const sql = "UPDATE `custom` SET `wheel_style` = ?,`price`=? WHERE `custom`.`sid` = ?";
 
-  const [r] = await db.query(sql, [req.body.wheel_style,req.body.sid]);
+  const [r] = await db.query(sql, [req.body.wheel_style,req.body.price,req.body.sid]);
   res.json(r);
   
 });
 
 //更新輪架//
 router.post("/carrier", upload.none(),async (req, res) => {
-    const sid = req.body.sid;
-    const carrier = req.body.carrier;
-  
-    const sql = "UPDATE `custom` SET `carrier` = ? WHERE `custom`.`sid` = ?";
-  
-    const [r] = await db.query(sql, [req.body.carrier,req.body.sid]);
-    res.json(r);
+  const sid = req.body.sid;
+  const carrier = req.body.carrier;
+  const price = req.body.price;
+
+  const sql = "UPDATE `custom` SET `carrier` = ?,`price`=? WHERE `custom`.`sid` = ?";
+
+  const [r] = await db.query(sql, [req.body.carrier,req.body.price,req.body.sid]);
+  res.json(r);
 
   });
 
@@ -86,11 +99,12 @@ router.post("/carrier", upload.none(),async (req, res) => {
       const back_color = req.body.back_color;
       const back_text = req.body.back_text;
       const back_sticker = req.body.back_sticker;
+      const price = req.body.price;
 
     
-      const sql = "UPDATE `custom` SET `back_style`=?,`back_pattern`=?,`back_color`=?,`back_text`=?,`back_sticker`=? WHERE `custom`.`sid` = ?";
+      const sql = "UPDATE `custom` SET `back_style`=?,`back_pattern`=?,`back_color`=?,`back_text`=?,`back_sticker`=?,`price`=?  WHERE `custom`.`sid` = ?";
     
-      const [r] = await db.query(sql, [req.body.back_style,req.body.back_pattern,req.body.back_color,req.body.back_text,req.body.back_sticker,req.body.sid]);
+      const [r] = await db.query(sql, [req.body.back_style,req.body.back_pattern,req.body.back_color,req.body.back_text,req.body.back_sticker,req.body.price,req.body.sid]);
       res.json(r);
       
     });
@@ -133,6 +147,8 @@ router.get("/confirm", upload.none(),async (req, res) => {
     res.json(r) 
 });
 
+
+
 //分享牆//
 router.get("/share", upload.none(),async (req, res) => {
  
@@ -159,6 +175,17 @@ router.get("/prevcusproduct", upload.none(),async (req, res) => {
   const [r] = await db.query(sql,[req.query.member_id])
   res.json(r);
 });
+
+//刪除//
+router.delete("/delete", upload.none(),async (req, res) => {
+  const sid = req.body.sid;
+
+  const sql = "DELETE FROM custom WHERE `custom`.`sid` = ?";
+  const [r]=await db.query(sql, [req.query.sid]);
+  //  console.log(r)  
+    res.json(r) 
+});
+
 
 
 //留言//
