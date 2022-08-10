@@ -20,6 +20,7 @@ router.get("/", async (req, res) => {
   let where = " WHERE 1=1 ";
   let orderfield = "sid";
   let sort = "ASC";
+  let perPage = +req.query.perPage || 15;
 
   // 預設 ORDER BY SID，如果要查詢更動 ORDER BY SID
   switch (req.query.orderfield) {
@@ -93,17 +94,17 @@ router.get("/", async (req, res) => {
   }
   // console.log("req.query==", req.query);
 
-  // console.log("sql02==", sql02);
+  console.log("sql02==", sql02);
 
   // 限制商品有幾筆
   let sql04 = ` ORDER BY ${orderfield} ${sort} LIMIT ${
     (page - 1) * output.perPage
-  }, ${output.perPage}`;
+  }, ${perPage}`;
 
   let [r2] = await db.query(sql02 + sql04);
   output.rows = r2;
 
-  // console.log("compSQL==", sql02 + sql04);
+  console.log("compSQL==", sql02 + sql04);
 
   // 拿到總數量
   let [r3] = await db.query(sql02);
@@ -112,7 +113,7 @@ router.get("/", async (req, res) => {
   // 拿到總頁數
   let totalPages = Math.ceil(totalRows / output.perPage);
   output.code = 200;
-  output = { ...output, page, totalRows, totalPages };
+  output = { ...output, page, totalRows, totalPages, perPage };
   res.json(output);
 });
 
