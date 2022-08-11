@@ -208,7 +208,7 @@ router.get("/messageboard", upload.none(),async (req, res) => {
   // const sid = req.body.sid;
   const mes_cusproduct_id = req.body.mes_cusproduct_id
 
-  const sql = "SELECT * FROM custom JOIN cus_message ON custom.sid = cus_message.mes_cusproduct_id JOIN member ON cus_message.mes_member_id = member.sid WHERE custom.sid=? ;";
+  const sql = "SELECT * FROM custom JOIN cus_message ON custom.sid = cus_message.mes_cusproduct_id JOIN member ON cus_message.mes_member_id = member.sid WHERE custom.sid=? ORDER BY `cus_message`.`id` DESC;";
   const [r]=await db.query(sql, [req.query.mes_cusproduct_id]);
    console.log(r)  
     res.json(r) 
