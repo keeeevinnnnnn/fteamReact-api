@@ -31,7 +31,7 @@ const cus_io = require("socket.io")(3100, {
   }
 })
 cus_io.on('connection', socket => {
-  console.log(socket.id);
+  // console.log(socket.id);
 })
 // static folder
 app.use(express.static("errPage"));
