@@ -109,14 +109,14 @@ router.post("/register", upload.none(), async (req, res) => {
     host: "smtp.gmail.com",
     port: 465,
     auth: {
-      user: "26fteam@gmail.com",
-      pass: "yunmyhyrcyxdjloq",
+      user: "26fteam2@gmail.com",
+      // pass: "funtyvxnsbvripoh",
     },
   });
 
   transporter
     .sendMail({
-      from: "26fteam@gmail.com",
+      from: "26fteam2@gmail.com",
       to: email,
       subject: "SB感謝您的註冊，請開通帳號",
       html: `<h2>您的驗證碼為 : ${userHash}</h2>

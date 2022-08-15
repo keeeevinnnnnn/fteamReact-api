@@ -20,6 +20,7 @@ router.get("/", async (req, res) => {
   let where = " WHERE 1=1 ";
   let orderfield = "sid";
   let sort = "ASC";
+  let perPage = +req.query.perPage || 15;
 
   // 預設 ORDER BY SID，如果要查詢更動 ORDER BY SID
   switch (req.query.orderfield) {
@@ -93,12 +94,12 @@ router.get("/", async (req, res) => {
   }
   // console.log("req.query==", req.query);
 
-  // console.log("sql02==", sql02);
+  console.log("sql02==", sql02);
 
   // 限制商品有幾筆
   let sql04 = ` ORDER BY ${orderfield} ${sort} LIMIT ${
     (page - 1) * output.perPage
-  }, ${output.perPage}`;
+  }, ${perPage}`;
 
   let [r2] = await db.query(sql02 + sql04);
   output.rows = r2;
@@ -112,7 +113,7 @@ router.get("/", async (req, res) => {
   // 拿到總頁數
   let totalPages = Math.ceil(totalRows / output.perPage);
   output.code = 200;
-  output = { ...output, page, totalRows, totalPages };
+  output = { ...output, page, totalRows, totalPages, perPage };
   res.json(output);
 });
 
@@ -220,6 +221,20 @@ router.get("/guessULike", async (req, res) => {
 });
 
 //  --------------------------------------------------------------------------------------
+
+// 各月份銷售數據
+router.get("/priceHistory/:productId", async (req, res) => {
+  const sql =
+    "SELECT month(order_date) as orderData, order_details.item_id as itemId, sum(order_details.quantity) as quantity FROM orders LEFT JOIN order_details ON orders.sid = order_details.order_id WHERE 1=1 AND order_details.item_type = 'product' AND order_details.item_id = " +
+    req.params.productId +
+    " GROUP BY month(order_date), order_details.item_id;";
+
+  const [r1] = await db.query(sql);
+
+  res.json(r1);
+});
+
+// ---------------------------------------------------------------------------------------
 
 // 拿到該商品的細節資訊
 router.get("/:productId", async (req, res) => {
