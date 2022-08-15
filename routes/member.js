@@ -310,7 +310,7 @@ router.put("/edit", upload.none(), async (req, res) => {
     nickname: Joi.any(),
     email: Joi.string().email().required(),
     mobile: Joi.any(),
-    account: Joi.string().required(),
+    account: Joi.any(),
     //可以是任何類型
     birthday: Joi.any(),
     address: Joi.any(),
@@ -335,6 +335,14 @@ router.put("/edit", upload.none(), async (req, res) => {
   }
   if (!req.body.address) {
     req.body.address = "";
+  }
+  if (!req.body.account) {
+    req.body.account = "";
+  }
+
+  // console.log(req.body.birthday); 失效日期
+  if (req.body.birthday==='Invalid date') {
+    req.body.birthday = null;
   }
 
   const { name, nickname, account, email, mobile, birthday, address } =
