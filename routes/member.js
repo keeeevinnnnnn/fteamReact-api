@@ -340,6 +340,11 @@ router.put("/edit", upload.none(), async (req, res) => {
     req.body.account = "";
   }
 
+  // console.log(req.body.birthday); 失效日期
+  if (req.body.birthday==='Invalid date') {
+    req.body.birthday = null;
+  }
+
   const { name, nickname, account, email, mobile, birthday, address } =
     req.body;
 
