@@ -148,15 +148,23 @@ router.get("/api/v1/auth/google/sign", async (req, res, next) => {
             );
         } else {
             const sql =
-                "INSERT INTO `member`(`mem_name`, `mem_email`,`mem_avatar`, `google_id`, `mem_created_at`, mem_bollen, verify) VALUES (?,?,?,?,NOW(),?,?)";
+            "INSERT INTO `member`(`mem_name`,`mem_nickname`,`mem_level`,`mem_account`,`mem_password`, `mem_email`, `mem_mobile`, `mem_birthday`, `mem_address`, `mem_avatar`, `mem_bollen`, `hash`, `verify`, `google_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?)";
 
             const [result] = await db.query(sql, [
                 userName,
+                '',
+                '平民',
+                '',
+                '',
                 emailAddr,
+                '',
+                null,
+                '',
                 avatar,
-                googleId,
                 1,
-                'on'
+                '',
+                'on',
+                googleId
             ]);
 
             console.log(result);
