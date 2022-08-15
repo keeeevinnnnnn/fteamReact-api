@@ -117,8 +117,6 @@ router.get("/api/v1/auth/google/sign", async (req, res, next) => {
 
         console.log(myData);
 
-        const familyName = myData.names[0].familyName; //姓
-        const givenName = myData.names[0].givenName; //名
         const userName = myData.names[0].displayName; //名
         const googleId = myData.names[0].metadata.source.id;
         const avatar = myData.photos[0].url;
