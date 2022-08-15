@@ -117,7 +117,7 @@ router.post('/', upload.none(), async (req, res) => {
         }).catch(console.error);
 
         for (let i of r) {
-            // console.log(i);
+            // 課程人數 -1
             if (i.item_type === 'lesson') {
                 let [[lessonData]] = await db.query(`SELECT quota FROM lesson WHERE sid = ${i.item_id}`)
                 db.query(`UPDATE lesson SET quota=${lessonData.quota - 1} WHERE sid =${i.item_id}`)
@@ -163,7 +163,7 @@ router.post('/pay-credit', upload.none(), async (req, res) => {
         "details": "An apple and a pen.",
         "cardholder": {
             "phone_number": "+886923456789",
-            "name": "jack",
+            "name": "Gary",
             "email": "example@gmail.com"
         },
         "remember": false

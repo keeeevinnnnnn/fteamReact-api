@@ -24,7 +24,15 @@ const io = new Server(server, {
     methods: ["GET", "POST"],
   },
 });
-
+// customChat
+const cus_io = require("socket.io")(3100, {
+  cors: {
+    origin: 'http://localhost:3001',
+  }
+})
+cus_io.on('connection', socket => {
+  console.log(socket.id);
+})
 // static folder
 app.use(express.static("errPage"));
 app.use("/", express.static(__dirname + "/public"));
