@@ -148,7 +148,7 @@ router.get("/api/v1/auth/google/sign", async (req, res, next) => {
             );
         } else {
             const sql =
-            "INSERT INTO `member`(`mem_name`,`mem_nickname`,`mem_level`,`mem_account`,`mem_password`, `mem_email`, `mem_mobile`, `mem_birthday`, `mem_address`, `mem_avatar`, `mem_bollen`, `hash`, `verify`, `google_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?)";
+            "INSERT INTO `member`(`mem_name`,`mem_nickname`,`mem_level`,`mem_account`,`mem_password`, `mem_email`, `mem_mobile`, `mem_birthday`, `mem_address`, `mem_avatar`, `mem_bollen`, `hash`, `verify`, `google_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?)";
 
             const [result] = await db.query(sql, [
                 userName,
@@ -161,7 +161,6 @@ router.get("/api/v1/auth/google/sign", async (req, res, next) => {
                 null,
                 '',
                 avatar,
-                1,
                 '',
                 'on',
                 googleId
