@@ -133,6 +133,8 @@ router.post("/register", upload.none(), async (req, res) => {
   const sql =
     "INSERT INTO `member`(`mem_name`,`mem_nickname`,`mem_level`,`mem_account`,`mem_password`, `mem_email`, `mem_mobile`, `mem_birthday`, `mem_address`, `mem_avatar`, `mem_bollen`, `hash`, `verify`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?)";
 
+  const avatarURL = 'http://localhost:3000/avatar/' + avatar;
+
   // 把註冊資料存進資料庫 verify預設給off是為了讓信箱驗證
   const [result] = await db.query(sql, [
     name,
@@ -144,7 +146,7 @@ router.post("/register", upload.none(), async (req, res) => {
     mobile,
     birthday,
     address,
-    avatar,
+    avatarURL,
     userHash,
     "off",
   ]);
@@ -254,10 +256,6 @@ router.post("/login", upload.none(), async (req, res) => {
 
   output.success = true;
   output.info = {
-    mem_account,
-    mem_nickname,
-    new: output.new,
-    mem_avatar,
     grade: output.grade,
   };
 

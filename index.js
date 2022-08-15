@@ -85,6 +85,7 @@ app.use("/chatimg", express.static(__dirname + "/public/chatimg"));
 
 app.use("/admin", require(__dirname + "/routes/admin"));
 app.use("/member", require(__dirname + "/routes/member"));
+app.use("/google", require(__dirname + "/routes/google"));
 app.use("/carts", require(__dirname + "/routes/carts.js"));
 app.use("/orders", require(__dirname + "/routes/orders.js"));
 app.use("/product", require(__dirname + "/routes/product"));
