@@ -214,6 +214,34 @@ router.get("/messageboard", upload.none(),async (req, res) => {
     res.json(r) 
 });
 
+//長條圖撈單日//
+router.get("/cardbardata", upload.none(),async (req, res) => {
+  
+  const sql = "SELECT * FROM `cus_message` WHERE `mes_cusproduct_id` = ? AND `created_time` = ?;";
+  const [r]=await db.query(sql, [req.query.mes_cusproduct_id,req.query.created_time]);
+   console.log(r)  
+    res.json(r) 
+});
+router.get("/cardbardataprev1", upload.none(),async (req, res) => {
+  let prev1Arr = req.query.created_time.split('-');
+  let prevDay =prev1Arr[0]+'-'+prev1Arr[1]+'-'+(Number(prev1Arr[2])-1);
+  // console.log(prev1Arr)  
+  // console.log(prevDay)  
+
+  const sql = "SELECT * FROM `cus_message` WHERE `mes_cusproduct_id` = ? AND `created_time` = ?;";
+  const [r]=await db.query(sql, [req.query.mes_cusproduct_id,prevDay]);
+   console.log(r)  
+    res.json(r) 
+});
+router.get("/cardbardataprev2", upload.none(),async (req, res) => {
+  let prev1Arr = req.query.created_time.split('-');
+  let prevDay =prev1Arr[0]+'-'+prev1Arr[1]+'-'+(Number(prev1Arr[2])-2);
+
+  const sql = "SELECT * FROM `cus_message` WHERE `mes_cusproduct_id` = ? AND `created_time` = ?;";
+  const [r]=await db.query(sql, [req.query.mes_cusproduct_id,prevDay]);
+   console.log(r)  
+    res.json(r) 
+});
 
 
 
