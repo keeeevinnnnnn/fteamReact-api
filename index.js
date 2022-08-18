@@ -24,15 +24,30 @@ const io = new Server(server, {
     methods: ["GET", "POST"],
   },
 });
+
 // customChat
-const cus_io = require("socket.io")(3100, {
+const customChatServer = http.createServer(app);
+const cus_io = new Server(customChatServer, {
   cors: {
     origin: 'http://localhost:3001',
+    methods: ['GET', 'POST'],
   }
 })
-cus_io.on('connection', socket => {
-  // console.log(socket.id);
+cus_io.on('connection', (socket) => {
+  console.log('Connected ID : ', socket.id);
+  socket.on('enter_chat', (memID) => {
+    console.log('memID : ', memID);
+    socket.join(memID)
+  })
+  socket.on('send_msg', (msgData) => {
+    console.log(msgData);
+    cus_io.to(msgData.room).emit('receive_msg', msgData)
+  })
+  socket.on('disconnect', () => {
+    console.log('Disconnected', socket.id);
+  })
 })
+
 // static folder
 app.use(express.static("errPage"));
 app.use("/", express.static(__dirname + "/public"));
@@ -99,6 +114,7 @@ app.use("/orders", require(__dirname + "/routes/orders.js"));
 app.use("/product", require(__dirname + "/routes/product"));
 app.use("/custom", require(__dirname + "/routes/custom"));
 app.use("/lesson", require(__dirname + "/routes/lesson"));
+app.use("/cus_chat", require(__dirname + "/routes/cus_chat"))
 
 // app.use('/test', require(__dirname + '/routes/test.js')); // 借我測試用  p.s.阿嘎留
 // ------------------ routes end -------------------------
@@ -119,3 +135,7 @@ app.listen(3000, () => {
 server.listen(4000, function () {
   console.log("listening on port 4000");
 });
+// custom chat server
+customChatServer.listen(3100, () => {
+  console.log('customChatServer is running 3100');
+})
