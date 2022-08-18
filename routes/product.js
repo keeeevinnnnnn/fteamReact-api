@@ -90,7 +90,7 @@ router.get("/", async (req, res) => {
 
   if (req.query.searchName != "") {
     let searchName = req.query.searchName;
-    sql02 = sql02 + "AND name LIKE" + `'%${searchName}%'`;
+    sql02 = sql02 + " AND name LIKE" + `'%${searchName}%'`;
   }
   // console.log("req.query==", req.query);
 
