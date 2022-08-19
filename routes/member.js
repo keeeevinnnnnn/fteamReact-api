@@ -292,7 +292,7 @@ router.get("/memberself", async (req, res) => {
 
 // 資料修改
 router.put("/edit", upload.none(), async (req, res) => {
-  if (!res.locals.user.sid) {
+  if (res.locals.user === null) {
     return;
   }
   const output = {
@@ -369,7 +369,7 @@ router.put("/edit", upload.none(), async (req, res) => {
 
 // 密碼修改
 router.put("/password", upload.none(), async (req, res) => {
-  if (!res.locals.user.sid) {
+  if (res.locals.user === null) {
     return;
   }
   const output = {
@@ -424,7 +424,7 @@ router.put("/password", upload.none(), async (req, res) => {
 
 // 刪除帳號
 router.delete("/", async (req, res) => {
-  if (!res.locals.user.sid) {
+  if (res.locals.user === null) {
     return;
   }
   const output = {
@@ -446,7 +446,7 @@ router.post("/upload", upload.single("avatar"), (req, res) => {
 
 // 會員中心單獨更換頭貼
 router.put("/avatar", upload.none(), async (req, res) => {
-  if (!res.locals.user.sid) {
+  if (res.locals.user === null) {
     return;
   }
   const output = {
@@ -466,7 +466,7 @@ router.put("/avatar", upload.none(), async (req, res) => {
 
 // 會員商品收藏
 router.get("/favorite", async (req, res) => {
-  if (!res.locals.user.sid) {
+  if (res.locals.user === null) {
     return;
   }
   const [sql] = await db.query(
@@ -493,7 +493,7 @@ router.post("/delfavorite", async (req, res) => {
 
 // 會員購買紀錄 商品
 router.get("/recordproducts", async (req, res) => {
-  if (!res.locals.user.sid) {
+  if (res.locals.user === null) {
     return;
   }
   const [sql] = await db.query(
@@ -511,7 +511,7 @@ router.get("/recordproducts", async (req, res) => {
 
 // 會員購買紀錄 客製化商品
 router.get("/recordcustomized", async (req, res) => {
-  if (!res.locals.user.sid) {
+  if (res.locals.user === null) {
     return;
   }
   const [sql] = await db.query(
@@ -529,7 +529,7 @@ router.get("/recordcustomized", async (req, res) => {
 
 // 會員購買紀錄 課程
 router.get("/lesson", async (req, res) => {
-  if (!res.locals.user.sid) {
+  if (res.locals.user === null) {
     return;
   }
   const [sql] = await db.query(
@@ -562,7 +562,7 @@ router.get("/chat", async (req, res) => {
 
 // 寫入聊天室
 router.post("/chat", upload.none(), async (req, res) => {
-  if (!res.locals.user.sid) {
+  if (res.locals.user === null) {
     return;
   }
 
