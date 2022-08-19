@@ -9,6 +9,7 @@ const upload = require("../modules/upload-avatar");
 const uploadimg = require("../modules/upload-chatimg");
 const moment = require("moment-timezone");
 const nodemailer = require("nodemailer");
+const { exit } = require("process");
 
 //讓創建日期+X天
 // Date.prototype.addDays = function(days) {
@@ -274,16 +275,19 @@ router.post("/login", upload.none(), async (req, res) => {
 
 // 登入中會員自己的資料
 router.get("/memberself", async (req, res) => {
-  if (!res.locals.user.sid) {
+  if (res.locals.user === null) {
     return;
-  }
-  const [sql] = await db.query(
-    `SELECT * FROM member WHERE sid=${res.locals.user.sid}`
-  );
+    exit();
+  } else {
+    const [sql] = await db.query(
+      `SELECT * FROM member WHERE sid=${res.locals.user.sid}`
+    );
 
-  const birthday = moment(sql[0].mem_birthday).format("YYYY-MM-DD");
-  sql[0].mem_birthday = birthday;
-  res.json(sql[0]);
+    const birthday = moment(sql[0].mem_birthday).format("YYYY-MM-DD");
+    sql[0].mem_birthday = birthday;
+    res.json(sql[0]);
+  }
+
 });
 
 // 資料修改
@@ -341,7 +345,7 @@ router.put("/edit", upload.none(), async (req, res) => {
   }
 
   // console.log(req.body.birthday); 失效日期
-  if (req.body.birthday==='Invalid date') {
+  if (req.body.birthday === 'Invalid date') {
     req.body.birthday = null;
   }
 
