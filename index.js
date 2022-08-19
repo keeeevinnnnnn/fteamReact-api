@@ -35,13 +35,15 @@ const cus_io = new Server(customChatServer, {
 })
 cus_io.on('connection', (socket) => {
   console.log('Connected ID : ', socket.id);
+
   socket.on('enter_chat', (memID) => {
-    console.log('memID : ', memID);
-    socket.join(memID)
+    console.log('memID : ', memID, 'r' + memID);
+    socket.join('r' + memID)
   })
   socket.on('send_msg', (msgData) => {
+    console.log('Room :', cus_io.sockets.adapter.rooms.get('r' + msgData.room));
     console.log(msgData);
-    cus_io.to(msgData.room).emit('receive_msg', msgData)
+    cus_io.to('r' + msgData.room).emit('receive_msg', msgData)
   })
   socket.on('disconnect', () => {
     console.log('Disconnected', socket.id);
