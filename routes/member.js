@@ -105,7 +105,8 @@ router.post("/register", upload.none(), async (req, res) => {
   // 亂數出五位數整數
   const userHash = parseInt(Math.random() * 100000);
 
-  // 寄出Gmail hdkboeirumxpwgal
+  // 寄出Gmail
+  // const gg = 'hdkboeirumxpwgalgary'
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 465,
