@@ -111,7 +111,7 @@ router.post("/register", upload.none(), async (req, res) => {
     port: 465,
     auth: {
       // user: "fteamgary@gmail.com",
-      // pass: "hdkboeirumxpwgal",
+      // pass: "hdkboeirumxpwgalgary",
     },
   });
 
