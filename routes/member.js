@@ -9,6 +9,7 @@ const upload = require("../modules/upload-avatar");
 const uploadimg = require("../modules/upload-chatimg");
 const moment = require("moment-timezone");
 const nodemailer = require("nodemailer");
+const { exit } = require("process");
 
 //讓創建日期+X天
 // Date.prototype.addDays = function(days) {
@@ -105,18 +106,19 @@ router.post("/register", upload.none(), async (req, res) => {
   const userHash = parseInt(Math.random() * 100000);
 
   // 寄出Gmail
+  // const gg = 'hdkboeirumxpwgalgary'
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 465,
     auth: {
-      user: "26fteam2@gmail.com",
-      pass: "funtyvxnsbvripoh",
+      user: "fteamgary@gmail.com",
+      // pass: "",
     },
   });
 
   transporter
     .sendMail({
-      from: "26fteam2@gmail.com",
+      from: "fteamgary@gmail.com",
       to: email,
       subject: "SB感謝您的註冊，請開通帳號",
       html: `<h2>您的驗證碼為 : ${userHash}</h2>
@@ -274,21 +276,24 @@ router.post("/login", upload.none(), async (req, res) => {
 
 // 登入中會員自己的資料
 router.get("/memberself", async (req, res) => {
-  if (!res.locals.user.sid) {
+  if (res.locals.user === null) {
     return;
-  }
-  const [sql] = await db.query(
-    `SELECT * FROM member WHERE sid=${res.locals.user.sid}`
-  );
+    exit();
+  } else {
+    const [sql] = await db.query(
+      `SELECT * FROM member WHERE sid=${res.locals.user.sid}`
+    );
 
-  const birthday = moment(sql[0].mem_birthday).format("YYYY-MM-DD");
-  sql[0].mem_birthday = birthday;
-  res.json(sql[0]);
+    const birthday = moment(sql[0].mem_birthday).format("YYYY-MM-DD");
+    sql[0].mem_birthday = birthday;
+    res.json(sql[0]);
+  }
+
 });
 
 // 資料修改
 router.put("/edit", upload.none(), async (req, res) => {
-  if (!res.locals.user.sid) {
+  if (res.locals.user === null) {
     return;
   }
   const output = {
@@ -341,7 +346,7 @@ router.put("/edit", upload.none(), async (req, res) => {
   }
 
   // console.log(req.body.birthday); 失效日期
-  if (req.body.birthday==='Invalid date') {
+  if (req.body.birthday === 'Invalid date') {
     req.body.birthday = null;
   }
 
@@ -365,7 +370,7 @@ router.put("/edit", upload.none(), async (req, res) => {
 
 // 密碼修改
 router.put("/password", upload.none(), async (req, res) => {
-  if (!res.locals.user.sid) {
+  if (res.locals.user === null) {
     return;
   }
   const output = {
@@ -420,7 +425,7 @@ router.put("/password", upload.none(), async (req, res) => {
 
 // 刪除帳號
 router.delete("/", async (req, res) => {
-  if (!res.locals.user.sid) {
+  if (res.locals.user === null) {
     return;
   }
   const output = {
@@ -442,7 +447,7 @@ router.post("/upload", upload.single("avatar"), (req, res) => {
 
 // 會員中心單獨更換頭貼
 router.put("/avatar", upload.none(), async (req, res) => {
-  if (!res.locals.user.sid) {
+  if (res.locals.user === null) {
     return;
   }
   const output = {
@@ -462,7 +467,7 @@ router.put("/avatar", upload.none(), async (req, res) => {
 
 // 會員商品收藏
 router.get("/favorite", async (req, res) => {
-  if (!res.locals.user.sid) {
+  if (res.locals.user === null) {
     return;
   }
   const [sql] = await db.query(
@@ -489,7 +494,7 @@ router.post("/delfavorite", async (req, res) => {
 
 // 會員購買紀錄 商品
 router.get("/recordproducts", async (req, res) => {
-  if (!res.locals.user.sid) {
+  if (res.locals.user === null) {
     return;
   }
   const [sql] = await db.query(
@@ -507,7 +512,7 @@ router.get("/recordproducts", async (req, res) => {
 
 // 會員購買紀錄 客製化商品
 router.get("/recordcustomized", async (req, res) => {
-  if (!res.locals.user.sid) {
+  if (res.locals.user === null) {
     return;
   }
   const [sql] = await db.query(
@@ -525,7 +530,7 @@ router.get("/recordcustomized", async (req, res) => {
 
 // 會員購買紀錄 課程
 router.get("/lesson", async (req, res) => {
-  if (!res.locals.user.sid) {
+  if (res.locals.user === null) {
     return;
   }
   const [sql] = await db.query(
@@ -558,7 +563,7 @@ router.get("/chat", async (req, res) => {
 
 // 寫入聊天室
 router.post("/chat", upload.none(), async (req, res) => {
-  if (!res.locals.user.sid) {
+  if (res.locals.user === null) {
     return;
   }
 

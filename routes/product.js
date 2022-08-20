@@ -3,6 +3,7 @@ const express = require("express");
 const db = require("../modules/connect_db");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
+const { exit } = require("process");
 
 // 全部商品
 router.get("/", async (req, res) => {
@@ -97,9 +98,8 @@ router.get("/", async (req, res) => {
   // console.log("sql02==", sql02);
 
   // 限制商品有幾筆
-  let sql04 = ` ORDER BY ${orderfield} ${sort} LIMIT ${
-    (page - 1) * output.perPage
-  }, ${perPage}`;
+  let sql04 = ` ORDER BY ${orderfield} ${sort} LIMIT ${(page - 1) * output.perPage
+    }, ${perPage}`;
 
   let [r2] = await db.query(sql02 + sql04);
   output.rows = r2;
@@ -189,15 +189,22 @@ router.get("/favoriteCount", async (req, res) => {
 
 // 比對該會員收藏哪些商品
 router.get("/whoFavorites", async (req, res) => {
-  const sql =
-    "SELECT product.sid FROM product LEFT JOIN favorite ON product.sid = favorite.favoriteId WHERE 1=1 AND favorite.memId = ?";
-  const [r1] = await db.query(sql, [res.locals.user.sid]);
-  const r2 = [];
-  for (let i = 0; i < r1.length; i++) {
-    r2.push(r1[i].sid);
+  // console.log('123', res.locals.user);
+  if (res.locals.user === null) {
+    return
+    exit();
+  } else {
+    const sql =
+      "SELECT product.sid FROM product LEFT JOIN favorite ON product.sid = favorite.favoriteId WHERE 1=1 AND favorite.memId = ?";
+    const [r1] = await db.query(sql, [res.locals.user.sid]);
+    const r2 = [];
+    for (let i = 0; i < r1.length; i++) {
+      r2.push(r1[i].sid);
+    }
+    // console.log("sql==", sql);
+    res.json(r2);
   }
-  // console.log("sql==", sql);
-  res.json(r2);
+
 });
 
 // ---------------------------------------------------------------------------------------
