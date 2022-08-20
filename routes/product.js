@@ -94,7 +94,7 @@ router.get("/", async (req, res) => {
   }
   // console.log("req.query==", req.query);
 
-  console.log("sql02==", sql02);
+  // console.log("sql02==", sql02);
 
   // 限制商品有幾筆
   let sql04 = ` ORDER BY ${orderfield} ${sort} LIMIT ${
@@ -104,7 +104,7 @@ router.get("/", async (req, res) => {
   let [r2] = await db.query(sql02 + sql04);
   output.rows = r2;
 
-  console.log("compSQL==", sql02 + sql04);
+  // console.log("compSQL==", sql02 + sql04);
 
   // 拿到總數量
   let [r3] = await db.query(sql02);
@@ -238,15 +238,13 @@ router.get("/priceHistory/:productId", async (req, res) => {
 
 // 拿到該商品的細節資訊
 router.get("/:productId", async (req, res) => {
-  if (req.params.productId != null) {
-    let sql =
-      "SELECT * FROM `product` WHERE 1=1 and sid = " + req.params.productId;
-    const [product] = await db.query(sql);
+  let sql =
+    "SELECT * FROM `product` WHERE 1=1 and sid = " + req.params.productId;
+  const [product] = await db.query(sql);
 
-    if (product.length > 0) {
-      // console.log(product[0]);
-      res.json(product[0]);
-    }
+  if (product.length > 0) {
+    // console.log(product[0]);
+    res.json(product[0]);
   }
 });
 
