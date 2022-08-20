@@ -98,8 +98,9 @@ router.get("/", async (req, res) => {
   // console.log("sql02==", sql02);
 
   // 限制商品有幾筆
-  let sql04 = ` ORDER BY ${orderfield} ${sort} LIMIT ${(page - 1) * output.perPage
-    }, ${perPage}`;
+  let sql04 = ` ORDER BY ${orderfield} ${sort} LIMIT ${
+    (page - 1) * output.perPage
+  }, ${perPage}`;
 
   let [r2] = await db.query(sql02 + sql04);
   output.rows = r2;
@@ -189,9 +190,9 @@ router.get("/favoriteCount", async (req, res) => {
 
 // 比對該會員收藏哪些商品
 router.get("/whoFavorites", async (req, res) => {
-  // console.log('123', res.locals.user);
+  // 沒有登入會員拿不到token，也能看到商品資訊
   if (res.locals.user === null) {
-    return
+    return;
     exit();
   } else {
     const sql =
@@ -204,7 +205,6 @@ router.get("/whoFavorites", async (req, res) => {
     // console.log("sql==", sql);
     res.json(r2);
   }
-
 });
 
 // ---------------------------------------------------------------------------------------
